@@ -1,0 +1,9 @@
+.root {
+    -fx-background-color: #0E4F79;
+}
+
+.loginBox {
+    -fx-background-color: #fff;
+    -fx-border-radius: 5;
+    -fx-border-width:1;
+}
