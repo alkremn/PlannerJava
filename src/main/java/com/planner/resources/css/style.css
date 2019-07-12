@@ -1,9 +1,41 @@
 .root {
+    -fx-min-width: 1400;
+    -fx-min-height: 900;
     -fx-background-color: #0E4F79;
 }
 
 .loginBox {
+    -fx-background-radius: 20;
+    -fx-background-color: #F0F8FF;
+    -fx-border-color: #0E4F79;
+    -fx-border-width:5;
+    -fx-pref-width: 400;
+}
+
+.mainLabel{
+    -fx-padding: 50 0 0 0;
+    -fx-font-size: 40;
+    -fx-font-weight: bold;
+}
+
+.SignLabel {
+    -fx-padding: 10 0 60 0;
+    -fx-font-size: 20;
+}
+.textField{
     -fx-background-color: #fff;
     -fx-border-radius: 5;
-    -fx-border-width:1;
+    -fx-border-width: 1;
+    -fx-prompt-text-fill: #787878;
+    -fx-border-color: #0E4F79;
+    -fx-text-alignment: CENTER;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+}
+.signButton {
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+    -fx-font-family: Calibri;
+    -fx-background-color: #ffa800;
+    -fx-text-fill: #fff;
 }

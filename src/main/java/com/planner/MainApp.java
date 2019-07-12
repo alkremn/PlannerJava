@@ -3,40 +3,34 @@ package main.java.com.planner;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class MainApp extends Application {
 
-    private Stage primaryStage;
+    private Stage window;
+
+    public static void main(String[] args){launch(args);}
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Planner");
+        this.window = primaryStage;
+        this.window.setTitle("Planner");
 
         initLoginPageLayout();
     }
 
-    private void initLoginPageLayout() {
-        try{
+    private void initLoginPageLayout() throws Exception {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("fxml/LoginPage.fxml"));
-
+            window.getIcons().add(new Image(getClass().getResourceAsStream("resources/favicon-1.jpg")));
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource("resources/css/style.css").toExternalForm());
-            primaryStage.setScene(scene);
-            primaryStage.setResizable(false);
-            primaryStage.show();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+            window.setScene(scene);
+            window.setResizable(false);
+            window.show();
     }
 
 
-    public static void main(String[] args){
-        launch(args);
-    }
+
 }

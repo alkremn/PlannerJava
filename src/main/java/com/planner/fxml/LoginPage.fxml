@@ -1,20 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1200.0" styleClass="root" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.LoginPageController">
-   <children>
-      <AnchorPane layoutX="376.0" layoutY="81.0" prefHeight="438.0" prefWidth="395.0" styleClass="loginBox" stylesheets="@../resources/css/style.css" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="405.0" AnchorPane.topAnchor="80.0">
-         <children>
-            <Label layoutX="141.0" layoutY="24.0" text="Planner" textFill="#686868">
-               <font>
-                  <Font name="Calibri" size="38.0" />
-               </font>
-            </Label>
-            <Label layoutX="186.0" layoutY="79.0" text="Sign in" textFill="#686868" />
-         </children>
-      </AnchorPane>
-   </children>
-</AnchorPane>
+<VBox alignment="CENTER" fillWidth="false" prefHeight="700.0" prefWidth="1200.0" styleClass="root" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="main.java.com.planner.controller.LoginPageController">
+  <children>
+    <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="519.0" prefWidth="400.0" styleClass="loginBox">
+      <children>
+        <Label styleClass="mainLabel" text="Planner">
+          <font>
+            <Font name="Calibri" size="38.0" />
+          </font>
+          <textFill>
+            <Color blue="0.408" green="0.408" red="0.408" fx:id="x1" />
+          </textFill>
+        </Label>
+        <Label styleClass="SignLabel" text="Sign in" textFill="$x1">
+          <font>
+            <Font size="16.0" />
+          </font>
+        </Label>
+        <TextField alignment="TOP_CENTER" editable="true" maxHeight="-Infinity" maxWidth="-1.0" minHeight="-Infinity" prefHeight="40.0" prefWidth="280.0" promptText="Username" styleClass="textField" text="" />
+        <PasswordField alignment="CENTER" prefHeight="40.0" prefWidth="280.0" promptText="Password" styleClass="textField">
+          <VBox.margin>
+            <Insets top="20.0" />
+          </VBox.margin>
+        </PasswordField>
+        <Button contentDisplay="TOP" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" styleClass="signButton" text="Login" textAlignment="CENTER" textFill="#ffa800" textOverrun="ELLIPSIS">
+          <font>
+            <Font name="Candara" size="12.0" />
+          </font>
+          <VBox.margin>
+            <Insets top="40.0" />
+          </VBox.margin>
+        </Button>
+      </children>
+    </VBox>
+  </children>
+  <stylesheets>
+    <URL value="@../resources/css/style.css" />
+  </stylesheets>
+</VBox>
