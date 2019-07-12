@@ -39,3 +39,8 @@
     -fx-background-color: #ffa800;
     -fx-text-fill: #fff;
 }
+.messageLabel {
+    -fx-font-size: 20;
+    -fx-text-fill: #FF7F50;
+    -fx-font-weight: bold;
+}

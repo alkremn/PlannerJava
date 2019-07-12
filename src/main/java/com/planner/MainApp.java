@@ -5,12 +5,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import main.java.com.planner.DataService.DBConnection;
 
 public class MainApp extends Application {
 
     private Stage window;
 
-    public static void main(String[] args){launch(args);}
+    public static void main(String[] args) {
+        DBConnection.makeConnection();
+        launch(args);
+        DBConnection.closeConnection();
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -21,6 +26,7 @@ public class MainApp extends Application {
     }
 
     private void initLoginPageLayout() throws Exception {
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("fxml/LoginPage.fxml"));
             window.getIcons().add(new Image(getClass().getResourceAsStream("resources/favicon-1.jpg")));
@@ -30,7 +36,5 @@ public class MainApp extends Application {
             window.setResizable(false);
             window.show();
     }
-
-
 
 }
