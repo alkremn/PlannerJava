@@ -15,6 +15,9 @@ public class User {
     //private default constructor
     private User() {}
 
+    public int getUserId(){ return this.userId; }
+    public String getUserName() { return this.userName; }
+
     public static class UserBuilder {
         private int userId;
         private String userName;

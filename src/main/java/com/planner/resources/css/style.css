@@ -44,3 +44,15 @@
     -fx-text-fill: #FF7F50;
     -fx-font-weight: bold;
 }
+
+.plannerLabel {
+    -fx-font-size: 45;
+    -fx-text-fill: #FF7F50;
+    -fx-font-weight: bold;
+}
+
+.mainButton {
+    -fx-background-color: #0E4F79;
+    -fx-text-fill: #E8F5FF;
+    -fx-font-size: 20;
+}

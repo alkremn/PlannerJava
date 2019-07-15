@@ -7,18 +7,34 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import main.java.com.planner.DataService.DBConnection;
 import main.java.com.planner.Exceptions.AuthenticationException;
+import main.java.com.planner.Exceptions.LoggerException;
+import main.java.com.planner.MainApp;
 import main.java.com.planner.model.User;
 
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class LoginPageController {
 
+
+    private final String FILE_NAME = "log.txt";
+    private final String CONNECTING_MESSAGE = "Connecting to server...Hold on!";
+    private MainApp mainApp;
+
+    static User user;
 
     @FXML
     private TextField username;
@@ -29,13 +45,8 @@ public class LoginPageController {
     @FXML
     private Label messageLabel;
 
-
-    public LoginPageController(){
-    }
-
     @FXML
     private void loginButtonHandler(ActionEvent event) throws Exception {
-        User user = null;
         messageLabel.setText("");
         messageLabel.setVisible(false);
         try {
@@ -45,9 +56,9 @@ public class LoginPageController {
             messageLabel.setText(e.getMessage());
             messageLabel.setVisible(true);
         }
-        if(user != null){
-            messageLabel.setText("Logged in. Great job!");
-            messageLabel.setVisible(true);
+        if (user != null) {
+            MainApp.user = user;
+            mainApp.CustomerPageLoad();
         }
     }
 
@@ -56,7 +67,7 @@ public class LoginPageController {
         user = user.trim().toLowerCase();
         pass = pass.trim();
 
-        if(user.isEmpty() || pass.isEmpty())
+        if (user.isEmpty() || pass.isEmpty())
             throw new AuthenticationException("Invalid credentials");
 
         String sql = "SELECT * FROM user WHERE userName = '" + user + "' AND password = '" + pass + "';";
@@ -68,7 +79,7 @@ public class LoginPageController {
         try {
             Statement statement = DBConnection.getConnection().createStatement();
             ResultSet result = statement.executeQuery(sql);
-            if(result.first()){
+            if (result.first()) {
                 int id = result.getInt("userId");
                 String username = result.getString("username");
                 String password = result.getString("password");
@@ -88,15 +99,42 @@ public class LoginPageController {
                         .LastUpdateBy(lastUpdateBy)
                         .build();
 
-            }else {
+            } else {
                 throw new AuthenticationException("User not authenticated");
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        catch (ParseException e){
+        } catch (SQLException | ParseException e) {
             System.out.println(e.getMessage());
         }
         return foundUser;
+    }
+
+    private void LogUserIntoFile() throws LoggerException {
+        Path path = Paths.get("").toAbsolutePath();
+        String separator = File.separator;
+        File logFilePath = new File(path + separator + FILE_NAME);
+        String logString = String.format("%s, %s, %s\n", user.getUserId(), user.getUserName(), LocalDateTime.now());
+        BufferedWriter out = null;
+        try {
+            if (!logFilePath.exists()) {
+                logFilePath.createNewFile();
+            }
+            out = new BufferedWriter(new FileWriter(logFilePath, true));
+            out.write(logString);
+            out.close();
+        } catch (IOException e) {
+            throw new LoggerException("Unable to write to the file");
+        }
+    }
+
+    public void setData(MainApp mainApp, Future<?> result) {
+        this.mainApp = mainApp;
+
+        try {
+            result.get(5, TimeUnit.SECONDS);
+
+        } catch (InterruptedException | TimeoutException | ExecutionException e) {
+            messageLabel.setText("Unable to connect to server");
+        }
+
     }
 }
