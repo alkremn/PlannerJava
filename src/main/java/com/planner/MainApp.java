@@ -7,14 +7,20 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import main.java.com.planner.DataService.DBConnection;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class MainApp extends Application {
 
     private Stage window;
 
     public static void main(String[] args) {
-        DBConnection.makeConnection();
+
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        service.submit(DBConnection::makeConnection);
         launch(args);
         DBConnection.closeConnection();
+        if(!service.isTerminated()) service.shutdown();
     }
 
     @Override
@@ -33,7 +39,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource("resources/css/style.css").toExternalForm());
             window.setScene(scene);
-            window.setResizable(false);
+            //window.setResizable(false);
             window.show();
     }
 
