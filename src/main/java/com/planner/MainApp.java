@@ -23,12 +23,12 @@ public class MainApp extends Application {
     private final String CUSTOMER_PAGE= "CustomerPage.fxml";
     private final String LOGIN_PAGE= "LoginPage.fxml";
     private final String APPOINTMENT_PAGE = "AppointmentPage.fxml";
-    private final String CALENDAR_PAGE = "Calendar.fxml";
-    private final String REPORT_PAGE = "Report.fxml";
+    private final String CALENDAR_PAGE = "CalendarPage.fxml";
+    private final String REPORT_PAGE = "ReportPage.fxml";
     private final String ICON_PATH = "resources/favicon.jpg";
     public static ExecutorService service;
     public static Future<?> result;
-    public static User user = new User.UserBuilder(1).username("root").password("Root").active(2)
+    public static User user = new User.UserBuilder(1).username("root").password("Root").active(true)
             .createDate(new Date()).createdBy("Alex").lastUpdate(new Date()).LastUpdateBy("Alex").build();
 
 

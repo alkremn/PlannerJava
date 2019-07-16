@@ -6,7 +6,7 @@ public class User {
     private int userId;
     private String userName;
     private String password;
-    private int active;
+    private boolean active;
     private Date createDate;
     private String createdBy;
     private Date lastUpdate;
@@ -22,7 +22,7 @@ public class User {
         private int userId;
         private String userName;
         private String password;
-        private int active;
+        private boolean active;
         private Date createDate;
         private String createdBy;
         private Date lastUpdate;
@@ -39,7 +39,7 @@ public class User {
             this.password = password;
             return this;
         }
-        public UserBuilder active(int active){
+        public UserBuilder active(boolean active){
             this.active = active;
             return this;
         }

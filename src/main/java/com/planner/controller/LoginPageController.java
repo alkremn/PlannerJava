@@ -83,7 +83,7 @@ public class LoginPageController {
                 int id = result.getInt("userId");
                 String username = result.getString("username");
                 String password = result.getString("password");
-                int active = result.getInt("active");
+                boolean active = result.getBoolean("active");
                 Date createDate = dateFormat.parse(result.getString("createDate"));
                 String createdBy = result.getString("createdBy");
                 Date lastUpdateDate = dateFormat.parse(result.getString("lastUpdate"));
