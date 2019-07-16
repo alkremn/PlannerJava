@@ -3,7 +3,9 @@ package main.java.com.planner.controller;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -14,6 +16,7 @@ import main.java.com.planner.MainApp;
 import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
+import java.io.IOException;
 import java.util.Date;
 
 
@@ -74,6 +77,10 @@ public class CustomerPageController {
         createByColumn.setStyle( "-fx-alignment: CENTER;");
     }
 
+    @FXML
+    private void newCustomerHandler(ActionEvent event){
+       mainApp.customerPageLoad(null);
+    }
 
     @FXML
     private void appointmentButtonHandler(ActionEvent event) {

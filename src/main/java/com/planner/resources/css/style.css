@@ -1,4 +1,4 @@
-.root {
+.mainPage {
     -fx-min-width: 1400;
     -fx-min-height: 900;
     -fx-background-color: #0E4F79;
@@ -68,6 +68,14 @@
     -fx-font-weight: bold;
     -fx-text-fill: #ffffff;
 }
+
+.deleteButton {
+    -fx-background-color: #ef5b21;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
 .headerLabel {
     -fx-font-size: 14;
     -fx-text-alignment: center;

@@ -2,11 +2,14 @@ package main.java.com.planner;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.java.com.planner.DataService.DBConnection;
 import main.java.com.planner.controller.*;
+import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
 import java.io.IOException;
@@ -122,4 +125,28 @@ public class MainApp extends Application {
         }
     }
 
+    public void customerPageLoad(Customer customer){
+         try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("fxml/CustomerDetailPage.fxml"));
+
+            Stage detailsWindow = new Stage();
+            detailsWindow.initModality(Modality.APPLICATION_MODAL);
+
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
+            detailsWindow.setScene(scene);
+
+            CustomerDetailController customerDetailController = loader.getController();
+            customerDetailController.setData(this, customer);
+
+            Parent root = loader.getRoot();
+            root.requestFocus();
+            detailsWindow.showAndWait();
+
+        } catch (
+        IOException e){
+            e.printStackTrace();
+        }
+    }
 }
