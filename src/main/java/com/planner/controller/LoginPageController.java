@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import main.java.com.planner.DataService.DBConnection;
+import main.java.com.planner.DataService.AuthenticationDataService;
 import main.java.com.planner.Exceptions.AuthenticationException;
 import main.java.com.planner.Exceptions.LoggerException;
 import main.java.com.planner.MainApp;
@@ -14,14 +14,7 @@ import main.java.com.planner.model.User;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -58,7 +51,7 @@ public class LoginPageController {
         }
         if (user != null) {
             MainApp.user = user;
-            mainApp.CustomerPageLoad();
+            mainApp.customerPageLoad();
         }
     }
 
@@ -70,42 +63,13 @@ public class LoginPageController {
         if (user.isEmpty() || pass.isEmpty())
             throw new AuthenticationException("Invalid credentials");
 
-        String sql = "SELECT * FROM user WHERE userName = '" + user + "' AND password = '" + pass + "';";
-        User foundUser = null;
+        User foundUser = AuthenticationDataService.findUser(user, pass);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        try {
-            Statement statement = DBConnection.getConnection().createStatement();
-            ResultSet result = statement.executeQuery(sql);
-            if (result.first()) {
-                int id = result.getInt("userId");
-                String username = result.getString("username");
-                String password = result.getString("password");
-                boolean active = result.getBoolean("active");
-                Date createDate = dateFormat.parse(result.getString("createDate"));
-                String createdBy = result.getString("createdBy");
-                Date lastUpdateDate = dateFormat.parse(result.getString("lastUpdate"));
-                String lastUpdateBy = result.getString("lastUpdateBy");
-
-                foundUser = new User.UserBuilder(id)
-                        .username(username)
-                        .password(password)
-                        .active(active)
-                        .createDate(createDate)
-                        .createdBy(createdBy)
-                        .lastUpdate(lastUpdateDate)
-                        .LastUpdateBy(lastUpdateBy)
-                        .build();
-
-            } else {
+        if(foundUser == null)
                 throw new AuthenticationException("User not authenticated");
-            }
-        } catch (SQLException | ParseException e) {
-            System.out.println(e.getMessage());
-        }
+
         return foundUser;
+
     }
 
     private void LogUserIntoFile() throws LoggerException {
