@@ -51,7 +51,7 @@ public class MainApp extends Application {
         window.setTitle("Planner");
         window.getIcons().add(new Image(getClass().getResourceAsStream(ICON_PATH)));
 
-        customerPageLoad();
+        customersPageLoad();
         window.show();
     }
 
@@ -71,7 +71,7 @@ public class MainApp extends Application {
 
     }
 
-    public void customerPageLoad(){
+    public void customersPageLoad(){
        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML + CUSTOMER_PAGE));
             Scene scene = new Scene(loader.load());
@@ -126,7 +126,7 @@ public class MainApp extends Application {
         }
     }
 
-    public void customerPageLoad(Customer customer){
+    public void customerDetailPageLoad(Customer customer){
          try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("fxml/CustomerDetailPage.fxml"));

@@ -51,7 +51,7 @@ public class LoginPageController {
         }
         if (user != null) {
             MainApp.user = user;
-            mainApp.customerPageLoad();
+            mainApp.customersPageLoad();
         }
     }
 

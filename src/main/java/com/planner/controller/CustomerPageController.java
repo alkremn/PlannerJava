@@ -73,7 +73,7 @@ public class CustomerPageController {
 
     @FXML
     private void newCustomerHandler(ActionEvent event){
-       mainApp.customerPageLoad(null);
+       mainApp.customerDetailPageLoad(null);
     }
 
     @FXML
