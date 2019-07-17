@@ -51,7 +51,7 @@ public class Customer {
         this.name.set(name);
     }
 
-    public Address getAddressId() {
+    public Address getAddress() {
         return address.get();
     }
 

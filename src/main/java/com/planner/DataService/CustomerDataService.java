@@ -1,5 +1,8 @@
 package main.java.com.planner.DataService;
 
+import main.java.com.planner.model.Address;
+import main.java.com.planner.model.City;
+import main.java.com.planner.model.Country;
 import main.java.com.planner.model.Customer;
 
 import java.sql.ResultSet;
@@ -33,13 +36,14 @@ public class CustomerDataService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        String values = String.format("'%s', %s, %s, '%s', '%s', '%s', '%s'",
-                customer.getName(), customer.getAddressId(),customer.isActive(),
-                dateFormat.format(customer.getCreateDate()),customer.getCreatedBy(),
-                dateFormat.format(customer.getLastUpdate()),customer.getLastUpdateBy());
 
-        String sql = String.format("INSERT INTO customer VALUES(%s);",values);
-        System.out.println(sql);
+        String countryValues = getCountryString(customer.getAddress().getCity().getCountry(), dateFormat);
+        String cityValues = getCityString(customer.getAddress().getCity(), dateFormat);
+        String addressValues = getAddressString(customer.getAddress(), dateFormat);
+        String customerValues = getCustomerString(customer, dateFormat);
+
+        String sql = String.format("INSERT INTO country" + SQLStrings.countryTableValues +" VALUES(%s);",countryValues);
+
         int result = 0;
         try{
             Statement statement = DBConnection.getConnection().createStatement();
@@ -48,6 +52,7 @@ public class CustomerDataService {
         }catch (SQLException e){
             e.getMessage();
         }
+        if(result > 0) System.out.println("Added!!!");
         return result > 0;
     }
 
@@ -80,5 +85,27 @@ public class CustomerDataService {
         return customer;
     }
 
+    private String getCustomerString(final Customer customer, final SimpleDateFormat dateFormat){
+        return String.format("'%s', %s, %s, '%s', '%s', '%s', '%s'",
+                customer.getName(), customer.getAddress(),customer.isActive(),
+                dateFormat.format(customer.getCreateDate()),customer.getCreatedBy(),
+                dateFormat.format(customer.getLastUpdate()),customer.getLastUpdateBy());
+    }
 
+    private String getAddressString(final Address address, final SimpleDateFormat dateFormat){
+        return String.format("'%s', %s, %s, '%s', '%s', '%s', '%s'",
+                address.getAddress(), address.getAddress2(),address.getCity().getCityId(), address.getPostalCode(),
+                address.getPhone(), dateFormat.format(address.getCreateDate()),address.getCreatedBy(),
+                dateFormat.format(address.getLastUpdate()),address.getLastUpdateBy());
+    }
+
+    private String getCityString(final City city, final SimpleDateFormat dateFormat){
+        return String.format("%s,");
+    }
+
+    private String getCountryString(final Country country, final SimpleDateFormat dateFormat){
+        return String.format("'%s', '%s', '%s', '%s', '%s'",
+                    country.getName(), dateFormat.format(country.getCreateDate()),country.getCreatedBy(),
+                dateFormat.format(country.getLastUpdate()),country.getLastUpdateBy());
+    }
 }

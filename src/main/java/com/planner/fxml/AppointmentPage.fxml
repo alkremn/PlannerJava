@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #fff;" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.AppointmentPageController">
+<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.AppointmentPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.3333740234375" minWidth="10.0" prefWidth="211.33334350585938" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1156.3333129882812" minWidth="10.0" prefWidth="910.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1145.3333129882812" minWidth="10.0" prefWidth="282.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="290.6666564941406" minHeight="0.0" prefHeight="32.33333969116211" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="709.3333282470703" minHeight="10.0" prefHeight="702.6666603088379" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="290.6666564941406" minHeight="0.0" prefHeight="69.33332824707031" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="712.6666717529297" minHeight="10.0" prefHeight="712.6666717529297" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
@@ -35,12 +31,12 @@
       </Label>
       <HBox alignment="CENTER" prefHeight="97.0" prefWidth="369.0" GridPane.columnIndex="2">
          <children>
-            <Label text="Welcome">
+            <Label style="-fx-text-fill: #0E4F79;" text="Welcome">
                <font>
                   <Font size="21.0" />
                </font>
             </Label>
-            <Label text="User" fx:id="usernameLabel">
+            <Label fx:id="usernameLabel" text="User">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>
@@ -83,6 +79,84 @@
             <Insets top="20.0" />
          </padding>
       </VBox>
-      <Pane prefHeight="200.0" prefWidth="1183.0" style="-fx-background-color: #343434;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+      <GridPane alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="256.0" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="256.0" minHeight="-Infinity" prefHeight="48.666664123535156" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="778.3333358764648" minHeight="10.0" prefHeight="731.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TableView fx:id="customerTableView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+              <columns>
+                  <TableColumn fx:id="customerIdColumn" prefWidth="59.0" text="Id" />
+                  <TableColumn fx:id="customerNameColumn" prefWidth="214.0" text="Customer Name" />
+                  <TableColumn fx:id="addressColumn" prefWidth="249.66668701171875" text="Address" />
+                <TableColumn fx:id="appointmentColumn" prefWidth="156.33331298828125" text="Appointments" />
+                <TableColumn fx:id="statusColumn" prefWidth="139.0" text="Status" />
+                  <TableColumn fx:id="createDateColumn" prefWidth="163.66668701171875" text="Created On" />
+                  <TableColumn fx:id="createByColumn" prefWidth="210.666748046875" text="Created By" />
+              </columns>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
+               </padding>
+            </TableView>
+            <TableView fx:id="appointmentTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <columns>
+                  <TableColumn fx:id="appIdColumn" prefWidth="59.0" text="Id" />
+                  <TableColumn fx:id="appNameColumn" prefWidth="214.0" text="Customer Name" />
+                  <TableColumn fx:id="appStatusColumn" prefWidth="139.0" text="Status" />
+                  <TableColumn fx:id="appCreateDateColumn" prefWidth="163.66668701171875" text="Created On" />
+                  <TableColumn fx:id="appCreateByColumn" prefWidth="210.666748046875" text="Created By" />
+               </columns>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
+               </padding>
+            </TableView>
+            <Label styleClass="secondLabel" text="Appointments" GridPane.columnIndex="1">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+            </Label>
+            <Label styleClass="secondLabel" text="Customers">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+            </Label>
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#modifyAppointmentHander" style="-fx-font-size: 15;" styleClass="utilityButton" text="Modify">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#deleteAppointmentHandler" style="-fx-font-size: 15;" styleClass="deleteButton" text="Delete">
+                           <HBox.margin>
+                              <Insets right="30.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Button mnemonicParsing="false" onAction="#addAppointmentHandler" styleClass="utilityButton" text="+">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="20.0" />
+                     </GridPane.margin>
+                  </Button>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
    </children>
 </GridPane>
