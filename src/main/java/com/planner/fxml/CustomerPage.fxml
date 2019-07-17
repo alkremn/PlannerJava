@@ -111,12 +111,12 @@
             </TableView>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                  <Button mnemonicParsing="false" style="-fx-font-size: 15;" styleClass="utilityButton" text="Modify">
+                  <Button mnemonicParsing="false" style="-fx-font-size: 15;" styleClass="utilityButton" onAction="#modifyCustomerHandler" text="Modify">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" style="-fx-font-size: 15;" styleClass="deleteButton" text="Delete">
+                  <Button mnemonicParsing="false" style="-fx-font-size: 15;" styleClass="deleteButton" onAction="#deleteCustomerHandler" text="Delete">
                      <HBox.margin>
                         <Insets right="30.0" />
                      </HBox.margin>

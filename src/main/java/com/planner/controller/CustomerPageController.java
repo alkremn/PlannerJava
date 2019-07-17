@@ -6,8 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import main.java.com.planner.DataService.CustomerDataService;
 import main.java.com.planner.DataService.MockCustomerData;
 import main.java.com.planner.MainApp;
+import main.java.com.planner.model.Address;
 import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
@@ -18,6 +20,7 @@ public class CustomerPageController {
 
     private MainApp mainApp;
     private User user;
+    private CustomerDataService customerDS;
 
     @FXML
     private Label usernameLabel;
@@ -32,10 +35,10 @@ public class CustomerPageController {
     private TableColumn<Customer,String> customerNameColumn;
 
     @FXML
-    private TableColumn<Customer, Integer> addressColumn;
+    private TableColumn<Customer, Address> addressColumn;
 
     @FXML
-    private TableColumn<Customer, Integer> appointmentColumn;
+    private TableColumn<Customer, String> appointmentColumn;
 
     @FXML
     private TableColumn<Customer, Boolean> statusColumn;
@@ -58,7 +61,7 @@ public class CustomerPageController {
     void initialize(){
         customerIdColumn.setCellValueFactory(cellData -> cellData.getValue().customerIdProperty().asObject());
         customerNameColumn.setCellValueFactory((cellData -> cellData.getValue().nameProperty()));
-        addressColumn.setCellValueFactory((cellData -> cellData.getValue().addressIdProperty().asObject()));
+        addressColumn.setCellValueFactory((cellData -> cellData.getValue().addressProperty()));
         statusColumn.setCellValueFactory(cellData -> cellData.getValue().activeProperty());
         createDateColumn.setCellValueFactory(cellData -> cellData.getValue().createDateProperty());
         createByColumn.setCellValueFactory(cellData -> cellData.getValue().createdByProperty());
@@ -77,6 +80,25 @@ public class CustomerPageController {
     }
 
     @FXML
+    private void modifyCustomerHandler(ActionEvent event){
+        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+        if(selectedCustomer != null)
+            mainApp.customerDetailPageLoad(selectedCustomer);
+        else
+            mainApp.showAlertMessage("No customer selected", "please, select the customer in the table");
+    }
+
+    @FXML
+    private void deleteCustomerHandler(ActionEvent event){
+        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+        if(selectedCustomer != null) {
+            customerDS.addCustomer(selectedCustomer);
+        } else{
+            mainApp.showAlertMessage("No customer selected", "please, select the customer in the table");
+        }
+    }
+
+    @FXML
     private void appointmentButtonHandler(ActionEvent event) {
     }
 
@@ -90,9 +112,10 @@ public class CustomerPageController {
         mainApp.reportPageLoad();
     }
 
-    public void setData(MainApp mainApp, User user){
+    public void setData(MainApp mainApp, User user, CustomerDataService customerDS){
         this.mainApp = mainApp;
         this.user = user;
+        this.customerDS = customerDS;
         customerTableView.setItems(MockCustomerData.getCustomerList());
         this.usernameLabel.setText(user.getUserName());
     }

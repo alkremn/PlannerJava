@@ -4,9 +4,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import main.java.com.planner.DataService.CustomerDataService;
 import main.java.com.planner.DataService.DBConnection;
 import main.java.com.planner.controller.*;
 import main.java.com.planner.model.Customer;
@@ -30,6 +32,7 @@ public class MainApp extends Application {
     private final String REPORT_PAGE = "ReportPage.fxml";
     private final String ICON_PATH = "resources/favicon.jpg";
     public static ExecutorService service;
+    private CustomerDataService customerDS;
     private Stage detailsWindow;
     public static Future<?> result;
     public static User user = new User.UserBuilder(1).username("root").password("Root").active(true)
@@ -51,8 +54,14 @@ public class MainApp extends Application {
         window.setTitle("Planner");
         window.getIcons().add(new Image(getClass().getResourceAsStream(ICON_PATH)));
 
+        initData();
+
         customersPageLoad();
         window.show();
+    }
+
+    private void initData(){
+        customerDS = new CustomerDataService();
     }
 
     private void loginPageLoad() {
@@ -77,7 +86,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
             CustomerPageController customerController = loader.getController();
-            customerController.setData(this, user);
+            customerController.setData(this, user, customerDS);
             window.setScene(scene);
 
        } catch (IOException e){
@@ -155,5 +164,14 @@ public class MainApp extends Application {
             detailsWindow.close();
         }
         //TODO:: Save Customer if its not null
+    }
+
+    public void showAlertMessage(final String header, final String message){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Selection Warning");
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.showAndWait();
     }
 }

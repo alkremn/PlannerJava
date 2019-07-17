@@ -7,7 +7,7 @@ import java.util.Date;
 public class Customer {
     private IntegerProperty customerId;
     private StringProperty name;
-    private IntegerProperty addressId;
+    private ObjectProperty<Address> address;
     private BooleanProperty active;
     private ObjectProperty<Date> createDate;
     private StringProperty createdBy;
@@ -15,16 +15,15 @@ public class Customer {
     private StringProperty lastUpdateBy;
 
 
-    public Customer(int customerId, String name, int addressId, boolean active,
-                    Date createDate, String createdBy, Date lastUpdate,
-                    String lastUpdateBy) {
+    public Customer(int customerId, String name, Address address, boolean active,
+                    Date createDate, String createdBy, Date lastUpdate,String lastUpdateBy) {
         this.customerId = new SimpleIntegerProperty(customerId);
         this.name = new SimpleStringProperty(name);
-        this.addressId =  new SimpleIntegerProperty(addressId);
+        this.address =  new SimpleObjectProperty<>(address);
         this.active = new SimpleBooleanProperty(active);
-        this.createDate = new SimpleObjectProperty<Date>(createDate);
+        this.createDate = new SimpleObjectProperty<>(createDate);
         this.createdBy = new SimpleStringProperty(createdBy);
-        this.lastUpdate = new SimpleObjectProperty<Date>(lastUpdate);
+        this.lastUpdate = new SimpleObjectProperty<>(lastUpdate);
         this.lastUpdateBy = new SimpleStringProperty(lastUpdateBy);
     }
 
@@ -52,16 +51,16 @@ public class Customer {
         this.name.set(name);
     }
 
-    public int getAddressId() {
-        return addressId.get();
+    public Address getAddressId() {
+        return address.get();
     }
 
-    public IntegerProperty addressIdProperty() {
-        return addressId;
+    public ObjectProperty<Address> addressProperty() {
+        return address;
     }
 
-    public void setAddressId(int addressId) {
-        this.addressId.set(addressId);
+    public void setAddress(Address address) {
+        this.address.set(address);
     }
 
     public boolean isActive() {

@@ -1,7 +1,6 @@
 package main.java.com.planner.DataService;
 
 import main.java.com.planner.model.Customer;
-import main.java.com.planner.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +12,7 @@ import java.util.TimeZone;
 
 public class CustomerDataService {
 
-    public static List<Customer> getAllCustomers(){
+    public List<Customer> getAllCustomers(){
         String sql = "SELECT * FROM customer";
         List<Customer> customers = new ArrayList<>();
 
@@ -29,7 +28,40 @@ public class CustomerDataService {
         return customers;
     }
 
-    private static Customer createCustomer(ResultSet result){
+    public boolean addCustomer(Customer customer){
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        String values = String.format("'%s', %s, %s, '%s', '%s', '%s', '%s'",
+                customer.getName(), customer.getAddressId(),customer.isActive(),
+                dateFormat.format(customer.getCreateDate()),customer.getCreatedBy(),
+                dateFormat.format(customer.getLastUpdate()),customer.getLastUpdateBy());
+
+        String sql = String.format("INSERT INTO customer VALUES(%s);",values);
+        System.out.println(sql);
+        int result = 0;
+        try{
+            Statement statement = DBConnection.getConnection().createStatement();
+            result = statement.executeUpdate(sql);
+
+        }catch (SQLException e){
+            e.getMessage();
+        }
+        return result > 0;
+    }
+
+    public boolean deleteCustomer(Customer customer){
+        String sql = "";
+
+        if(customer != null){
+
+        }
+
+        return true;
+    }
+
+    private Customer createCustomer(ResultSet result){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Customer customer = null;

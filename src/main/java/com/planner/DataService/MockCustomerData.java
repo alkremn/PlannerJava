@@ -2,6 +2,9 @@ package main.java.com.planner.DataService;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import main.java.com.planner.model.Address;
+import main.java.com.planner.model.City;
+import main.java.com.planner.model.Country;
 import main.java.com.planner.model.Customer;
 
 import java.time.LocalDateTime;
@@ -11,11 +14,24 @@ import java.util.Date;
 public class MockCustomerData {
     public static ObservableList<Customer> getCustomerList(){
 
+        Country country = new Country(1, "USA", Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)),
+                "Alex", Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)), "Alex");
+
+        City city = new City(1, "Orem", country, Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)),
+                "Alex", Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)), "Alex");
+
+        Address address = new Address(1, "1028 W 1375 N", "", city, "84057", "3852218919",
+                Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)), "Alex", Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)),
+                "Alex");
+
+
+
         return FXCollections.observableArrayList(
-                new Customer(1,"Alexey Kremnev", 1, true,
+                new Customer(1,"Alexey Kremnev", address, true,
                         Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)),
                         "Alex", Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)),"Alex"),
-                new Customer(1,"Ben Someone", 2, false,
+
+                new Customer(1,"Ben Someone", address, false,
                         Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)),
                         "Alex", Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)),"Alex"));
     }

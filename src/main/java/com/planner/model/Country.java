@@ -8,4 +8,13 @@ public class Country {
     private String CreatedBy;
     private Date lastUpdate;
     private String lastUpdateBy;
+
+    public Country(int countryId, String name, Date createDate, String createdBy, Date lastUpdate, String lastUpdateBy) {
+        this.countryId = countryId;
+        this.name = name;
+        this.createDate = createDate;
+        CreatedBy = createdBy;
+        this.lastUpdate = lastUpdate;
+        this.lastUpdateBy = lastUpdateBy;
+    }
 }
