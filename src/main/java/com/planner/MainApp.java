@@ -30,6 +30,7 @@ public class MainApp extends Application {
     private final String REPORT_PAGE = "ReportPage.fxml";
     private final String ICON_PATH = "resources/favicon.jpg";
     public static ExecutorService service;
+    private Stage detailsWindow;
     public static Future<?> result;
     public static User user = new User.UserBuilder(1).username("root").password("Root").active(true)
             .createDate(new Date()).createdBy("Alex").lastUpdate(new Date()).LastUpdateBy("Alex").build();
@@ -130,7 +131,7 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("fxml/CustomerDetailPage.fxml"));
 
-            Stage detailsWindow = new Stage();
+            detailsWindow = new Stage();
             detailsWindow.initModality(Modality.APPLICATION_MODAL);
 
             Scene scene = new Scene(loader.load());
@@ -148,5 +149,11 @@ public class MainApp extends Application {
         IOException e){
             e.printStackTrace();
         }
+    }
+    public void saveNewCustomer(Customer customer){
+        if(detailsWindow != null) {
+            detailsWindow.close();
+        }
+        //TODO:: Save Customer if its not null
     }
 }
