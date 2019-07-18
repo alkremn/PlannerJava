@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.AppointmentPageController">
+<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.AppointmentPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.3333740234375" minWidth="10.0" prefWidth="211.33334350585938" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1156.3333129882812" minWidth="10.0" prefWidth="910.0" />
@@ -48,7 +48,7 @@
       </HBox>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #0E4F79;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="mainButton" text="Customers">
+            <Button alignment="CENTER" contentDisplay="CENTER" onAction="#customerButtonHandler" mnemonicParsing="false" styleClass="mainButton" text="Customers">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -56,7 +56,7 @@
                   <Insets top="10.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#appointmentButtonHandler" styleClass="mainButton" text="Appointments">
+            <Button mnemonicParsing="false" styleClass="mainButton" text="Appointments">
                <padding>
                   <Insets top="10.0" />
                </padding>

@@ -39,7 +39,8 @@ public class AppointmentPageController {
     }
 
     @FXML
-    private void appointmentButtonHandler(ActionEvent event) {
+    private void customerButtonHandler(ActionEvent event){
+        mainApp.customersPageLoad();
     }
 
     @FXML

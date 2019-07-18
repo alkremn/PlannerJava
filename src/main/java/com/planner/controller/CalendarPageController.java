@@ -19,7 +19,13 @@ public class CalendarPageController {
     private GridPane gridPane;
 
     @FXML
+    private void customerButtonHandler(ActionEvent event){
+        mainApp.customersPageLoad();
+    }
+
+    @FXML
     private void appointmentButtonHandler(ActionEvent event) {
+        mainApp.appointmentPageLoad();
     }
 
     @FXML

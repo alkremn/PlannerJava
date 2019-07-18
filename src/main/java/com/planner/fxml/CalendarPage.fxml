@@ -16,14 +16,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #fff;" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.CalendarPageController">
+<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.CalendarPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.3333740234375" minWidth="10.0" prefWidth="211.33334350585938" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1156.3333129882812" minWidth="10.0" prefWidth="910.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1145.3333129882812" minWidth="10.0" prefWidth="282.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="290.6666564941406" minHeight="0.0" prefHeight="32.33333969116211" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="709.3333282470703" minHeight="10.0" prefHeight="702.6666603088379" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
@@ -40,7 +40,7 @@
                   <Font size="21.0" />
                </font>
             </Label>
-            <Label text="User" fx:id="usernameLabel">
+            <Label fx:id="usernameLabel" text="User">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>
@@ -52,7 +52,7 @@
       </HBox>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #0E4F79;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="mainButton" text="Customers">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#customerButtonHandler" styleClass="mainButton" text="Customers">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

@@ -100,6 +100,7 @@ public class CustomerPageController {
 
     @FXML
     private void appointmentButtonHandler(ActionEvent event) {
+        mainApp.appointmentPageLoad();
     }
 
     @FXML

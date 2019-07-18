@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #fff;" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.ReportPageController">
+<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.ReportPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.3333740234375" minWidth="10.0" prefWidth="211.33334350585938" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1156.3333129882812" minWidth="10.0" prefWidth="910.0" />
@@ -40,7 +40,7 @@
                   <Font size="21.0" />
                </font>
             </Label>
-            <Label text="User" fx:id="usernameLabel">
+            <Label fx:id="usernameLabel" text="User">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>
