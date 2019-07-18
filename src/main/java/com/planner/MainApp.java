@@ -11,11 +11,13 @@ import javafx.stage.Stage;
 import main.java.com.planner.DataService.CustomerDataService;
 import main.java.com.planner.DataService.DBConnection;
 import main.java.com.planner.controller.*;
+import main.java.com.planner.model.Appointment;
 import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -33,6 +35,8 @@ public class MainApp extends Application {
     private final String ICON_PATH = "resources/favicon.jpg";
     public static ExecutorService service;
     private CustomerDataService customerDS;
+    public List<Customer> customerList;
+    public List<Appointment> appointmentList;
     private Stage detailsWindow;
     public static Future<?> result;
     public static User user = new User.UserBuilder(1).username("root").password("Root").active(true)

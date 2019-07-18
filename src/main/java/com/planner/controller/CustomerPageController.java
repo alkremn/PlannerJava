@@ -16,8 +16,6 @@ import main.java.com.planner.model.User;
 
 import java.util.Date;
 
-
-
 public class CustomerPageController {
 
     private MainApp mainApp;
@@ -34,23 +32,16 @@ public class CustomerPageController {
     private TableColumn<Customer, Integer> customerIdColumn;
 
     @FXML
-    private TableColumn<Customer,String> customerNameColumn;
+    private TableColumn<Customer,String> customerNameColumn, createByColumn, appointmentColumn;
 
     @FXML
     private TableColumn<Customer, Address> addressColumn;
-
-    @FXML
-    private TableColumn<Customer, String> appointmentColumn;
 
     @FXML
     private TableColumn<Customer, Boolean> statusColumn;
 
     @FXML
     private TableColumn<Customer, Date> createDateColumn;
-
-    @FXML
-    private TableColumn<Customer, String> createByColumn;
-
 
     @FXML
     private ObservableList<Customer> customerList;
