@@ -1,5 +1,6 @@
 package main.java.com.planner.controller;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
 import java.util.Date;
+
 
 
 public class CustomerPageController {
@@ -117,7 +119,7 @@ public class CustomerPageController {
         this.mainApp = mainApp;
         this.user = user;
         this.customerDS = customerDS;
-        customerTableView.setItems(MockCustomerData.getCustomerList());
+        customerTableView.setItems(FXCollections.observableArrayList(customerDS.getAllCustomers()));
         this.usernameLabel.setText(user.getUserName());
     }
 
