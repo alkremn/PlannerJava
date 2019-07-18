@@ -16,20 +16,16 @@ public class ReportPageController {
     private Label usernameLabel;
 
     @FXML
-    private GridPane gridPane;
+    private void customerButtonHandler(ActionEvent event){ mainApp.customersPageLoad();}
 
     @FXML
     private void appointmentButtonHandler(ActionEvent event) {
+        mainApp.appointmentPageLoad();
     }
 
     @FXML
     private void calendarButtonHandler(ActionEvent event) {
         mainApp.calendarPageLoad();
-    }
-
-    @FXML
-    private void reportButtonHandler(ActionEvent actionEvent) {
-        mainApp.reportPageLoad();
     }
 
     public void setData(MainApp mainApp, User user){

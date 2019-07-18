@@ -24,7 +24,7 @@
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1145.3333129882812" minWidth="10.0" prefWidth="282.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="712.6666717529297" minHeight="10.0" prefHeight="712.6666717529297" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
@@ -113,6 +113,9 @@
                   <TableColumn fx:id="createDateColumn" prefWidth="163.66668701171875" text="Created On" />
                   <TableColumn fx:id="createByColumn" prefWidth="210.666748046875" text="Created By" />
               </columns>
+               <GridPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
+               </GridPane.margin>
             </TableView>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>

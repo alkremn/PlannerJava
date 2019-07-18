@@ -42,12 +42,18 @@ public class CustomerDataService {
         String addressValues = getAddressString(customer.getAddress(), dateFormat);
         String customerValues = getCustomerString(customer, dateFormat);
 
-        String sql = String.format("INSERT INTO country" + SQLStrings.countryTableValues +" VALUES(%s);",countryValues);
+        String countrySQL = String.format("INSERT INTO country(%s) VALUES(%s);", SQLStrings.countryTableValues, countryValues);
+        String citySQL = String.format("INSERT INTO city(%s) VALUES(%s);",SQLStrings.cityTableValues, cityValues);
+        String addressSQL = String.format("INSERT INTO address(%s) VALUES(%s);", SQLStrings.addressTableValues, addressValues);
+        String customerSQL = String.format("INSERT INTO customer(%s) VALUES(%s)",SQLStrings.customerTableValues,customerValues);
 
         int result = 0;
         try{
             Statement statement = DBConnection.getConnection().createStatement();
-            result = statement.executeUpdate(sql);
+            statement.executeUpdate(countrySQL);
+            statement.executeUpdate(citySQL);
+            statement.executeUpdate(addressSQL);
+            result = statement.executeUpdate(customerSQL);
 
         }catch (SQLException e){
             e.getMessage();
@@ -86,21 +92,23 @@ public class CustomerDataService {
     }
 
     private String getCustomerString(final Customer customer, final SimpleDateFormat dateFormat){
-        return String.format("'%s', %s, %s, '%s', '%s', '%s', '%s'",
-                customer.getName(), customer.getAddress(),customer.isActive(),
+        return String.format("'%s', LAST_INSERT_ID(), %d, '%s', '%s', '%s', '%s'",
+                customer.getName(),customer.isActive() ? 1 : 0,
                 dateFormat.format(customer.getCreateDate()),customer.getCreatedBy(),
                 dateFormat.format(customer.getLastUpdate()),customer.getLastUpdateBy());
     }
 
     private String getAddressString(final Address address, final SimpleDateFormat dateFormat){
-        return String.format("'%s', %s, %s, '%s', '%s', '%s', '%s'",
-                address.getAddress(), address.getAddress2(),address.getCity().getCityId(), address.getPostalCode(),
+        return String.format("'%s', '%s', LAST_INSERT_ID(), '%s', '%s', '%s', '%s','%s','%s'",
+                address.getAddress(), address.getAddress2(), address.getPostalCode(),
                 address.getPhone(), dateFormat.format(address.getCreateDate()),address.getCreatedBy(),
                 dateFormat.format(address.getLastUpdate()),address.getLastUpdateBy());
     }
 
     private String getCityString(final City city, final SimpleDateFormat dateFormat){
-        return String.format("%s,");
+        return String.format("'%s',LAST_INSERT_ID(),'%s','%s','%s','%s'",city.getName(),
+                dateFormat.format(city.getCreateDate()),city.getCreatedBy(),
+                dateFormat.format(city.getCreateDate()), city.getLastUpdateBy());
     }
 
     private String getCountryString(final Country country, final SimpleDateFormat dateFormat){

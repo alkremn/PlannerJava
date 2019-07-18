@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -12,14 +17,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.AppointmentPageController">
+<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.AppointmentPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.3333740234375" minWidth="10.0" prefWidth="211.33334350585938" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1156.3333129882812" minWidth="10.0" prefWidth="910.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1145.3333129882812" minWidth="10.0" prefWidth="282.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="290.6666564941406" minHeight="0.0" prefHeight="69.33332824707031" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="712.6666717529297" minHeight="10.0" prefHeight="712.6666717529297" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
@@ -48,7 +53,7 @@
       </HBox>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #0E4F79;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" onAction="#customerButtonHandler" mnemonicParsing="false" styleClass="mainButton" text="Customers">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#customerButtonHandler" styleClass="mainButton" text="Customers">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -100,9 +105,9 @@
                   <TableColumn fx:id="createDateColumn" prefWidth="163.66668701171875" text="Created On" />
                   <TableColumn fx:id="createByColumn" prefWidth="210.666748046875" text="Created By" />
               </columns>
-               <padding>
+               <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" />
-               </padding>
+               </GridPane.margin>
             </TableView>
             <TableView fx:id="appointmentTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <columns>
@@ -112,9 +117,9 @@
                   <TableColumn fx:id="appCreateDateColumn" prefWidth="163.66668701171875" text="Created On" />
                   <TableColumn fx:id="appCreateByColumn" prefWidth="210.666748046875" text="Created By" />
                </columns>
-               <padding>
+               <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" />
-               </padding>
+               </GridPane.margin>
             </TableView>
             <Label styleClass="secondLabel" text="Appointments" GridPane.columnIndex="1">
                <padding>
