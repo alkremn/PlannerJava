@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,13 +64,28 @@ public class AuthenticationDataService {
         Date lastUpdateDate = dateFormat.parse(result.getString("lastupdate"));
         String lastUpdateBy = result.getString("lastupdateby");
 
+        String createDateString = result.getString("createDate");
+        String updateDateString = result.getString("lastUpdate");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime utcCreateDate = LocalDateTime.parse(createDateString, formatter);
+        ZonedDateTime zonedUTCCreateDateTime = ZonedDateTime.of(utcCreateDate, ZoneId.of("UTC"));
+
+        LocalDateTime utcUpdateDate = LocalDateTime.parse(updateDateString, formatter);
+        ZonedDateTime zonedUTCUpdateDateTime = ZonedDateTime.of(utcUpdateDate, ZoneId.of("UTC"));
+
+        ZonedDateTime localCreateDate = zonedUTCCreateDateTime.withZoneSameInstant(ZoneId.systemDefault());
+        ZonedDateTime localUpdateDate = zonedUTCUpdateDateTime.withZoneSameInstant(ZoneId.systemDefault());
+
+
         user = new User.UserBuilder(id)
                 .username(username)
                 .password(password)
                 .active(active)
-                .createDate(createDate)
+                .createDate(localCreateDate)
                 .createdBy(createdBy)
-                .lastUpdate(lastUpdateDate)
+                .lastUpdate(localUpdateDate)
                 .LastUpdateBy(lastUpdateBy)
                 .build();
 

@@ -107,11 +107,11 @@
               <columns>
                   <TableColumn fx:id="customerIdColumn" prefWidth="59.0" text="Id" />
                   <TableColumn fx:id="customerNameColumn" prefWidth="214.0" text="Customer Name" />
-                  <TableColumn fx:id="addressColumn" prefWidth="249.66668701171875" text="Address" />
-                <TableColumn fx:id="appointmentColumn" prefWidth="156.33331298828125" text="Appointments" />
-                <TableColumn fx:id="statusColumn" prefWidth="139.0" text="Status" />
-                  <TableColumn fx:id="createDateColumn" prefWidth="163.66668701171875" text="Created On" />
-                  <TableColumn fx:id="createByColumn" prefWidth="210.666748046875" text="Created By" />
+                  <TableColumn fx:id="addressColumn" prefWidth="239.0" text="Address" />
+                <TableColumn fx:id="appointmentColumn" prefWidth="168.0" text="Appointments" />
+                <TableColumn fx:id="statusColumn" prefWidth="102.0" text="Status" />
+                  <TableColumn fx:id="createDateColumn" minWidth="0.0" prefWidth="193.0" text="Created On" />
+                  <TableColumn fx:id="createByColumn" prefWidth="176.0" text="Created By" />
               </columns>
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" />

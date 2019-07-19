@@ -8,13 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import main.java.com.planner.DataService.CustomerDataService;
-import main.java.com.planner.DataService.MockCustomerData;
 import main.java.com.planner.MainApp;
 import main.java.com.planner.model.Address;
 import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class CustomerPageController {
 
@@ -41,11 +43,7 @@ public class CustomerPageController {
     private TableColumn<Customer, Boolean> statusColumn;
 
     @FXML
-    private TableColumn<Customer, Date> createDateColumn;
-
-    @FXML
-    private ObservableList<Customer> customerList;
-
+    private TableColumn<Customer, ZonedDateTime> createDateColumn;
 
     //Default constructor
     public CustomerPageController() {}
@@ -65,6 +63,8 @@ public class CustomerPageController {
         statusColumn.setStyle( "-fx-alignment: CENTER;");
         createDateColumn.setStyle( "-fx-alignment: CENTER;");
         createByColumn.setStyle( "-fx-alignment: CENTER;");
+
+
     }
 
     @FXML
@@ -85,7 +85,9 @@ public class CustomerPageController {
     private void deleteCustomerHandler(ActionEvent event){
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
         if(selectedCustomer != null) {
-            customerDS.addCustomer(selectedCustomer);
+
+            if(customerDS.deleteCustomer(selectedCustomer))
+                mainApp.customerList.remove(selectedCustomer);
         } else{
             mainApp.showAlertMessage("No customer selected", "please, select the customer in the table");
         }
@@ -106,13 +108,23 @@ public class CustomerPageController {
         mainApp.reportPageLoad();
     }
 
-    public void setData(MainApp mainApp, User user, CustomerDataService customerDS){
+    public void setData(MainApp mainApp, User user, CustomerDataService customerDS, Future<List<Customer>> result){
         this.mainApp = mainApp;
         this.user = user;
         this.customerDS = customerDS;
-        customerTableView.setItems(FXCollections.observableArrayList(customerDS.getAllCustomers()));
+        new Thread(()-> {
+            try {
+                mainApp.customerList.clear();
+                mainApp.customerList.addAll(result.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        customerTableView.setItems(mainApp.customerList);
         this.usernameLabel.setText(user.getUserName());
     }
+
+
 
 
 }

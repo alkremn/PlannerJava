@@ -1,5 +1,6 @@
 package main.java.com.planner.model;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class User {
@@ -7,9 +8,9 @@ public class User {
     private String userName;
     private String password;
     private boolean active;
-    private Date createDate;
+    private ZonedDateTime createDate;
     private String createdBy;
-    private Date lastUpdate;
+    private ZonedDateTime lastUpdate;
     private String LastUpdateBy;
 
     //private default constructor
@@ -23,9 +24,9 @@ public class User {
         private String userName;
         private String password;
         private boolean active;
-        private Date createDate;
+        private ZonedDateTime createDate;
         private String createdBy;
-        private Date lastUpdate;
+        private ZonedDateTime lastUpdate;
         private String LastUpdateBy;
 
         public UserBuilder(int userId){
@@ -44,7 +45,7 @@ public class User {
             return this;
         }
 
-        public UserBuilder createDate(Date createDate){
+        public UserBuilder createDate(ZonedDateTime createDate){
             this.createDate = createDate;
             return this;
         }
@@ -53,7 +54,7 @@ public class User {
             return this;
         }
 
-        public UserBuilder lastUpdate(Date lastUpdate){
+        public UserBuilder lastUpdate(ZonedDateTime lastUpdate){
             this.lastUpdate = lastUpdate;
             return this;
         }

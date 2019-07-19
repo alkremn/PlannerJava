@@ -2,6 +2,7 @@ package main.java.com.planner.model;
 
 import javafx.beans.property.*;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class Customer {
@@ -9,14 +10,14 @@ public class Customer {
     private StringProperty name;
     private ObjectProperty<Address> address;
     private BooleanProperty active;
-    private ObjectProperty<Date> createDate;
+    private ObjectProperty<ZonedDateTime> createDate;
     private StringProperty createdBy;
-    private ObjectProperty<Date> lastUpdate;
+    private ObjectProperty<ZonedDateTime> lastUpdate;
     private StringProperty lastUpdateBy;
 
 
     public Customer(int customerId, String name, Address address, boolean active,
-                    Date createDate, String createdBy, Date lastUpdate,String lastUpdateBy) {
+                    ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate,String lastUpdateBy) {
         this.customerId = new SimpleIntegerProperty(customerId);
         this.name = new SimpleStringProperty(name);
         this.address =  new SimpleObjectProperty<>(address);
@@ -75,15 +76,15 @@ public class Customer {
         this.active.set(active);
     }
 
-    public Date getCreateDate() {
+    public ZonedDateTime getCreateDate() {
         return createDate.get();
     }
 
-    public ObjectProperty<Date> createDateProperty() {
+    public ObjectProperty<ZonedDateTime> createDateProperty() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(ZonedDateTime createDate) {
         this.createDate.set(createDate);
     }
 
@@ -99,15 +100,15 @@ public class Customer {
         this.createdBy.set(createdBy);
     }
 
-    public Date getLastUpdate() {
+    public ZonedDateTime getLastUpdate() {
         return lastUpdate.get();
     }
 
-    public ObjectProperty<Date> lastUpdateProperty() {
+    public ObjectProperty<ZonedDateTime> lastUpdateProperty() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
+    public void setLastUpdate(ZonedDateTime lastUpdate) {
         this.lastUpdate.set(lastUpdate);
     }
 

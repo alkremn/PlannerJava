@@ -84,7 +84,7 @@
             </HBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <Label fx:id="firstNameError" styleClass="errorMessage" text="Invalid First Name" visible="false">
+                  <Label fx:id="firstNameError" styleClass="errorMessage" text="Invalid First Name">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
@@ -104,7 +104,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Label fx:id="lastNameError" styleClass="errorMessage" text="Invalid Last Name" visible="false">
+                  <Label fx:id="lastNameError" styleClass="errorMessage" text="Invalid Last Name">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
@@ -124,7 +124,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <Label fx:id="addressError" styleClass="errorMessage" text="Invalid Address" visible="false">
+                  <Label fx:id="addressError" styleClass="errorMessage" text="Invalid Address">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
@@ -144,7 +144,7 @@
             </VBox>
             <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
-                  <TextField fx:id="add2FIeld" styleClass="inputText">
+                  <TextField fx:id="add2Field" styleClass="inputText">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -159,7 +159,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
-                  <Label fx:id="phoneError" styleClass="errorMessage" text="Invalid Phone Number" visible="false">
+                  <Label fx:id="phoneError" styleClass="errorMessage" text="Invalid Phone Number">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
@@ -179,7 +179,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <children>
-                  <Label fx:id="cityError" styleClass="errorMessage" text="Invalid City" visible="false">
+                  <Label fx:id="cityError" styleClass="errorMessage" text="Invalid City">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
@@ -199,7 +199,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <children>
-                  <Label fx:id="codeError" styleClass="errorMessage" text="Invalid Postal Code" visible="false">
+                  <Label fx:id="codeError" styleClass="errorMessage" text="Invalid Postal Code">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>

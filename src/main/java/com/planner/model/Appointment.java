@@ -1,6 +1,6 @@
 package main.java.com.planner.model;
 
-import java.sql.Date;
+import java.time.ZonedDateTime;
 
 public class Appointment {
     private int id;
@@ -12,10 +12,10 @@ public class Appointment {
     private String contact;
     private String type;
     private String url;
-    private Date start;
-    private Date end;
-    private Date createDate;
+    private ZonedDateTime start;
+    private ZonedDateTime end;
+    private ZonedDateTime createDate;
     private String createdBy;
-    private Date updateDate;
+    private ZonedDateTime updateDate;
     private String lastUpdatedBy;
 }

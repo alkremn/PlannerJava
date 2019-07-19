@@ -17,7 +17,7 @@ public class DBConnection {
     public static Connection getConnection(){return connection;}
 
     //opens new connection to the database
-    public static void makeConnection(){
+    public static boolean makeConnection(){
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
@@ -25,6 +25,7 @@ public class DBConnection {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+        return true;
     }
 
     //closes the connection to the database

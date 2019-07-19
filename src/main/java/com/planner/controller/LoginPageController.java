@@ -15,10 +15,6 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class LoginPageController {
 
@@ -90,15 +86,7 @@ public class LoginPageController {
         }
     }
 
-    public void setData(MainApp mainApp, Future<?> result) {
+    public void setData(MainApp mainApp) {
         this.mainApp = mainApp;
-
-        try {
-            result.get(5, TimeUnit.SECONDS);
-
-        } catch (InterruptedException | TimeoutException | ExecutionException e) {
-            messageLabel.setText("Unable to connect to server");
-        }
-
     }
 }

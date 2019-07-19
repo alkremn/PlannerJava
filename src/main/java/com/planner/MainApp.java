@@ -1,6 +1,8 @@
 package main.java.com.planner;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,11 +18,12 @@ import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class MainApp extends Application {
 
@@ -35,18 +38,20 @@ public class MainApp extends Application {
     private final String ICON_PATH = "resources/favicon.jpg";
     public static ExecutorService service;
     private CustomerDataService customerDS;
-    public List<Customer> customerList;
-    public List<Appointment> appointmentList;
+    public ObservableList<Customer> customerList;
+    public ObservableList<Appointment> appointmentList;
     private Stage detailsWindow;
-    public static Future<?> result;
-    public static User user = new User.UserBuilder(1).username("root").password("Root").active(true)
-            .createDate(new Date()).createdBy("Alex").lastUpdate(new Date()).LastUpdateBy("Alex").build();
+    private static Future<Boolean> connection;
+    public Future<List<Customer>> customerResult;
+
+    public static User user = new User.UserBuilder(1).username("test").password("test").active(true)
+            .createDate(ZonedDateTime.now(ZoneId.systemDefault())).createdBy("Alex").lastUpdate(ZonedDateTime.now(ZoneId.systemDefault())).LastUpdateBy("Alex").build();
 
 
     public static void main(String[] args) {
 
         service = Executors.newSingleThreadExecutor();
-        result =  service.submit(DBConnection::makeConnection);
+        connection = service.submit(DBConnection::makeConnection);
         launch(args);
         DBConnection.closeConnection();
         if(!service.isTerminated()) service.shutdown();
@@ -57,15 +62,17 @@ public class MainApp extends Application {
         window = primaryStage;
         window.setTitle("Planner");
         window.getIcons().add(new Image(getClass().getResourceAsStream(ICON_PATH)));
-
+        window.setResizable(false);
         initData();
 
-        customersPageLoad();
+        loginPageLoad();
         window.show();
     }
 
     private void initData(){
         customerDS = new CustomerDataService();
+        customerList = FXCollections.observableArrayList();
+        customerResult = service.submit(customerDS::getAllCustomers);
     }
 
     private void loginPageLoad() {
@@ -76,7 +83,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
             LoginPageController loginController = loader.getController();
-            loginController.setData(this, result);
+            loginController.setData(this);
             window.setScene(scene);
         } catch (IOException e){
             e.printStackTrace();
@@ -90,7 +97,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
             CustomerPageController customerController = loader.getController();
-            customerController.setData(this, user, customerDS);
+            customerController.setData(this, user, customerDS, customerResult);
             window.setScene(scene);
 
        } catch (IOException e){
@@ -152,7 +159,7 @@ public class MainApp extends Application {
             detailsWindow.setScene(scene);
 
             CustomerDetailController customerDetailController = loader.getController();
-            customerDetailController.setData(this, customer);
+            customerDetailController.setData(this, customer, user.getUserName());
 
             Parent root = loader.getRoot();
             root.requestFocus();
@@ -163,11 +170,19 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
-    public void saveNewCustomer(Customer customer){
-        if(detailsWindow != null) {
+    public void saveCustomer(Customer customer, boolean isExisting){
+        if(detailsWindow != null)
             detailsWindow.close();
+
+        if(customer != null) {
+            if (!isExisting) {
+                customerDS.addCustomer(customer);
+            } else {
+                customerDS.updateCustomer(customer);
+            }
+            customerList.clear();
+            customerList.addAll(customerDS.getAllCustomers());
         }
-        //TODO:: Save Customer if its not null
     }
 
     public void showAlertMessage(final String header, final String message){

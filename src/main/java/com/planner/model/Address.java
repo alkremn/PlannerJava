@@ -1,6 +1,6 @@
 package main.java.com.planner.model;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 public class Address {
     private int addressId;
@@ -9,13 +9,13 @@ public class Address {
     private City city;
     private String postalCode;
     private String phone;
-    private Date createDate;
+    private ZonedDateTime createDate;
     private String CreatedBy;
-    private Date lastUpdate;
+    private ZonedDateTime lastUpdate;
     private String lastUpdateBy;
 
     public Address(int addressId, String address, String address2, City city, String postalCode,
-                   String phone, Date createDate, String createdBy, Date lastUpdate, String lastUpdateBy) {
+                   String phone, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdateBy) {
         this.addressId = addressId;
         this.address = address;
         this.address2 = address2;
@@ -81,11 +81,11 @@ public class Address {
         this.phone = phone;
     }
 
-    public Date getCreateDate() {
+    public ZonedDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(ZonedDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -97,11 +97,11 @@ public class Address {
         CreatedBy = createdBy;
     }
 
-    public Date getLastUpdate() {
+    public ZonedDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
+    public void setLastUpdate(ZonedDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
