@@ -3,10 +3,7 @@ package main.java.com.planner.controller;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import main.java.com.planner.MainApp;
 import main.java.com.planner.model.Customer;
 
@@ -23,6 +20,9 @@ public class CustomerDetailController {
     private Label customerLabel;
 
     @FXML
+    private RadioButton activeButton, notActiveButton;
+
+    @FXML
     private TextField firstNameField, lastNameField, addField, add2FIeld, phoneField, cityField, codeField;
 
     @FXML
@@ -34,7 +34,7 @@ public class CustomerDetailController {
     @FXML
     private Button saveButton;
 
-    private boolean isFirst, isLast, isAddress, isPhone, isCity, isCode, isCountry;
+    private boolean isFirstValid, isLastValid, isAddressValid, isPhoneValid, isCityValid, isCodeValid, isCountryValid;
 
     //default constructor
     public CustomerDetailController(){}
@@ -42,16 +42,12 @@ public class CustomerDetailController {
 
     @FXML
     private void selectionChangedHandler(ActionEvent event){
-        countryComboBox.setStyle("-fx-border-color: transparent");
-        lastNameError.setVisible(false);
-        isCountry = true;
+        isCountryValid = true;
         validFormCheck();
     }
 
     @FXML
     private void saveButtonHandler(ActionEvent event){
-
-        //TODO:: validate input data
         mainApp.saveNewCustomer(customer);
     }
 
@@ -82,42 +78,67 @@ public class CustomerDetailController {
         saveButton.setDisable(true);
 
         firstNameField.textProperty().addListener(((observable, oldValue, newValue) -> {
-            lastNameError.setVisible(newValue.isEmpty());
+            isFirstValid = !newValue.isEmpty();
+            firstNameError.setVisible(!isFirstValid);
             validFormCheck();
         }));
 
         lastNameField.textProperty().addListener(((observable, oldValue, newValue) -> {
-            lastNameError.setVisible(newValue.isEmpty());
+            isLastValid = !newValue.isEmpty();
+            lastNameError.setVisible(!isLastValid);
             validFormCheck();
         }));
         addField.textProperty().addListener(((observable, oldValue, newValue) -> {
-            addressError.setVisible(newValue.isEmpty());
+            isAddressValid = !newValue.isEmpty();
+            addressError.setVisible(!isAddressValid);
             validFormCheck();
         }));
         phoneField.textProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue.isEmpty() || )
-            phoneError.setVisible(newValue.isEmpty());
+            boolean isNumber = true;
+            try{
+            Long.parseLong(newValue);
+            }catch (NumberFormatException e){
+                isNumber = false;
+            }
+            isPhoneValid = !newValue.isEmpty() && isNumber;
+            phoneError.setVisible(!isPhoneValid);
             validFormCheck();
         }));
         cityField.textProperty().addListener(((observable, oldValue, newValue) -> {
-            cityError.setVisible(newValue.isEmpty());
+            isCityValid = !newValue.isEmpty();
+            cityError.setVisible(!isCityValid);
             validFormCheck();
         }));
         codeField.textProperty().addListener(((observable, oldValue, newValue) -> {
-            codeError.setVisible(newValue.isEmpty());
+            boolean isNumber = true;
+            try{
+                Long.parseLong(newValue);
+            }catch (NumberFormatException e){
+                isNumber = false;
+            }
+            isCodeValid = !newValue.isEmpty() && isNumber;
+            codeError.setVisible(!isCodeValid);
             validFormCheck();
         }));
     }
 
     private void validFormCheck(){
-        boolean isValidToSave = isFirst && isLast && isAddress && isPhone && isCity && isCode && isCountry;
+        boolean isValidToSave = isFirstValid && isLastValid && isAddressValid && isPhoneValid && isCityValid
+                && isCodeValid && isCountryValid;
         saveButton.setDisable(!isValidToSave);
     }
 
     private void initFields(Customer customer){
-
-
-
+        notActiveButton.setSelected(!customer.isActive());
+        String[] firstLast = customer.getName().split(" ");
+        firstNameField.setText(firstLast[0]);
+        lastNameField.setText(firstLast[1]);
+        addField.setText(customer.getAddress().getAddress());
+        add2FIeld.setText(customer.getAddress().getAddress2());
+        phoneField.setText(customer.getAddress().getPhone());
+        cityField.setText(customer.getAddress().getCity().getName());
+        codeField.setText(customer.getAddress().getPostalCode());
+        countryComboBox.getSelectionModel().select(customer.getAddress().getCity().getCountry().getName());
     }
 
 }
