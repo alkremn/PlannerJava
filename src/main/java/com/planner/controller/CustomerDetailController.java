@@ -12,7 +12,9 @@ import main.java.com.planner.model.Customer;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class CustomerDetailController {
 
@@ -54,7 +56,7 @@ public class CustomerDetailController {
     @FXML
     private void saveButtonHandler(ActionEvent event){
         if(customer != null)
-            mainApp.saveCustomer(createCustomer(isExisting), !isExisting);
+            mainApp.saveCustomer(createCustomer(isExisting), isExisting);
         else
             mainApp.saveCustomer(createCustomer(isExisting), isExisting);
     }
@@ -106,7 +108,7 @@ public class CustomerDetailController {
         phoneField.textProperty().addListener(((observable, oldValue, newValue) -> {
             boolean isNumber = true;
             try{
-            Long.parseLong(newValue);
+                Long.parseLong(newValue);
             }catch (NumberFormatException e){
                 isNumber = false;
             }
@@ -133,6 +135,7 @@ public class CustomerDetailController {
     }
 
     private void initFields(Customer customer){
+        customerLabel.setText("Modify Customer");
         notActiveButton.setSelected(!customer.isActive());
         String[] firstLast = customer.getName().split(" ");
         firstNameField.setText(firstLast[0]);
@@ -147,9 +150,9 @@ public class CustomerDetailController {
         saveButton.setDisable(false);
     }
 
-    private Customer createCustomer(boolean isExisting){
+    private Customer createCustomer(boolean isExisting) {
         ZonedDateTime currentDate = ZonedDateTime.now(ZoneId.of("UTC"));
-        if(!isExisting) {
+        if (!isExisting) {
             Country country = new Country(0, countryComboBox.getSelectionModel().getSelectedItem(), currentDate,
                     user, currentDate, user);
             City city = new City(0, cityField.getText(), country, currentDate, user, currentDate, user);
@@ -158,7 +161,7 @@ public class CustomerDetailController {
             String fullName = firstNameField.getText() + " " + lastNameField.getText();
             boolean isActive = !notActiveButton.isSelected();
             return new Customer(0, fullName, address, isActive, currentDate, user, currentDate, user);
-        }else{
+        } else {
             Address address = customer.getAddress();
             City city = address.getCity();
             Country country = city.getCountry();
@@ -183,8 +186,4 @@ public class CustomerDetailController {
             return customer;
         }
     }
-
-
-
-
 }

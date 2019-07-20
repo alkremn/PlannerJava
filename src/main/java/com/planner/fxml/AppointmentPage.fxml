@@ -97,13 +97,10 @@
          <children>
             <TableView fx:id="customerTableView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
               <columns>
-                  <TableColumn fx:id="customerIdColumn" prefWidth="59.0" text="Id" />
-                  <TableColumn fx:id="customerNameColumn" prefWidth="214.0" text="Customer Name" />
-                  <TableColumn fx:id="addressColumn" prefWidth="249.66668701171875" text="Address" />
-                <TableColumn fx:id="appointmentColumn" prefWidth="156.33331298828125" text="Appointments" />
-                <TableColumn fx:id="statusColumn" prefWidth="139.0" text="Status" />
-                  <TableColumn fx:id="createDateColumn" prefWidth="163.66668701171875" text="Created On" />
-                  <TableColumn fx:id="createByColumn" prefWidth="210.666748046875" text="Created By" />
+                  <TableColumn fx:id="customerIdColumn" prefWidth="51.0" text="Id" />
+                  <TableColumn fx:id="customerNameColumn" prefWidth="207.0" text="Customer Name" />
+                  <TableColumn fx:id="statusColumn" prefWidth="104.0" text="Status" />
+                  <TableColumn fx:id="createDateColumn" prefWidth="193.0" text="Created On" />
               </columns>
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" />
@@ -112,10 +109,10 @@
             <TableView fx:id="appointmentTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <columns>
                   <TableColumn fx:id="appIdColumn" prefWidth="59.0" text="Id" />
-                  <TableColumn fx:id="appNameColumn" prefWidth="214.0" text="Customer Name" />
-                  <TableColumn fx:id="appStatusColumn" prefWidth="139.0" text="Status" />
-                  <TableColumn fx:id="appCreateDateColumn" prefWidth="163.66668701171875" text="Created On" />
-                  <TableColumn fx:id="appCreateByColumn" prefWidth="210.666748046875" text="Created By" />
+                  <TableColumn fx:id="appNameColumn" prefWidth="214.0" text="Time of Appointment" />
+                  <TableColumn fx:id="appStatusColumn" prefWidth="139.0" text="Date" />
+                  <TableColumn fx:id="appCreateDateColumn" prefWidth="143.0" text="Created On" />
+                  <TableColumn fx:id="appCreateByColumn" prefWidth="232.0" text="Created By" />
                </columns>
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" />

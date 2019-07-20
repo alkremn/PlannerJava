@@ -65,7 +65,7 @@ public class MainApp extends Application {
         window.setResizable(false);
         initData();
 
-        loginPageLoad();
+        customersPageLoad();
         window.show();
     }
 
@@ -169,20 +169,48 @@ public class MainApp extends Application {
         IOException e){
             e.printStackTrace();
         }
-    }
+   }
+
+   public void appDetailPageLoad(Appointment appointment, Customer selectedCustomer){
+       try{
+           FXMLLoader loader = new FXMLLoader();
+           loader.setLocation(getClass().getResource("fxml/AppDetailPage.fxml"));
+
+           detailsWindow = new Stage();
+           detailsWindow.initModality(Modality.APPLICATION_MODAL);
+
+           Scene scene = new Scene(loader.load());
+           scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
+           detailsWindow.setScene(scene);
+
+           AppDetailController appDetailController = loader.getController();
+           appDetailController.setData(this, appointment, selectedCustomer);
+
+           Parent root = loader.getRoot();
+           root.requestFocus();
+           detailsWindow.showAndWait();
+
+       } catch (
+               IOException e){
+           e.printStackTrace();
+       }
+   }
     public void saveCustomer(Customer customer, boolean isExisting){
         if(detailsWindow != null)
             detailsWindow.close();
 
         if(customer != null) {
-            if (!isExisting) {
-                customerDS.addCustomer(customer);
-            } else {
+            if (isExisting) {
                 customerDS.updateCustomer(customer);
+            } else {
+                customerDS.addCustomer(customer);
             }
             customerList.clear();
             customerList.addAll(customerDS.getAllCustomers());
         }
+    }
+    public void saveAppointment(Appointment appointment, boolean isExisting){
+
     }
 
     public void showAlertMessage(final String header, final String message){

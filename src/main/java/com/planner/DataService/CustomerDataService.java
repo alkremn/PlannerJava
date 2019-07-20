@@ -74,10 +74,10 @@ public class CustomerDataService {
         String addressValues = getAddressUpdateValueString(customer.getAddress(), formatter);
         String customerValues = getCustomerUpdateValueString(customer, formatter);
 
-        String countrySQL = String.format("UPDATE country SET (%s) WHERE countryId = %s;", countryUpdateValues, countryId);
-        String citySQL = String.format("UPDATE city SET (%s) WHERE cityId = %s;",cityValues, cityId);
-        String addressSQL = String.format("UPDATE address SET (%s) WHERE addressId = %s;", addressValues, addressId);
-        String customerSQL = String.format("UPDATE customer SET (%s) WHERE customerId = %s;",customerValues,customer.getCustomerId());
+        String countrySQL = String.format("UPDATE country SET %s WHERE countryId = %s;", countryUpdateValues, countryId);
+        String citySQL = String.format("UPDATE city SET %s WHERE cityId = %s;",cityValues, cityId);
+        String addressSQL = String.format("UPDATE address SET %s WHERE addressId = %s;", addressValues, addressId);
+        String customerSQL = String.format("UPDATE customer SET %s WHERE customerId = %s;",customerValues,customer.getCustomerId());
 
         int result = 0;
         try{
@@ -90,7 +90,7 @@ public class CustomerDataService {
         }catch (SQLException e){
             e.getMessage();
         }
-        if(result > 0) System.out.println("Added!!!");
+        if(result > 0) System.out.println("Updated!!!");
         return result > 0;
     }
 
