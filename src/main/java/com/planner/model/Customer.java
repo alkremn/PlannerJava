@@ -2,22 +2,23 @@ package main.java.com.planner.model;
 
 import javafx.beans.property.*;
 
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 public class Customer {
     private IntegerProperty customerId;
     private StringProperty name;
     private ObjectProperty<Address> address;
     private BooleanProperty active;
-    private ObjectProperty<ZonedDateTime> createDate;
+    private ObjectProperty<LocalDateTime> createDate;
     private StringProperty createdBy;
-    private ObjectProperty<ZonedDateTime> lastUpdate;
+    private ObjectProperty<LocalDateTime> lastUpdate;
     private StringProperty lastUpdateBy;
 
 
     public Customer(int customerId, String name, Address address, boolean active,
-                    ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate,String lastUpdateBy) {
+                    LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate,String lastUpdateBy) {
         this.customerId = new SimpleIntegerProperty(customerId);
         this.name = new SimpleStringProperty(name);
         this.address =  new SimpleObjectProperty<>(address);
@@ -76,15 +77,16 @@ public class Customer {
         this.active.set(active);
     }
 
-    public ZonedDateTime getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate.get();
     }
 
-    public ObjectProperty<ZonedDateTime> createDateProperty() {
-        return createDate;
+    public SimpleStringProperty createDateProperty() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+        return new SimpleStringProperty(createDate.getValue().format(formatter));
     }
 
-    public void setCreateDate(ZonedDateTime createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate.set(createDate);
     }
 
@@ -100,15 +102,15 @@ public class Customer {
         this.createdBy.set(createdBy);
     }
 
-    public ZonedDateTime getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate.get();
     }
 
-    public ObjectProperty<ZonedDateTime> lastUpdateProperty() {
+    public ObjectProperty<LocalDateTime> lastUpdateProperty() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(ZonedDateTime lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate.set(lastUpdate);
     }
 

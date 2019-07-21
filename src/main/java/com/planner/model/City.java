@@ -1,18 +1,17 @@
 package main.java.com.planner.model;
 
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class City {
     private int cityId;
     private String name;
     private Country country;
-    private ZonedDateTime createDate;
+    private LocalDateTime createDate;
     private String createdBy;
-    private ZonedDateTime lastUpdate;
+    private LocalDateTime lastUpdate;
     private String lastUpdateBy;
 
-    public City(int cityId, String name, Country country, ZonedDateTime createDate, String createdBy, ZonedDateTime lastUpdate, String lastUpdateBy) {
+    public City(int cityId, String name, Country country, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdateBy) {
         this.cityId = cityId;
         this.name = name;
         this.country = country;
@@ -46,11 +45,11 @@ public class City {
         this.country = country;
     }
 
-    public ZonedDateTime getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(ZonedDateTime createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -62,11 +61,11 @@ public class City {
         this.createdBy = createdBy;
     }
 
-    public ZonedDateTime getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(ZonedDateTime lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 

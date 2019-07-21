@@ -1,7 +1,5 @@
-package main.java.com.planner.controller;
+package main.java.com.planner.controller.Customer;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -13,6 +11,7 @@ import main.java.com.planner.model.Address;
 import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -43,7 +42,7 @@ public class CustomerPageController {
     private TableColumn<Customer, Boolean> statusColumn;
 
     @FXML
-    private TableColumn<Customer, ZonedDateTime> createDateColumn;
+    private TableColumn<Customer, String> createDateColumn;
 
     //Default constructor
     public CustomerPageController() {}

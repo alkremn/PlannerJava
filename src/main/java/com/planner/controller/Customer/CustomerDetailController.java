@@ -1,4 +1,4 @@
-package main.java.com.planner.controller;
+package main.java.com.planner.controller.Customer;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -10,6 +10,7 @@ import main.java.com.planner.model.City;
 import main.java.com.planner.model.Country;
 import main.java.com.planner.model.Customer;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -151,7 +152,7 @@ public class CustomerDetailController {
     }
 
     private Customer createCustomer(boolean isExisting) {
-        ZonedDateTime currentDate = ZonedDateTime.now(ZoneId.of("UTC"));
+        LocalDateTime currentDate = LocalDateTime.now(ZoneId.of("UTC"));
         if (!isExisting) {
             Country country = new Country(0, countryComboBox.getSelectionModel().getSelectedItem(), currentDate,
                     user, currentDate, user);

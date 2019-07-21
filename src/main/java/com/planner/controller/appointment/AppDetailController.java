@@ -1,4 +1,4 @@
-package main.java.com.planner.controller;
+package main.java.com.planner.controller.appointment;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

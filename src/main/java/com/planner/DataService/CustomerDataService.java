@@ -5,15 +5,12 @@ import main.java.com.planner.model.City;
 import main.java.com.planner.model.Country;
 import main.java.com.planner.model.Customer;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
@@ -113,7 +110,6 @@ public class CustomerDataService {
             String country = entry.getString("country");
             String createBy = entry.getString("createdBy");
             String updateBy = entry.getString("lastUpdateBy");
-
             String createDateString = entry.getString("createDate");
             String updateDateString = entry.getString("lastUpdate");
 
@@ -131,10 +127,10 @@ public class CustomerDataService {
             customer = new Customer(id,cusName,
                     new Address(addressId,address,address2,
                             new City(cityId, city,
-                                    new Country(countryId, country, localCreateDate, createBy, localUpdateDate, updateBy),
-                                    localCreateDate, createBy,localUpdateDate,updateBy), postalCode, phone,
-                            localCreateDate, createBy, localCreateDate, createBy),
-                                    active, localCreateDate, createBy, localUpdateDate, updateBy);
+                                    new Country(countryId, country, localCreateDate.toLocalDateTime(), createBy, localUpdateDate.toLocalDateTime(), updateBy),
+                                    localCreateDate.toLocalDateTime(), createBy,localUpdateDate.toLocalDateTime(),updateBy), postalCode, phone,
+                            localCreateDate.toLocalDateTime(), createBy, localCreateDate.toLocalDateTime(), createBy),
+                                    active, localCreateDate.toLocalDateTime(), createBy, localUpdateDate.toLocalDateTime(), updateBy);
         } catch(SQLException e){
             System.out.println(e.getMessage());
         }
@@ -168,11 +164,11 @@ public class CustomerDataService {
     }
 
     private String getCountryUpdateValueString(final Country country, final DateTimeFormatter formatter){
-        ZonedDateTime countryCreateDate = country.getCreateDate();
+        ZonedDateTime countryCreateDate = country.getCreateDate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcCreateDate = countryCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime createDate = utcCreateDate.toLocalDateTime();
 
-        ZonedDateTime countryUpdateDate = country.getLastUpdate();
+        ZonedDateTime countryUpdateDate = country.getLastUpdate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcUpdateDate = countryUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 
@@ -182,11 +178,11 @@ public class CustomerDataService {
     }
 
     private String getCityUpdateValueString(final City city, final DateTimeFormatter formatter) {
-        ZonedDateTime cityCreateDate = city.getCreateDate();
+        ZonedDateTime cityCreateDate = city.getCreateDate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcCreateDate = cityCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime createDate = utcCreateDate.toLocalDateTime();
 
-        ZonedDateTime cityUpdateDate = city.getLastUpdate();
+        ZonedDateTime cityUpdateDate = city.getLastUpdate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcUpdateDate = cityUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 
@@ -196,11 +192,11 @@ public class CustomerDataService {
     }
 
     private String getAddressUpdateValueString(final Address address, final DateTimeFormatter formatter) {
-        ZonedDateTime addressCreateDate = address.getCreateDate();
+        ZonedDateTime addressCreateDate = address.getCreateDate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcCreateDate = addressCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime createDate = utcCreateDate.toLocalDateTime();
 
-        ZonedDateTime addressUpdateDate = address.getLastUpdate();
+        ZonedDateTime addressUpdateDate = address.getLastUpdate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcUpdateDate = addressUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 
@@ -212,11 +208,11 @@ public class CustomerDataService {
     }
 
     private String getCustomerUpdateValueString(final Customer customer, final DateTimeFormatter formatter) {
-        ZonedDateTime customerCreateDate = customer.getCreateDate();
+        ZonedDateTime customerCreateDate = customer.getCreateDate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcCreateDate = customerCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime createDate = utcCreateDate.toLocalDateTime();
 
-        ZonedDateTime customerUpdateDate = customer.getLastUpdate();
+        ZonedDateTime customerUpdateDate = customer.getLastUpdate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcUpdateDate = customerUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 
@@ -227,11 +223,11 @@ public class CustomerDataService {
     }
 
     private String getCustomerValueString(final Customer customer, final DateTimeFormatter formatter){
-        ZonedDateTime customerCreateDate = customer.getCreateDate();
+        ZonedDateTime customerCreateDate = customer.getCreateDate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcCreateDate = customerCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime createDate = utcCreateDate.toLocalDateTime();
 
-        ZonedDateTime customerUpdateDate = customer.getLastUpdate();
+        ZonedDateTime customerUpdateDate = customer.getLastUpdate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcUpdateDate = customerUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 
@@ -242,11 +238,11 @@ public class CustomerDataService {
     }
 
     private String getAddressValueString(final Address address, final DateTimeFormatter formatter){
-        ZonedDateTime addressCreateDate = address.getCreateDate();
+        ZonedDateTime addressCreateDate = address.getCreateDate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcCreateDate = addressCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime createDate = utcCreateDate.toLocalDateTime();
 
-        ZonedDateTime addressUpdateDate = address.getLastUpdate();
+        ZonedDateTime addressUpdateDate = address.getLastUpdate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcUpdateDate = addressUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 
@@ -257,11 +253,11 @@ public class CustomerDataService {
     }
 
     private String getCityValueString(final City city, final DateTimeFormatter formatter){
-        ZonedDateTime cityCreateDate = city.getCreateDate();
+        ZonedDateTime cityCreateDate = city.getCreateDate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcCreateDate = cityCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime createDate = utcCreateDate.toLocalDateTime();
 
-        ZonedDateTime cityUpdateDate = city.getLastUpdate();
+        ZonedDateTime cityUpdateDate = city.getLastUpdate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcUpdateDate = cityUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 
@@ -271,11 +267,11 @@ public class CustomerDataService {
     }
 
     private String getCountryValueString(final Country country, final DateTimeFormatter formatter){
-        ZonedDateTime countryCreateDate = country.getCreateDate();
+        ZonedDateTime countryCreateDate = country.getCreateDate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcCreateDate = countryCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime createDate = utcCreateDate.toLocalDateTime();
 
-        ZonedDateTime countryUpdateDate = country.getLastUpdate();
+        ZonedDateTime countryUpdateDate = country.getLastUpdate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcUpdateDate = countryUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 

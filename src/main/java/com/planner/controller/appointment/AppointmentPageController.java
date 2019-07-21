@@ -1,4 +1,4 @@
-package main.java.com.planner.controller;
+package main.java.com.planner.controller.appointment;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +10,7 @@ import main.java.com.planner.model.Appointment;
 import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 public class AppointmentPageController {
 
@@ -33,13 +33,11 @@ public class AppointmentPageController {
     private TableColumn<Customer, Boolean> statusColumn;
 
     @FXML
-    private TableColumn<Customer, ZonedDateTime> createDateColumn;
+    private TableColumn<Customer, String> createDateColumn;
 
 
     @FXML
     private TableView<Appointment> appointmentTableView;
-
-
 
     @FXML
     void initialize() {
@@ -64,13 +62,28 @@ public class AppointmentPageController {
     }
 
     @FXML
-    private void modifyAppointmentHander(ActionEvent event){
-        //TODO::
+    private void modifyAppointmentHandler(ActionEvent event){
+        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+        Appointment selectedApp= appointmentTableView.getSelectionModel().getSelectedItem();
+        if(selectedCustomer == null)
+            mainApp.showAlertMessage("No customer selected", "please, select the customer in the table");
+        else if (selectedApp == null)
+            mainApp.showAlertMessage("No appointment selected", "please, select the appointment in the table");
+        else
+            mainApp.appDetailPageLoad(selectedApp, selectedCustomer);
     }
 
     @FXML
     private void deleteAppointmentHandler(ActionEvent event){
+        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+        Appointment selectedApp = appointmentTableView.getSelectionModel().getSelectedItem();
+        if(selectedCustomer == null) {
+            mainApp.showAlertMessage("No customer selected", "please, select the customer in the table");
+        } else if (selectedApp == null){
+            mainApp.showAlertMessage("No appointment selected", "please, select the appointment in the table");
+        }
 
+        //TODO::
     }
 
     @FXML
@@ -94,6 +107,4 @@ public class AppointmentPageController {
         this.usernameLabel.setText(user.getUserName());
         customerTableView.setItems(mainApp.customerList);
     }
-
-
 }
