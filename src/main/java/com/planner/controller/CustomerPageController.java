@@ -63,8 +63,6 @@ public class CustomerPageController {
         statusColumn.setStyle( "-fx-alignment: CENTER;");
         createDateColumn.setStyle( "-fx-alignment: CENTER;");
         createByColumn.setStyle( "-fx-alignment: CENTER;");
-
-
     }
 
     @FXML

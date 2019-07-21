@@ -1,5 +1,7 @@
 package main.java.com.planner.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -32,6 +34,9 @@ public class AppDetailController {
     private Button saveButton;
 
     private boolean isFirstValid, isLastValid, isAddressValid, isPhoneValid, isCityValid, isCodeValid, isCountryValid;
+
+    @FXML
+    private ComboBox<String> typeComboBox;
 
     //default constructor
     public AppDetailController(){}
@@ -68,6 +73,7 @@ public class AppDetailController {
 
     @FXML
     public void initialize(){
+        typeComboBox.setItems(FXCollections.observableArrayList( "New Appt", "Follow up"));
     }
 
     private void validFormCheck(){
