@@ -27,8 +27,28 @@ public class AppointmentDataService {
         return appointments;
     }
 
+    public boolean addAppointment(Appointment appointment){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        String appointmentValues = getAppValueString(appointment, formatter);
+
+        String appointmentSQL = String.format("INSERT INTO appointment(%s) VALUES(%s)",SQLStrings.appointmentTableValues,appointmentValues);
+
+        int result = 0;
+        try{
+            Statement statement = DBConnection.getConnection().createStatement();
+            result = statement.executeUpdate(appointmentSQL);
+        }catch (SQLException e){
+            e.getMessage();
+        }
+        if(result > 0) System.out.println("Appointment Added!!!");
+        return result > 0;
+    }
+
+
+
     private Appointment createAppointment(final ResultSet entry){
-        Customer customer = null;
+        Appointment appointment = null;
         try {
             int id = entry.getInt("appointmentId");
             int customerId = entry.getInt("customerId");
@@ -42,33 +62,44 @@ public class AppointmentDataService {
             Time startTime = entry.getTime("start");
             Time endTime = entry.getTime("end");
 
-            Date createBy = entry.getDate("createdBy");
-            String updateBy = entry.getString("lastUpdateBy");
+            String createdBy = entry.getString("createdBy");
+            String lastUpdateBy = entry.getString("lastUpdateBy");
 
             String createDateString = entry.getString("createDate");
             String updateDateString = entry.getString("lastUpdate");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-//            LocalDateTime utcCreateDate = LocalDateTime.parse(createDateString, formatter);
-//            ZonedDateTime zonedUTCCreateDateTime = ZonedDateTime.of(utcCreateDate, ZoneId.of("UTC"));
-//
-//            LocalDateTime utcUpdateDate = LocalDateTime.parse(updateDateString, formatter);
-//            ZonedDateTime zonedUTCUpdateDateTime = ZonedDateTime.of(utcUpdateDate, ZoneId.of("UTC"));
-//
-//            ZonedDateTime localCreateDate = zonedUTCCreateDateTime.withZoneSameInstant(ZoneId.systemDefault());
-//            ZonedDateTime localUpdateDate = zonedUTCUpdateDateTime.withZoneSameInstant(ZoneId.systemDefault());
-//
-//            customer = new Customer(id,cusName,
-//                    new Address(addressId,address,address2,
-//                            new City(cityId, city,
-//                                    new Country(countryId, country, localCreateDate, createBy, localUpdateDate, updateBy),
-//                                    localCreateDate, createBy,localUpdateDate,updateBy), postalCode, phone,
-//                            localCreateDate, createBy, localCreateDate, createBy),
-//                    active, localCreateDate, createBy, localUpdateDate, updateBy);
+            LocalDateTime utcCreateDate = LocalDateTime.parse(createDateString, formatter);
+            ZonedDateTime zonedUTCCreateDateTime = ZonedDateTime.of(utcCreateDate, ZoneId.of("UTC"));
+
+            LocalDateTime utcUpdateDate = LocalDateTime.parse(updateDateString, formatter);
+            ZonedDateTime zonedUTCUpdateDateTime = ZonedDateTime.of(utcUpdateDate, ZoneId.of("UTC"));
+
+            ZonedDateTime localCreateDate = zonedUTCCreateDateTime.withZoneSameInstant(ZoneId.systemDefault());
+            ZonedDateTime localUpdateDate = zonedUTCUpdateDateTime.withZoneSameInstant(ZoneId.systemDefault());
+
+            appointment = new Appointment(id, customerId, userId, title, description, location, contact, type,
+            url, startTime, endTime, localCreateDate.toLocalDateTime(), createdBy, localUpdateDate.toLocalDateTime(), lastUpdateBy);
         } catch(SQLException e){
            System.out.println(e.getMessage());
         }
-        return null;
+        return appointment;
+    }
+
+    private String getAppValueString(Appointment appointment, DateTimeFormatter formatter){
+        ZonedDateTime appCreateDate = appointment.getCreateDate().atZone(ZoneId.systemDefault());
+        ZonedDateTime utcCreateDate = appCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime createDate = utcCreateDate.toLocalDateTime();
+
+        ZonedDateTime customerUpdateDate = appointment.getLastUpdateDate().atZone(ZoneId.systemDefault());
+        ZonedDateTime utcUpdateDate = customerUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
+
+        return String.format("%d, %d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s'",
+                appointment.getCustomerId(),appointment.getUserId(), appointment.getTitle(), appointment.getDescription(),appointment.getLocation(),
+                appointment.getContact(), appointment.getType(), appointment.getUrl(), appointment.getStart(), appointment.getEnd(),
+                createDate.format(formatter),appointment.getCreateBy(),
+                updateDate.format(formatter),appointment.getLastUpdateBy());
     }
 }

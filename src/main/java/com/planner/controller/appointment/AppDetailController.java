@@ -22,29 +22,42 @@ public class AppDetailController {
     private Label customerNameLabel;
 
     @FXML
-    private TextField firstNameField, lastNameField, addField, add2Field, phoneField, cityField, codeField;
+    private TextField titleField, descField, locationField, contactField;
 
     @FXML
-    private Label firstNameError, lastNameError, addressError, phoneError, cityError, codeError;
+    private Label titleError, descError, locationError, contactError, typeError, dateError, startError, endError;
 
     @FXML
-    private ComboBox<String> countryComboBox;
+    private ComboBox<String> typePicker, startTimePicker, endTimePicker;
+
+    @FXML
+    private DatePicker appDatePicker;
 
     @FXML
     private Button saveButton;
 
-    private boolean isFirstValid, isLastValid, isAddressValid, isPhoneValid, isCityValid, isCodeValid, isCountryValid;
-
-    @FXML
-    private ComboBox<String> typeComboBox;
+    private boolean isTitleValid, isDescValid, isLocationValid, isContactValid, isTypeValid, isDateValid,
+            isStartValid, isEndValid;
 
     //default constructor
     public AppDetailController(){}
 
 
     @FXML
-    private void selectionChangedHandler(ActionEvent event){
-        isCountryValid = true;
+    private void startSelectionChangedHandler(ActionEvent event){
+        isStartValid = true;
+        validFormCheck();
+    }
+
+    @FXML
+    private void endSelectionChangedHandler(ActionEvent event){
+        isEndValid = true;
+        validFormCheck();
+    }
+
+    @FXML
+    private void typeSelectionChangedHandler(ActionEvent event){
+        isTypeValid = true;
         validFormCheck();
     }
 
@@ -65,7 +78,7 @@ public class AppDetailController {
         this.mainApp = mainApp;
         this.appointment = appointment;
         this.customer = customer;
-        if(customer != null) {
+        if(appointment != null) {
             initFields(customer);
             isExisting = true;
         }
@@ -73,12 +86,12 @@ public class AppDetailController {
 
     @FXML
     public void initialize(){
-        typeComboBox.setItems(FXCollections.observableArrayList( "New Appt", "Follow up"));
+        typePicker.setItems(FXCollections.observableArrayList( "New Appt", "Follow up"));
     }
 
     private void validFormCheck(){
-        boolean isValidToSave = isFirstValid && isLastValid && isAddressValid && isPhoneValid && isCityValid
-                && isCodeValid && isCountryValid;
+        boolean isValidToSave = isTitleValid && isDescValid && isLocationValid && isContactValid && isTypeValid && isDateValid
+                && isStartValid && isEndValid;
         saveButton.setDisable(!isValidToSave);
     }
 

@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -16,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane alignment="CENTER" maxHeight="650" maxWidth="800" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="800.0" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.appointment.AppDetailController">
+<GridPane alignment="CENTER" maxHeight="650" maxWidth="800" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="800.0" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.appointment.AppDetailController">
   <columnConstraints>
     <ColumnConstraints />
       <ColumnConstraints />
@@ -71,12 +67,12 @@
             </HBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                <children>
-                  <Label fx:id="firstNameError" styleClass="errorMessage" text="Invalid Title">
+                  <Label fx:id="titleError" styleClass="errorMessage" text="Invalid Title">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="firstNameField" styleClass="inputText">
+                  <TextField fx:id="titleField" styleClass="inputText">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -91,12 +87,12 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <children>
-                  <Label fx:id="lastNameError" styleClass="errorMessage" text="Invalid Description">
+                  <Label fx:id="descError" styleClass="errorMessage" text="Invalid Description">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="lastNameField" styleClass="inputText">
+                  <TextField fx:id="descField" styleClass="inputText">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -111,12 +107,12 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
-                  <Label fx:id="addressError" styleClass="errorMessage" text="Invalid Location">
+                  <Label fx:id="locationError" styleClass="errorMessage" text="Invalid Location">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="addField" styleClass="inputText">
+                  <TextField fx:id="locationField" styleClass="inputText">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -131,12 +127,12 @@
             </VBox>
             <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <children>
-                  <Label fx:id="phoneError1" styleClass="errorMessage" text="Invalid Contact">
+                  <Label fx:id="contactError" styleClass="errorMessage" text="Invalid Contact">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="add2Field" styleClass="inputText">
+                  <TextField fx:id="contactField" styleClass="inputText">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -151,12 +147,12 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <children>
-                  <Label fx:id="phoneError" styleClass="errorMessage" text="Invalid Type">
+                  <Label fx:id="typeError" styleClass="errorMessage" text="Invalid Type">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
                   </Label>
-                  <ComboBox fx:id="typeComboBox" onAction="#selectionChangedHandler" promptText="Select" styleClass="choice-box">
+                  <ComboBox fx:id="typePicker" onAction="#typeSelectionChangedHandler" promptText="Select" styleClass="choice-box">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
@@ -168,7 +164,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
                <children>
-                  <Label fx:id="cityError" styleClass="errorMessage" text="Invalid Date">
+                  <Label fx:id="dateError" styleClass="errorMessage" text="Invalid Date">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
@@ -190,7 +186,12 @@
                <children>
                   <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <ComboBox fx:id="startTimePicker" onAction="#selectionChangedHandler" promptText="Select" styleClass="choice-box">
+                        <Label fx:id="startError" styleClass="errorMessage" text="Invalid Start Time">
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ComboBox fx:id="startTimePicker" onAction="#startSelectionChangedHandler" promptText="Select" styleClass="choice-box">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>
@@ -261,7 +262,12 @@
                   <Insets left="20.0" right="20.0" />
                </opaqueInsets>
                <children>
-                  <ComboBox fx:id="endTimePicker" onAction="#selectionChangedHandler" promptText="Select" styleClass="choice-box">
+                  <Label fx:id="endError" styleClass="errorMessage" text="Invalid End Time">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ComboBox fx:id="endTimePicker" onAction="#endSelectionChangedHandler" promptText="Select" styleClass="choice-box">
                      <VBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </VBox.margin>
