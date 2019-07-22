@@ -86,6 +86,7 @@ public class Customer {
         return new SimpleStringProperty(createDate.getValue().format(formatter));
     }
 
+
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate.set(createDate);
     }

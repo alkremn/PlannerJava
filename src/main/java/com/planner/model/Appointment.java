@@ -2,7 +2,10 @@ package main.java.com.planner.model;
 
 import javafx.beans.property.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 public class Appointment {
     private IntegerProperty id;
@@ -152,10 +155,6 @@ public class Appointment {
         return start.get();
     }
 
-    public ObjectProperty<LocalDateTime> startEndTimeProperty() {
-        return start;
-    }
-
     public void setStart(LocalDateTime start) {
         this.start.set(start);
     }
@@ -176,9 +175,23 @@ public class Appointment {
         return createDate.get();
     }
 
-    public ObjectProperty<LocalDateTime> createDateProperty() {
-        return createDate;
+    public SimpleStringProperty createDateProperty() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+        return new SimpleStringProperty(createDate.getValue().format(formatter));
     }
+
+    public SimpleStringProperty startDateProperty(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+        return new SimpleStringProperty(start.getValue().format(formatter));
+    }
+
+    public SimpleStringProperty startEndTimeProperty(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
+        String startTime = this.start.getValue().format(formatter);
+        String endTime = this.end.getValue().format(formatter);
+        return new SimpleStringProperty(startTime + "-" + endTime);
+    }
+
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate.set(createDate);

@@ -51,16 +51,16 @@ public class AppointmentPageController {
     private TableView<Appointment> appointmentTableView;
 
     @FXML
-    private TableColumn<Appointment, Integer> appIdColumn;
+    private TableColumn<Appointment, String> appTypeColumn;
 
     @FXML
-    private TableColumn<Appointment, LocalDateTime> appStartEndTimeColumn;
+    private TableColumn<Appointment, String> appStartEndTimeColumn;
 
     @FXML
-    private TableColumn<Appointment, LocalDateTime> appDateColumn;
+    private TableColumn<Appointment, String> appDateColumn;
 
     @FXML
-    private TableColumn<Appointment, LocalDateTime> appCreateDateColumn;
+    private TableColumn<Appointment, String> appCreateDateColumn;
 
 
     @FXML
@@ -70,9 +70,9 @@ public class AppointmentPageController {
         statusColumn.setCellValueFactory((cellData -> cellData.getValue().activeProperty()));
         createDateColumn.setCellValueFactory(cellData -> cellData.getValue().createDateProperty());
 
-        appIdColumn.setCellValueFactory(cellDate -> cellDate.getValue().idProperty().asObject());
+        appTypeColumn.setCellValueFactory(cellDate -> cellDate.getValue().typeProperty());
         appStartEndTimeColumn.setCellValueFactory(cellData -> cellData.getValue().startEndTimeProperty());
-        appDateColumn.setCellValueFactory(cellData -> cellData.getValue().startEndTimeProperty());
+        appDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
         appCreateDateColumn.setCellValueFactory(cellData -> cellData.getValue().createDateProperty());
 
         customerIdColumn.setStyle("-fx-alignment: CENTER;");
@@ -80,7 +80,7 @@ public class AppointmentPageController {
         statusColumn.setStyle("-fx-alignment: CENTER;");
         createDateColumn.setStyle("-fx-alignment: CENTER;");
 
-        appIdColumn.setStyle("-fx-alignment: CENTER;");
+        appTypeColumn.setStyle("-fx-alignment: CENTER;");
         appStartEndTimeColumn.setStyle("-fx-alignment: CENTER;");
         appDateColumn.setStyle("-fx-alignment: CENTER;");
         appCreateDateColumn.setStyle("-fx-alignment: CENTER;");

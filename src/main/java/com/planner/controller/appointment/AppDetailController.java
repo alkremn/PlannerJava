@@ -62,6 +62,8 @@ public class AppDetailController {
     @FXML
     private void startSelectionChangedHandler(ActionEvent event){
         isStartValid = true;
+        TimeSpan startTime = startTimePicker.getSelectionModel().getSelectedItem();
+        endTimePicker.setItems(createTime(new TimeSpan(startTime.hours,startTime.minutes + TIME_PACE),FXCollections.observableArrayList()));
         validFormCheck();
     }
 
@@ -103,9 +105,9 @@ public class AppDetailController {
         this.customer = customer;
         this.user = user;
         startTimePicker.setItems(createTime(new TimeSpan(START_TIME_HOUR,0),FXCollections.observableArrayList()));
-        endTimePicker.setItems(createTime(new TimeSpan(START_TIME_HOUR,0),FXCollections.observableArrayList()));
+
         if(appointment != null) {
-            initFields(customer);
+            initFields(appointment, customer);
             saveButton.setDisable(false);
             isExisting = true;
         }
@@ -152,9 +154,16 @@ public class AppDetailController {
         saveButton.setDisable(!isValidToSave);
     }
 
-    private void initFields(Customer customer){
+    private void initFields(Appointment appointment, Customer customer){
         appointmentLabel.setText("Modify Appointment");
         customerNameLabel.setText(customer.getName());
+        titleField.setText(appointment.getTitle());
+        descTextArea.setText(appointment.getDescription());
+        locationTextArea.setText(appointment.getLocation());
+        contactTextArea.setText(appointment.getContact());
+        urlTextArea.setText(appointment.getUrl());
+        typePicker.getSelectionModel().select(appointment.getType());
+        appDatePicker.setValue(appointment.getStart().toLocalDate());
     }
 
     private Appointment createAppointment(boolean isExisting){
