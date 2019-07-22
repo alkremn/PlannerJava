@@ -188,8 +188,13 @@ public class AppDetailController {
         TimeSpan start = startTimePicker.getValue();
         TimeSpan end = endTimePicker.getValue();
         LocalDate date = appDatePicker.getValue();
-        LocalDateTime startTime = LocalDateTime.of(date, LocalTime.of(start.hours,start.minutes, 0));
-        LocalDateTime endTime = LocalDateTime.of(date, LocalTime.of(end.hours, end.minutes, 0));
+        ZonedDateTime zonedStartTime = LocalDateTime.of(date, LocalTime.of(start.hours,start.minutes, 0)).atZone(ZoneId.systemDefault());
+        ZonedDateTime utcStartTime = zonedStartTime.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime startTime  = utcStartTime.toLocalDateTime();
+
+        ZonedDateTime zonedEndTime = LocalDateTime.of(date, LocalTime.of(end.hours, end.minutes, 0)).atZone(ZoneId.systemDefault());
+        ZonedDateTime utcEndTime = zonedEndTime.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime endTime  = utcEndTime.toLocalDateTime();
 
         if (!isExisting) {
             int customerId = customer.getCustomerId();
