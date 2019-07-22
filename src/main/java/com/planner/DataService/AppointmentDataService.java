@@ -12,12 +12,13 @@ import java.util.List;
 
 public class AppointmentDataService {
 
-    public List<Appointment> getAllAppointmentsById(int customerId){
+    public List<Appointment> getAllAppointments(){
         List<Appointment> appointments = new ArrayList<>();
+        String allAppointmentsSQL = "SELECT * from appointment";
 
         try{
             Statement statement = DBConnection.getConnection().createStatement();
-            ResultSet result = statement.executeQuery(SQLStrings.allAppointmentsByCustomerId);
+            ResultSet result = statement.executeQuery(allAppointmentsSQL);
             while(result.next()){
                 appointments.add(createAppointment(result));
             }

@@ -10,7 +10,6 @@ import main.java.com.planner.model.Appointment;
 import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
-import java.time.LocalDateTime;
 
 public class AppointmentPageController {
 

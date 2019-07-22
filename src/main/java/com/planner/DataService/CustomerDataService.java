@@ -149,7 +149,6 @@ public class CustomerDataService {
             int result = 0;
             try{
                 Statement statement = DBConnection.getConnection().createStatement();
-                //System.out.println(begin +customerSQL + countrySQL + citySQL + countrySQL + commit);
                 result += statement.executeUpdate(customerSQL);
                 result += statement.executeUpdate(addressSQL );
                 result += statement.executeUpdate(citySQL);
@@ -157,10 +156,10 @@ public class CustomerDataService {
             } catch (SQLException e){
                 System.out.println(e.getMessage());
             }
+            if(result == 4) System.out.println("removed");
             return result == 4;
         }
-
-        return true;
+        return false;
     }
 
     private String getCountryUpdateValueString(final Country country, final DateTimeFormatter formatter){

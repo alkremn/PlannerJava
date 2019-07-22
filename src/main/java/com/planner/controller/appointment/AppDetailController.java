@@ -8,12 +8,21 @@ import javafx.scene.control.*;
 import main.java.com.planner.MainApp;
 import main.java.com.planner.model.*;
 
+import java.sql.Time;
+import java.time.*;
+import java.util.Calendar;
+import java.util.List;
+
 public class AppDetailController {
 
     private MainApp mainApp;
     private Customer customer;
     private Appointment appointment;
     private boolean isExisting;
+    private final int START_TIME_HOUR = 8;
+    private final int END_TIME_HOUR = 17;
+    private final int MINUTES_IN_HOUR = 60;
+    private final int TIME_PACE = 15;
 
     @FXML
     private Label appointmentLabel;
@@ -22,13 +31,16 @@ public class AppDetailController {
     private Label customerNameLabel;
 
     @FXML
-    private TextField titleField, descField, locationField, contactField;
+    private TextField titleField, descField, locationField, contactField, urlField;
 
     @FXML
-    private Label titleError, descError, locationError, contactError, typeError, dateError, startError, endError;
+    private Label titleError, descError, locationError, contactError, urlError;
 
     @FXML
-    private ComboBox<String> typePicker, startTimePicker, endTimePicker;
+    private ComboBox<String> typePicker;
+
+    @FXML
+    private ComboBox<TimeSpan> startTimePicker, endTimePicker;
 
     @FXML
     private DatePicker appDatePicker;
@@ -62,6 +74,13 @@ public class AppDetailController {
     }
 
     @FXML
+    private void appDateSelected(ActionEvent event){
+        System.out.println("Date selected");
+        isDateValid = true;
+        validFormCheck();
+    }
+
+    @FXML
     private void saveButtonHandler(ActionEvent event){
         if(customer != null)
             mainApp.saveAppointment(createAppointment(isExisting), isExisting);
@@ -78,8 +97,11 @@ public class AppDetailController {
         this.mainApp = mainApp;
         this.appointment = appointment;
         this.customer = customer;
+        startTimePicker.setItems(createTime(new TimeSpan(START_TIME_HOUR,0),FXCollections.observableArrayList()));
+        endTimePicker.setItems(createTime(new TimeSpan(START_TIME_HOUR,0),FXCollections.observableArrayList()));
         if(appointment != null) {
             initFields(customer);
+            saveButton.setDisable(false);
             isExisting = true;
         }
     }
@@ -87,6 +109,30 @@ public class AppDetailController {
     @FXML
     public void initialize(){
         typePicker.setItems(FXCollections.observableArrayList( "New Appt", "Follow up"));
+        titleField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            isTitleValid = !newValue.isEmpty();
+            titleError.setVisible(!isTitleValid);
+            validFormCheck();
+        }));
+
+        descField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            isDescValid = !newValue.isEmpty();
+            descError.setVisible(!isDescValid);
+            validFormCheck();
+        }));
+
+        locationField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            isLocationValid = !newValue.isEmpty();
+            locationError.setVisible(!isLocationValid);
+            validFormCheck();
+        }));
+
+        contactField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            isContactValid = !newValue.isEmpty();
+            contactError.setVisible(!isContactValid);
+            validFormCheck();
+        }));
+
     }
 
     private void validFormCheck(){
@@ -101,6 +147,35 @@ public class AppDetailController {
     }
 
     private Appointment createAppointment(boolean isExisting){
-       return null;
+        LocalDateTime currentDate = LocalDateTime.now(ZoneId.of("UTC"));
+        if (!isExisting) {
+            String title = titleField.getText();
+            String desc = descField.getText();
+            String location = locationField.getText();
+            String contact = contactField.getText();
+            String type = typePicker.getSelectionModel().getSelectedItem();
+            LocalDate date = appDatePicker.getValue();
+            TimeSpan startTime = startTimePicker.getValue();
+            TimeSpan endTime = endTimePicker.getValue();
+
+
+
+        } else {
+
+        }
+        return null;
+    }
+
+
+    private ObservableList<TimeSpan> createTime(TimeSpan startTime, ObservableList<TimeSpan> timeCollection){
+        timeCollection.clear();
+        int mins = startTime.minutes;
+        for(int hour = startTime.hours; hour < END_TIME_HOUR; hour++){
+            for(int min = mins; min < MINUTES_IN_HOUR; min += TIME_PACE){
+                timeCollection.add(new TimeSpan(hour, min));
+            }
+            mins = 0;
+        }
+        return timeCollection;
     }
 }

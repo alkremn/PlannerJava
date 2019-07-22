@@ -17,7 +17,7 @@ public class SQLStrings {
             "    INNER JOIN country ON city.countryid = country.countryid;";
 
 
-    public static final String allAppointmentsByCustomerId = "";
+    public static final String allAppointmentsByCustomerId = "SELECT * ";
 
 
 
