@@ -63,7 +63,10 @@ public class AppDetailController {
     private void startSelectionChangedHandler(ActionEvent event){
         isStartValid = true;
         TimeSpan startTime = startTimePicker.getSelectionModel().getSelectedItem();
+        endTimePicker.getItems().clear();
         endTimePicker.setItems(createTime(new TimeSpan(startTime.hours,startTime.minutes + TIME_PACE),FXCollections.observableArrayList()));
+        endTimePicker.getSelectionModel().select(0);
+        isEndValid = true;
         validFormCheck();
     }
 
@@ -164,31 +167,48 @@ public class AppDetailController {
         urlTextArea.setText(appointment.getUrl());
         typePicker.getSelectionModel().select(appointment.getType());
         appDatePicker.setValue(appointment.getStart().toLocalDate());
+        LocalDateTime startDate = appointment.getStart();
+        LocalDateTime endDate = appointment.getEnd();
+        TimeSpan startTime = new TimeSpan(startDate.getHour(), startDate.getMinute());
+        startTimePicker.getSelectionModel().select(startTime);
+        startSelectionChangedHandler(new ActionEvent());
+        endTimePicker.getSelectionModel().select(new TimeSpan(endDate.getHour(), endDate.getMinute()));
+        isTypeValid = isDateValid = true;
     }
 
     private Appointment createAppointment(boolean isExisting){
         LocalDateTime currentDate = LocalDateTime.now(ZoneId.of("UTC"));
-        Appointment appointment = null;
+
+        String title = titleField.getText();
+        String desc = descTextArea.getText();
+        String location = locationTextArea.getText();
+        String contact = contactTextArea.getText();
+        String url = urlTextArea.getText();
+        String type = typePicker.getSelectionModel().getSelectedItem();
+        TimeSpan start = startTimePicker.getValue();
+        TimeSpan end = endTimePicker.getValue();
+        LocalDate date = appDatePicker.getValue();
+        LocalDateTime startTime = LocalDateTime.of(date, LocalTime.of(start.hours,start.minutes, 0));
+        LocalDateTime endTime = LocalDateTime.of(date, LocalTime.of(end.hours, end.minutes, 0));
+
         if (!isExisting) {
             int customerId = customer.getCustomerId();
             int userId = user.getUserId();
-            String title = titleField.getText();
-            String desc = descTextArea.getText();
-            String location = locationTextArea.getText();
-            String contact = contactTextArea.getText();
-            String url = urlTextArea.getText();
-            String type = typePicker.getSelectionModel().getSelectedItem();
-            LocalDate date = appDatePicker.getValue();
-            TimeSpan start = startTimePicker.getValue();
-            TimeSpan end = endTimePicker.getValue();
 
-            LocalDateTime startTime = LocalDateTime.of(date, LocalTime.of(start.hours,start.minutes, 0));
-            LocalDateTime endTime = LocalDateTime.of(date, LocalTime.of(end.hours, end.minutes, 0));
             appointment = new Appointment(0,customerId,userId,title,desc,location,contact,type,url,startTime,endTime,currentDate,
                     user.getUserName(), currentDate, user.getUserName());
 
         } else {
-
+            appointment.setTitle(title);
+            appointment.setDescription(desc);
+            appointment.setLocation(location);
+            appointment.setContact(contact);
+            appointment.setUrl(url);
+            appointment.setType(type);
+            appointment.setStart(startTime);
+            appointment.setEnd(endTime);
+            appointment.setLastUpdateDate(currentDate);
+            appointment.setLastUpdateBy(user.getUserName());
         }
         return appointment;
     }

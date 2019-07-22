@@ -113,7 +113,18 @@ public class AppointmentDataService {
     }
 
     public boolean updateAppointment(Appointment appointment){
-        return true;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String appUpdateValues = getAppUpdateValueString(appointment, formatter);
+        String updateAppSQL = String.format("UPDATE appointment SET %s WHERE appointmentId = %s;",appUpdateValues, appointment.getId());
+        int result = 0;
+        try{
+            Statement statement = DBConnection.getConnection().createStatement();
+            result = statement.executeUpdate(updateAppSQL);
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return result > 0;
     }
 
 
@@ -122,8 +133,8 @@ public class AppointmentDataService {
         ZonedDateTime utcCreateDate = appCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime createDate = utcCreateDate.toLocalDateTime();
 
-        ZonedDateTime customerUpdateDate = appointment.getLastUpdateDate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcUpdateDate = customerUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
+        ZonedDateTime appUpdateDate = appointment.getLastUpdateDate().atZone(ZoneId.systemDefault());
+        ZonedDateTime utcUpdateDate = appUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 
         return String.format("%d, %d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s'",
@@ -131,5 +142,16 @@ public class AppointmentDataService {
                 appointment.getContact(), appointment.getType(), appointment.getUrl(), appointment.getStart(), appointment.getEnd(),
                 createDate.format(formatter),appointment.getCreateBy(),
                 updateDate.format(formatter),appointment.getLastUpdateBy());
+    }
+
+    private String getAppUpdateValueString(Appointment appointment, DateTimeFormatter formatter) {
+        ZonedDateTime appUpdateDate = appointment.getLastUpdateDate().atZone(ZoneId.systemDefault());
+        ZonedDateTime utcUpdateDate = appUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
+
+        return String.format("title='%s',description='%s',location='%s',contact='%s',type='%s',url='%s',start='%s',end='%s',lastUpdate ='%s',lastUpdateBy ='%s'",
+                appointment.getTitle(), appointment.getDescription(), appointment.getLocation(),
+                appointment.getContact(), appointment.getType(), appointment.getUrl(), appointment.getStart().format(formatter),
+                appointment.getEnd().format(formatter), updateDate.format(formatter), appointment.getLastUpdateBy());
     }
 }

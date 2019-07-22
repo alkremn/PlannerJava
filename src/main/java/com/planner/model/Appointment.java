@@ -22,6 +22,8 @@ public class Appointment {
     private ObjectProperty<LocalDateTime> createDate;
     private StringProperty createBy;
     private ObjectProperty<LocalDateTime> lastUpdateDate;
+    private StringProperty startEndTime;
+    private StringProperty startDateString;
     private StringProperty lastUpdateBy;
 
     public Appointment(int id, int customerId, int userId, String title, String description, String location, String contact, String type, String url,
@@ -40,6 +42,8 @@ public class Appointment {
         this.createDate = new SimpleObjectProperty<>(createDate);
         this.createBy = new SimpleStringProperty(createBy);
         this.lastUpdateDate = new SimpleObjectProperty<>(lastUpdateDate);
+        this.startEndTime = new SimpleStringProperty(createTimeString());
+        this.startDateString = new SimpleStringProperty(createAppDateString());
         this.lastUpdateBy = new SimpleStringProperty(lastUpdateBy);
     }
 
@@ -169,32 +173,28 @@ public class Appointment {
 
     public void setEnd(LocalDateTime end) {
         this.end.set(end);
+        this.startEndTime.set(createTimeString());
+        this.startDateString.set(createAppDateString());
     }
 
     public LocalDateTime getCreateDate() {
         return createDate.get();
     }
 
-    public SimpleStringProperty createDateProperty() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
-        return new SimpleStringProperty(createDate.getValue().format(formatter));
+    public StringProperty startEndTimeProperty(){
+       return this.startEndTime;
     }
 
-    public SimpleStringProperty startDateProperty(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
-        return new SimpleStringProperty(start.getValue().format(formatter));
+    public StringProperty startDateStringProperty(){
+        return this.startDateString;
     }
-
-    public SimpleStringProperty startEndTimeProperty(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
-        String startTime = this.start.getValue().format(formatter);
-        String endTime = this.end.getValue().format(formatter);
-        return new SimpleStringProperty(startTime + "-" + endTime);
-    }
-
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate.set(createDate);
+    }
+    public StringProperty createDateProperty(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+        return new SimpleStringProperty(createDate.getValue().toLocalDate().format(formatter));
     }
 
     public String getCreateBy() {
@@ -232,4 +232,21 @@ public class Appointment {
     public void setLastUpdateBy(String lastUpdatedBy) {
         this.lastUpdateBy.set(lastUpdatedBy);
     }
+
+    private String createTimeString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
+        String startTime = this.start.getValue().format(formatter);
+        String endTime = this.end.getValue().format(formatter);
+        return startTime + "-" + endTime;
+    }
+
+    private String createAppDateString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+        return start.getValue().format(formatter);
+    }
+    private String createDateString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+        return createDate.getValue().format(formatter);
+    }
+
 }

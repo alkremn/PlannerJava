@@ -13,7 +13,6 @@ import main.java.com.planner.model.Appointment;
 import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -72,7 +71,7 @@ public class AppointmentPageController {
 
         appTypeColumn.setCellValueFactory(cellDate -> cellDate.getValue().typeProperty());
         appStartEndTimeColumn.setCellValueFactory(cellData -> cellData.getValue().startEndTimeProperty());
-        appDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
+        appDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateStringProperty());
         appCreateDateColumn.setCellValueFactory(cellData -> cellData.getValue().createDateProperty());
 
         customerIdColumn.setStyle("-fx-alignment: CENTER;");
@@ -109,12 +108,14 @@ public class AppointmentPageController {
     private void modifyAppointmentHandler(ActionEvent event){
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
         Appointment selectedApp= appointmentTableView.getSelectionModel().getSelectedItem();
-        if(selectedCustomer == null)
+        if(selectedCustomer == null) {
             mainApp.showAlertMessage("No customer selected", "please, select the customer in the table");
-        else if (selectedApp == null)
+        } else if (selectedApp == null) {
             mainApp.showAlertMessage("No appointment selected", "please, select the appointment in the table");
-        else
+        } else{
             mainApp.appDetailPageLoad(selectedApp, selectedCustomer, user);
+        }
+
     }
 
     @FXML
