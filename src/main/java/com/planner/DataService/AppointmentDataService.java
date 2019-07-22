@@ -40,12 +40,24 @@ public class AppointmentDataService {
             Statement statement = DBConnection.getConnection().createStatement();
             result = statement.executeUpdate(appointmentSQL);
         }catch (SQLException e){
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         if(result > 0) System.out.println("Appointment Added!!!");
         return result > 0;
     }
 
+    public boolean deleteAppointment(Appointment appointment){
+        String appSQL = String.format("DELETE FROM appointment WHERE appointmentId = %d;",appointment.getId());
+        int result = 0;
+
+        try{
+            Statement statement = DBConnection.getConnection().createStatement();
+            result = statement.executeUpdate(appSQL);
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return result > 0;
+    }
 
 
     private Appointment createAppointment(final ResultSet entry){

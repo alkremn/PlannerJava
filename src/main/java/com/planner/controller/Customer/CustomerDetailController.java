@@ -90,23 +90,23 @@ public class CustomerDetailController {
         countryComboBox.setItems(FXCollections.observableArrayList(countries));
         saveButton.setDisable(true);
 
-        firstNameField.textProperty().addListener(((observable, oldValue, newValue) -> {
+        firstNameField.textProperty().addListener((observable, oldValue, newValue) -> {
             isFirstValid = !newValue.isEmpty();
             firstNameError.setVisible(!isFirstValid);
             validFormCheck();
-        }));
+        });
 
-        lastNameField.textProperty().addListener(((observable, oldValue, newValue) -> {
+        lastNameField.textProperty().addListener((observable, oldValue, newValue) -> {
             isLastValid = !newValue.isEmpty();
             lastNameError.setVisible(!isLastValid);
             validFormCheck();
-        }));
-        addField.textProperty().addListener(((observable, oldValue, newValue) -> {
+        });
+        addField.textProperty().addListener((observable, oldValue, newValue) -> {
             isAddressValid = !newValue.isEmpty();
             addressError.setVisible(!isAddressValid);
             validFormCheck();
-        }));
-        phoneField.textProperty().addListener(((observable, oldValue, newValue) -> {
+        });
+        phoneField.textProperty().addListener((observable, oldValue, newValue) -> {
             boolean isNumber = true;
             try{
                 Long.parseLong(newValue);
@@ -116,17 +116,17 @@ public class CustomerDetailController {
             isPhoneValid = !newValue.isEmpty() && isNumber;
             phoneError.setVisible(!isPhoneValid);
             validFormCheck();
-        }));
-        cityField.textProperty().addListener(((observable, oldValue, newValue) -> {
+        });
+        cityField.textProperty().addListener((observable, oldValue, newValue) -> {
             isCityValid = !newValue.isEmpty();
             cityError.setVisible(!isCityValid);
             validFormCheck();
-        }));
-        codeField.textProperty().addListener(((observable, oldValue, newValue) -> {
+        });
+        codeField.textProperty().addListener((observable, oldValue, newValue) -> {
             isCodeValid = !newValue.isEmpty();
             codeError.setVisible(!isCodeValid);
             validFormCheck();
-        }));
+        });
     }
 
     private void validFormCheck(){

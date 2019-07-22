@@ -119,7 +119,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
             AppointmentPageController appointmentController = loader.getController();
-            appointmentController.setData(this, user, appointmentResult);
+            appointmentController.setData(this, user, appointmentDS, appointmentResult);
             window.setScene(scene);
 
         } catch (IOException e){
