@@ -2,7 +2,6 @@ package main.java.com.planner.model;
 
 import javafx.beans.property.*;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
 
 public class Appointment {
@@ -15,15 +14,15 @@ public class Appointment {
     private StringProperty contact;
     private StringProperty type;
     private StringProperty url;
-    private ObjectProperty<Time> start;
-    private ObjectProperty<Time> end;
+    private ObjectProperty<LocalDateTime> start;
+    private ObjectProperty<LocalDateTime> end;
     private ObjectProperty<LocalDateTime> createDate;
     private StringProperty createBy;
     private ObjectProperty<LocalDateTime> lastUpdateDate;
     private StringProperty lastUpdateBy;
 
     public Appointment(int id, int customerId, int userId, String title, String description, String location, String contact, String type, String url,
-                       Time start, Time end, LocalDateTime createDate, String createBy, LocalDateTime lastUpdateDate, String lastUpdateBy) {
+                       LocalDateTime start, LocalDateTime end, LocalDateTime createDate, String createBy, LocalDateTime lastUpdateDate, String lastUpdateBy) {
         this.id = new SimpleIntegerProperty(id);
         this.customerId = new SimpleIntegerProperty(customerId);
         this.userId = new SimpleIntegerProperty(userId);
@@ -149,27 +148,27 @@ public class Appointment {
         this.url.set(url);
     }
 
-    public Time getStart() {
+    public LocalDateTime getStart() {
         return start.get();
     }
 
-    public ObjectProperty<Time> startProperty() {
+    public ObjectProperty<LocalDateTime> startEndTimeProperty() {
         return start;
     }
 
-    public void setStart(Time start) {
+    public void setStart(LocalDateTime start) {
         this.start.set(start);
     }
 
-    public Time getEnd() {
+    public LocalDateTime getEnd() {
         return end.get();
     }
 
-    public ObjectProperty<Time> endProperty() {
+    public ObjectProperty<LocalDateTime> endProperty() {
         return end;
     }
 
-    public void setEnd(Time end) {
+    public void setEnd(LocalDateTime end) {
         this.end.set(end);
     }
 

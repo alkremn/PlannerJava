@@ -26,8 +26,8 @@
    <children>
       <GridPane alignment="BOTTOM_CENTER" prefHeight="581.0" prefWidth="700.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
         <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="345.0" minWidth="10.0" prefWidth="234.0" />
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="345.0" minWidth="10.0" prefWidth="136.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="345.0" minWidth="10.0" prefWidth="253.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="345.0" minWidth="10.0" prefWidth="109.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="484.0" minWidth="10.0" prefWidth="341.0" />
         </columnConstraints>
         <rowConstraints>
@@ -39,7 +39,7 @@
             <RowConstraints maxHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="81.0" minHeight="20.0" prefHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="81.0" minHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="131.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <GridPane.margin>
@@ -66,6 +66,9 @@
                         <Insets left="20.0" />
                      </HBox.margin></Button>
                </children>
+               <GridPane.margin>
+                  <Insets left="60.0" />
+               </GridPane.margin>
             </HBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                <children>
@@ -94,7 +97,7 @@
                         <Insets left="20.0" />
                      </VBox.margin>
                   </Label>
-                  <TextArea prefHeight="200.0" prefWidth="200.0" styleClass="inputText">
+                  <TextArea fx:id="descTextArea" prefHeight="50.0" prefWidth="200.0" styleClass="inputText">
                      <VBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </VBox.margin>
@@ -111,7 +114,7 @@
                         <Insets left="20.0" />
                      </VBox.margin>
                   </Label>
-                  <TextArea prefHeight="200.0" prefWidth="200.0" styleClass="inputText">
+                  <TextArea fx:id="locationTextArea" prefHeight="50.0" prefWidth="200.0" styleClass="inputText">
                      <VBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </VBox.margin>
@@ -128,19 +131,12 @@
                         <Insets left="20.0" />
                      </VBox.margin>
                   </Label>
-                  <TextArea prefHeight="200.0" prefWidth="200.0" styleClass="inputText">
+                  <TextArea fx:id="contactTextArea" prefHeight="60.0" prefWidth="298.0" styleClass="inputText">
                      <VBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </VBox.margin>
                   </TextArea>
                   <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Label fx:id="contactError1" styleClass="errorMessage">
-                           <VBox.margin>
-                              <Insets left="20.0" />
-                           </VBox.margin>
-                        </Label>
-                     </children>
                      <opaqueInsets>
                         <Insets left="20.0" right="20.0" />
                      </opaqueInsets>
@@ -278,26 +274,19 @@
                   </Label>
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+            <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <children>
-                  <Label fx:id="contactError1" styleClass="errorMessage" text="Invalid Contact">
+                  <Label fx:id="urlError" alignment="TOP_LEFT" styleClass="errorMessage" text="Invalid Contact">
                      <VBox.margin>
                         <Insets left="20.0" />
                      </VBox.margin>
                   </Label>
-                  <TextArea prefHeight="200.0" prefWidth="200.0" styleClass="inputText">
+                  <TextArea fx:id="urlTextArea" prefHeight="50.0" prefWidth="200.0" styleClass="inputText">
                      <VBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </VBox.margin>
                   </TextArea>
                   <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Label fx:id="contactError11" styleClass="errorMessage">
-                           <VBox.margin>
-                              <Insets left="20.0" />
-                           </VBox.margin>
-                        </Label>
-                     </children>
                      <opaqueInsets>
                         <Insets left="20.0" right="20.0" />
                      </opaqueInsets>

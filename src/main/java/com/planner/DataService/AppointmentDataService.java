@@ -60,16 +60,27 @@ public class AppointmentDataService {
             String contact = entry.getString("contact");
             String type = entry.getString("type");
             String url = entry.getString("url");
-            Time startTime = entry.getTime("start");
-            Time endTime = entry.getTime("end");
+
+            String startTimeString = entry.getString("start");
+            String endTimeString = entry.getString("end");
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            LocalDateTime utcStartDate = LocalDateTime.parse(startTimeString, formatter);
+            ZonedDateTime zonedUTCStartDateTime = ZonedDateTime.of(utcStartDate, ZoneId.of("UTC"));
+
+            LocalDateTime utcEndDate = LocalDateTime.parse(endTimeString, formatter);
+            ZonedDateTime zonedUTCEndDateTime = ZonedDateTime.of(utcEndDate, ZoneId.of("UTC"));
+
+            ZonedDateTime localStartDate = zonedUTCStartDateTime.withZoneSameInstant(ZoneId.systemDefault());
+            ZonedDateTime localEndDate = zonedUTCEndDateTime.withZoneSameInstant(ZoneId.systemDefault());
+
 
             String createdBy = entry.getString("createdBy");
             String lastUpdateBy = entry.getString("lastUpdateBy");
 
             String createDateString = entry.getString("createDate");
             String updateDateString = entry.getString("lastUpdate");
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
             LocalDateTime utcCreateDate = LocalDateTime.parse(createDateString, formatter);
             ZonedDateTime zonedUTCCreateDateTime = ZonedDateTime.of(utcCreateDate, ZoneId.of("UTC"));
@@ -81,12 +92,18 @@ public class AppointmentDataService {
             ZonedDateTime localUpdateDate = zonedUTCUpdateDateTime.withZoneSameInstant(ZoneId.systemDefault());
 
             appointment = new Appointment(id, customerId, userId, title, description, location, contact, type,
-            url, startTime, endTime, localCreateDate.toLocalDateTime(), createdBy, localUpdateDate.toLocalDateTime(), lastUpdateBy);
+            url, localStartDate.toLocalDateTime(), localEndDate.toLocalDateTime(), localCreateDate.toLocalDateTime(),
+                    createdBy, localUpdateDate.toLocalDateTime(), lastUpdateBy);
         } catch(SQLException e){
            System.out.println(e.getMessage());
         }
         return appointment;
     }
+
+    public boolean updateAppointment(Appointment appointment){
+        return true;
+    }
+
 
     private String getAppValueString(Appointment appointment, DateTimeFormatter formatter){
         ZonedDateTime appCreateDate = appointment.getCreateDate().atZone(ZoneId.systemDefault());

@@ -6,14 +6,10 @@ import main.java.com.planner.model.Country;
 import main.java.com.planner.model.Customer;
 
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
-import java.util.concurrent.Callable;
 
 
 public class CustomerDataService {

@@ -18,6 +18,7 @@ public class AppDetailController {
     private MainApp mainApp;
     private Customer customer;
     private Appointment appointment;
+    private User user;
     private boolean isExisting;
     private final int START_TIME_HOUR = 8;
     private final int END_TIME_HOUR = 17;
@@ -31,7 +32,10 @@ public class AppDetailController {
     private Label customerNameLabel;
 
     @FXML
-    private TextField titleField, descField, locationField, contactField, urlField;
+    private TextField titleField;
+
+    @FXML
+    private TextArea descTextArea, locationTextArea, contactTextArea, urlTextArea;
 
     @FXML
     private Label titleError, descError, locationError, contactError, urlError;
@@ -48,7 +52,7 @@ public class AppDetailController {
     @FXML
     private Button saveButton;
 
-    private boolean isTitleValid, isDescValid, isLocationValid, isContactValid, isTypeValid, isDateValid,
+    private boolean isTitleValid, isDescValid, isLocationValid, isContactValid, isUrlValid, isTypeValid, isDateValid,
             isStartValid, isEndValid;
 
     //default constructor
@@ -93,10 +97,11 @@ public class AppDetailController {
         mainApp.saveCustomer(null, !isExisting);
     }
 
-    public void setData(MainApp mainApp, Appointment appointment, Customer customer){
+    public void setData(MainApp mainApp, Appointment appointment, Customer customer, User user){
         this.mainApp = mainApp;
         this.appointment = appointment;
         this.customer = customer;
+        this.user = user;
         startTimePicker.setItems(createTime(new TimeSpan(START_TIME_HOUR,0),FXCollections.observableArrayList()));
         endTimePicker.setItems(createTime(new TimeSpan(START_TIME_HOUR,0),FXCollections.observableArrayList()));
         if(appointment != null) {
@@ -109,35 +114,41 @@ public class AppDetailController {
     @FXML
     public void initialize(){
         typePicker.setItems(FXCollections.observableArrayList( "New Appt", "Follow up"));
-        titleField.textProperty().addListener(((observable, oldValue, newValue) -> {
+        titleField.textProperty().addListener((observable, oldValue, newValue) -> {
             isTitleValid = !newValue.isEmpty();
             titleError.setVisible(!isTitleValid);
             validFormCheck();
-        }));
+        });
 
-        descField.textProperty().addListener(((observable, oldValue, newValue) -> {
+        descTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
             isDescValid = !newValue.isEmpty();
             descError.setVisible(!isDescValid);
             validFormCheck();
-        }));
+        });
 
-        locationField.textProperty().addListener(((observable, oldValue, newValue) -> {
+        locationTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
             isLocationValid = !newValue.isEmpty();
             locationError.setVisible(!isLocationValid);
             validFormCheck();
-        }));
+        });
 
-        contactField.textProperty().addListener(((observable, oldValue, newValue) -> {
+        contactTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
             isContactValid = !newValue.isEmpty();
             contactError.setVisible(!isContactValid);
             validFormCheck();
-        }));
+        });
+
+        urlTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            isUrlValid = !newValue.isEmpty();
+            urlError.setVisible(!isUrlValid);
+            validFormCheck();
+        });
 
     }
 
     private void validFormCheck(){
-        boolean isValidToSave = isTitleValid && isDescValid && isLocationValid && isContactValid && isTypeValid && isDateValid
-                && isStartValid && isEndValid;
+        boolean isValidToSave = isTitleValid && isDescValid && isLocationValid && isContactValid && isUrlValid &&
+                isTypeValid && isDateValid && isStartValid && isEndValid;
         saveButton.setDisable(!isValidToSave);
     }
 
@@ -148,24 +159,30 @@ public class AppDetailController {
 
     private Appointment createAppointment(boolean isExisting){
         LocalDateTime currentDate = LocalDateTime.now(ZoneId.of("UTC"));
+        Appointment appointment = null;
         if (!isExisting) {
+            int customerId = customer.getCustomerId();
+            int userId = user.getUserId();
             String title = titleField.getText();
-            String desc = descField.getText();
-            String location = locationField.getText();
-            String contact = contactField.getText();
+            String desc = descTextArea.getText();
+            String location = locationTextArea.getText();
+            String contact = contactTextArea.getText();
+            String url = urlTextArea.getText();
             String type = typePicker.getSelectionModel().getSelectedItem();
             LocalDate date = appDatePicker.getValue();
-            TimeSpan startTime = startTimePicker.getValue();
-            TimeSpan endTime = endTimePicker.getValue();
+            TimeSpan start = startTimePicker.getValue();
+            TimeSpan end = endTimePicker.getValue();
 
-
+            LocalDateTime startTime = LocalDateTime.of(date, LocalTime.of(start.hours,start.minutes, 0));
+            LocalDateTime endTime = LocalDateTime.of(date, LocalTime.of(end.hours, end.minutes, 0));
+            appointment = new Appointment(0,customerId,userId,title,desc,location,contact,type,url,startTime,endTime,currentDate,
+                    user.getUserName(), currentDate, user.getUserName());
 
         } else {
 
         }
-        return null;
+        return appointment;
     }
-
 
     private ObservableList<TimeSpan> createTime(TimeSpan startTime, ObservableList<TimeSpan> timeCollection){
         timeCollection.clear();

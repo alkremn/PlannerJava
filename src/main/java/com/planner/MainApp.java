@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import main.java.com.planner.DataService.AppointmentDataService;
 import main.java.com.planner.DataService.CustomerDataService;
 import main.java.com.planner.DataService.DBConnection;
 import main.java.com.planner.controller.*;
@@ -40,11 +41,13 @@ public class MainApp extends Application {
     private final String ICON_PATH = "resources/favicon.jpg";
     public static ExecutorService service;
     private CustomerDataService customerDS;
+    private AppointmentDataService appointmentDS;
     public ObservableList<Customer> customerList;
     public ObservableList<Appointment> appointmentList;
     private Stage detailsWindow;
     private static Future<Boolean> connection;
     public Future<List<Customer>> customerResult;
+    public Future<List<Appointment>> appointmentResult;
 
     public static User user = new User.UserBuilder(1).username("test").password("test").active(true)
             .createDate(ZonedDateTime.now(ZoneId.systemDefault())).createdBy("Alex").lastUpdate(ZonedDateTime.now(ZoneId.systemDefault())).LastUpdateBy("Alex").build();
@@ -73,8 +76,11 @@ public class MainApp extends Application {
 
     private void initData(){
         customerDS = new CustomerDataService();
+        appointmentDS = new AppointmentDataService();
         customerList = FXCollections.observableArrayList();
+        appointmentList = FXCollections.observableArrayList();
         customerResult = service.submit(customerDS::getAllCustomers);
+        appointmentResult = service.submit(appointmentDS::getAllAppointments);
     }
 
     private void loginPageLoad() {
@@ -113,7 +119,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
             AppointmentPageController appointmentController = loader.getController();
-            appointmentController.setData(this, user);
+            appointmentController.setData(this, user, appointmentResult);
             window.setScene(scene);
 
         } catch (IOException e){
@@ -173,7 +179,7 @@ public class MainApp extends Application {
         }
    }
 
-   public void appDetailPageLoad(Appointment appointment, Customer selectedCustomer){
+   public void appDetailPageLoad(Appointment appointment, Customer selectedCustomer, User user){
        try{
            FXMLLoader loader = new FXMLLoader();
            loader.setLocation(getClass().getResource("fxml/AppDetailPage.fxml"));
@@ -186,7 +192,7 @@ public class MainApp extends Application {
            detailsWindow.setScene(scene);
 
            AppDetailController appDetailController = loader.getController();
-           appDetailController.setData(this, appointment, selectedCustomer);
+           appDetailController.setData(this, appointment, selectedCustomer, user);
 
            Parent root = loader.getRoot();
            root.requestFocus();
@@ -211,8 +217,20 @@ public class MainApp extends Application {
             customerList.addAll(customerDS.getAllCustomers());
         }
     }
-    public void saveAppointment(Appointment appointment, boolean isExisting){
 
+    public void saveAppointment(Appointment appointment, boolean isExisting){
+        if(detailsWindow != null)
+            detailsWindow.close();
+
+        if(appointment != null) {
+            if (isExisting) {
+                appointmentDS.updateAppointment(appointment);
+            } else {
+                appointmentDS.addAppointment(appointment);
+            }
+            appointmentList.clear();
+            appointmentList.addAll(appointmentDS.getAllAppointments());
+        }
     }
 
     public void showAlertMessage(final String header, final String message){
