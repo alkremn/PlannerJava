@@ -118,7 +118,7 @@ public class AppDetailController {
 
     @FXML
     public void initialize(){
-        typePicker.setItems(FXCollections.observableArrayList( "New Appt", "Follow up"));
+        typePicker.setItems(FXCollections.observableArrayList( "Presentation", "Scrum"));
         titleField.textProperty().addListener((observable, oldValue, newValue) -> {
             isTitleValid = !newValue.isEmpty();
             titleError.setVisible(!isTitleValid);

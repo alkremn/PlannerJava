@@ -18,6 +18,7 @@ import main.java.com.planner.controller.Customer.CustomerDetailController;
 import main.java.com.planner.controller.Customer.CustomerPageController;
 import main.java.com.planner.controller.appointment.AppDetailController;
 import main.java.com.planner.controller.appointment.AppointmentPageController;
+import main.java.com.planner.controller.calendar.CalendarPageController;
 import main.java.com.planner.model.Appointment;
 import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
