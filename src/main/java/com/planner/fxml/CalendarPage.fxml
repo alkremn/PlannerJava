@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.calendar.CalendarPageController">
+<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.calendar.CalendarPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.3333740234375" minWidth="10.0" prefWidth="211.33334350585938" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1156.3333129882812" minWidth="10.0" prefWidth="910.0" />
@@ -60,12 +60,12 @@
                   <Insets top="10.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" styleClass="mainButton" text="Appointments">
+            <Button mnemonicParsing="false" onAction="#appointmentButtonHandler" styleClass="mainButton" text="Appointments">
                <padding>
                   <Insets top="10.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#calendarButtonHandler" styleClass="mainButton" text="Calendar">
+            <Button mnemonicParsing="false" styleClass="mainButton" text="Calendar">
                <padding>
                   <Insets top="10.0" />
                </padding>
@@ -85,8 +85,10 @@
       </VBox>
       <GridPane alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="10.0" prefWidth="10.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="10.0" prefWidth="200.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="521.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="476.0" />
         </columnConstraints>
         <rowConstraints>
@@ -96,7 +98,7 @@
           <RowConstraints maxHeight="778.3333358764648" minHeight="10.0" prefHeight="731.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TableView fx:id="appointmentTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <TableView fx:id="appointmentTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
                <columns>
                   <TableColumn fx:id="appTypeColumn" prefWidth="166.0" text="Customer Name" />
                   <TableColumn fx:id="appStartEndTimeColumn" prefWidth="125.0" text="Time" />
@@ -104,22 +106,22 @@
                   <TableColumn fx:id="appCreateDateColumn" prefWidth="121.0" text="Created On" />
                </columns>
                <GridPane.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" />
+                  <Insets bottom="20.0" right="20.0" />
                </GridPane.margin>
             </TableView>
-            <Label styleClass="secondLabel" text="Calendar">
+            <Label styleClass="secondLabel" text="Calendar" GridPane.columnIndex="1">
                <padding>
                   <Insets left="30.0" />
                </padding>
             </Label>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <Label style="-fx-font-weight: bold;" styleClass="infoLabel" text="Month">
                      <padding>
                         <Insets right="10.0" />
                      </padding>
                   </Label>
-                  <ChoiceBox prefWidth="150.0" />
+                  <ComboBox fx:id="monthBox" prefWidth="150.0" styleClass="choice-box" />
                   <Label style="-fx-font-weight: bold;" styleClass="infoLabel" text="Year">
                      <HBox.margin>
                         <Insets />
@@ -128,15 +130,15 @@
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </Label>
-                  <ChoiceBox prefWidth="150.0" />
-                  <Button mnemonicParsing="false" onAction="#showDaysHandler" style="-fx-font-size: 18;" styleClass="utilityButton" text="Show">
+                  <ComboBox fx:id="yearBox" prefWidth="150.0" styleClass="choice-box" />
+                  <Button fx:id="showButton" mnemonicParsing="false" onAction="#showButtonHandler" style="-fx-font-size: 18;" styleClass="utilityButton" text="Show">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Button>
                </children>
             </HBox>
-            <GridPane alignment="CENTER" GridPane.columnIndex="2">
+            <GridPane alignment="CENTER" GridPane.columnIndex="4">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -157,28 +159,49 @@
                   </Pane>
                </children>
             </GridPane>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <center>
-                  <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Selected Date" BorderPane.alignment="CENTER" />
+                  <Label fx:id="selectedDate" style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Selected Date" BorderPane.alignment="CENTER" />
                </center>
                <GridPane.margin>
-                  <Insets left="20.0" right="20.0" />
+                  <Insets right="20.0" />
                </GridPane.margin>
             </BorderPane>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;" GridPane.columnIndex="4" GridPane.rowIndex="2">
                <center>
-                  <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Month" BorderPane.alignment="CENTER" />
+                  <Label fx:id="selectedMonth" style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Month" BorderPane.alignment="CENTER" />
                </center>
                <GridPane.margin>
-                  <Insets left="20.0" right="20.0" />
+                  <Insets right="20.0" />
                </GridPane.margin>
             </BorderPane>
-            <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+            <FlowPane fx:id="dayPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #0E4F79;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
+               <GridPane.margin>
+                  <Insets bottom="130.0" />
+               </GridPane.margin></FlowPane>
+            <GridPane alignment="CENTER" style="-fx-background-color: #919191;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+              <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" fx:id="dayPane" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Sun" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Mon" GridPane.columnIndex="1" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Tue" GridPane.columnIndex="2" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Wed" GridPane.columnIndex="3" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Thu" GridPane.columnIndex="4" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Fri" GridPane.columnIndex="5" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Sat" GridPane.columnIndex="6" />
                </children>
-            </FlowPane>
+            </GridPane>
          </children>
       </GridPane>
    </children>

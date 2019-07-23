@@ -106,27 +106,11 @@
 .errorMessage {
     -fx-text-fill: #ef5b21;
 }
-
-.list-cell {
-    -fx-background-color: transparent ;
-    -fx-padding: 0 ;
-}
-
-.list-cell .label {
-    display: inline-block;
-    -fx-background: lightyellow;
-    -fx-background-color: -fx-background ;
-    -fx-background-radius: 30px;
-    -fx-border-radius: 20px;
-    -fx-border-width: 2px;
-    -fx-border-style: solid;
-    -fx-border-color: #666666;
-    -fx-padding: 12px ;
-}
-.list-cell:empty .label {
+.calendarDayButton{
     -fx-background-color: transparent;
-    -fx-border-width: 0px;
-}
-.list-cell:selected .label {
-    -fx-background: -fx-selection-bar ;
+    -fx-font-size: 20;
+    -fx-pref-width: 100;
+    -fx-pref-height: 100;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
 }

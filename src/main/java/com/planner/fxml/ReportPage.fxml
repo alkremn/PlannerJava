@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.ReportPageController">
+<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.ReportPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.3333740234375" minWidth="10.0" prefWidth="211.33334350585938" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1156.3333129882812" minWidth="10.0" prefWidth="910.0" />
@@ -24,7 +21,7 @@
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="709.3333282470703" minHeight="10.0" prefHeight="702.6666603088379" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="712.6666717529297" minHeight="10.0" prefHeight="712.6666717529297" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
@@ -35,7 +32,7 @@
       </Label>
       <HBox alignment="CENTER" prefHeight="97.0" prefWidth="369.0" GridPane.columnIndex="2">
          <children>
-            <Label text="Welcome">
+            <Label style="-fx-text-fill: #0E4F79;" text="Welcome">
                <font>
                   <Font size="21.0" />
                </font>
@@ -52,7 +49,7 @@
       </HBox>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #0E4F79;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2">
          <children>
-            <Button alignment="CENTER" onAction="#customerButtonHandler" contentDisplay="CENTER" mnemonicParsing="false" styleClass="mainButton" text="Customers">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#customerButtonHandler" styleClass="mainButton" text="Customers">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -60,7 +57,7 @@
                   <Insets top="10.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#appointmentButtonHandler" styleClass="mainButton" text="Appointments">
+            <Button mnemonicParsing="false" styleClass="mainButton" text="Appointments">
                <padding>
                   <Insets top="10.0" />
                </padding>
@@ -83,6 +80,73 @@
             <Insets top="20.0" />
          </padding>
       </VBox>
-      <Pane prefHeight="200.0" prefWidth="1183.0" style="-fx-background-color: #343434;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+      <GridPane alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="10.0" prefWidth="10.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="10.0" prefWidth="384.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="0.0" prefWidth="10.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="384.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="384.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="256.0" minHeight="-Infinity" prefHeight="52.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="256.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="778.3333358764648" minHeight="10.0" prefHeight="741.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label styleClass="secondLabel" text="Reports" GridPane.columnIndex="1">
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+            </Label>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;" GridPane.columnIndex="5" GridPane.rowIndex="1">
+               <center>
+                  <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Number of Appointments per Customer" BorderPane.alignment="CENTER" />
+               </center>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </BorderPane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <center>
+                  <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Number of Appointment Types by Month" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <center>
+                  <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Consultant Schedule" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+              <columns>
+                <TableColumn prefWidth="192.0" text="Month" />
+                <TableColumn prefWidth="192.0" text="Type" />
+              </columns>
+               <GridPane.margin>
+                  <Insets bottom="20.0" />
+               </GridPane.margin>
+            </TableView>
+            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+              <columns>
+                <TableColumn prefWidth="192.0" text="Consultant" />
+                <TableColumn prefWidth="192.0" text="Appointment time" />
+              </columns>
+               <GridPane.margin>
+                  <Insets bottom="20.0" />
+               </GridPane.margin>
+            </TableView>
+            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
+              <columns>
+                <TableColumn prefWidth="192.0" text="Customer Name" />
+                <TableColumn prefWidth="192.0" text="Number of Appointments" />
+              </columns>
+               <GridPane.margin>
+                  <Insets bottom="20.0" />
+               </GridPane.margin>
+            </TableView>
+         </children>
+      </GridPane>
    </children>
 </GridPane>

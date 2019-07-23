@@ -3,12 +3,11 @@ package main.java.com.planner.controller.calendar;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.FlowPane;
 import main.java.com.planner.MainApp;
 import main.java.com.planner.model.Day;
 import main.java.com.planner.model.User;
@@ -17,20 +16,27 @@ import java.time.LocalDate;
 
 public class CalendarPageController {
 
+    private final int YEAR_PERIOD = 10;
     private MainApp mainApp;
+    private Button activeDayButton;
     private User user;
     private ObservableList<Day> days = FXCollections.observableArrayList();
     private ObservableList<Day> currentWeek = FXCollections.observableArrayList();
     private ObservableList<String> months = FXCollections.observableArrayList("January", "February", "March",
             "April", "May", "June", "July", "August", "September", "October", "November", "December");
+    private ObservableList<String> years = FXCollections.observableArrayList();
 
     @FXML
     private Label usernameLabel;
 
-
+    @FXML
+    private ComboBox<String> monthBox, yearBox;
 
     @FXML
-    private Pane dayPane;
+    private FlowPane dayPane;
+
+    @FXML
+    private Button showButton;
 
     @FXML
     private void initialize(){
@@ -61,20 +67,24 @@ public class CalendarPageController {
         this.mainApp = mainApp;
         this.user = user;
         this.usernameLabel.setText(user.getUserName());
-        dayPane.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-            Pane pane = (Pane)e.getSource();
-            System.out.println(pane.getId());
-        });
+        this.monthBox.setItems(months);
+        this.yearBox.setItems(years);
+        LocalDate date = LocalDate.now();
+        monthBox.getSelectionModel().select(date.getMonth().getValue() - 1);
+        yearBox.getSelectionModel().select(String.valueOf(date.getYear()));
+        buildYears(LocalDate.now());
+        createCalendar();
     }
 
     @FXML
-    private void showMonthHandler(ActionEvent event){
-        //TODO::
-    }
-
-    @FXML
-    private void showDaysHandler(ActionEvent event){
-        //TODO::
+    private void showButtonHandler(ActionEvent event){
+        int intMonth = monthBox.getSelectionModel().getSelectedIndex() + 1;
+        String year = yearBox.getSelectionModel().getSelectedItem();
+        if(intMonth > 0 && year != null){
+            int intYear = Integer.parseInt(year);
+            BuildCalendar(LocalDate.of(intYear, intMonth, 1));
+            createCalendar();
+        }
     }
 
     @FXML
@@ -89,7 +99,6 @@ public class CalendarPageController {
 
     private void BuildCurrentCalendarMonth(){
         BuildCalendar(LocalDate.now());
-        System.out.println("");
     }
 
     private void BuildCalendar(LocalDate targetDate) {
@@ -97,7 +106,7 @@ public class CalendarPageController {
 
         LocalDate d = LocalDate.of(targetDate.getYear(), targetDate.getMonth(), 1);
         int offset = d.getDayOfWeek().getValue();
-        if (offset != 1) d = d.plusDays(-offset);
+        if (offset != 6) d = d.plusDays(-offset);
 
         for(int i = 1; i < 42; i++){
             Day day = new Day(d, (targetDate.getMonth() == d.getMonth()), (d.equals(LocalDate.now())));
@@ -106,5 +115,49 @@ public class CalendarPageController {
         }
     }
 
+    private void createCalendar(){
+        dayPane.getChildren().clear();
+        for(Day d : days){
+            Button button = new Button(String.valueOf(d.getDate().getDayOfMonth()));
+            button.getStyleClass().add("calendarDayButton");
+            button.onActionProperty().setValue(this::dayButtonHandler);
+            if(d.isTargetMonth()){
+                button.setStyle("-fx-text-fill: #787878");
+                button.setId("targetMonth");
+            }
+            else{
+                button.setDisable(true);
+            }
+            if(d.isToday()){
+                button.setStyle("-fx-background-color: #458fbb");
+                button.setId(button.getId() + "today");
+            }
+            dayPane.getChildren().add(button);
+
+        }
+    }
+    private void dayButtonHandler(ActionEvent event){
+        if(activeDayButton != null){
+            activeDayButton.setStyle("-fx-background-color: transparent");
+            if(activeDayButton.getId() != null){
+                if(activeDayButton.getId().equals("targetMonth")){
+                    activeDayButton.setStyle("-fx-text-fill: #787878");
+                }else{
+                    activeDayButton.setStyle("-fx-background-color: #458fbb");
+                }
+            }
+        }
+        activeDayButton = (Button)event.getSource();
+        activeDayButton.setStyle("-fx-background-color: #787878;");
+        System.out.println(activeDayButton.getText());
+    }
+
+    private void buildYears(LocalDate targetDate){
+        int lowerBound = targetDate.getYear() - YEAR_PERIOD;
+        int upperBound = targetDate.getYear() + YEAR_PERIOD;
+        for(int year = lowerBound; year < upperBound; year++){
+            years.add(String.valueOf(year));
+        }
+    }
 
 }
