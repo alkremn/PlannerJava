@@ -46,7 +46,6 @@ public class MainApp extends Application {
     public ObservableList<Customer> customerList;
     public ObservableList<Appointment> appointmentList;
     private Stage detailsWindow;
-    private static Future<Boolean> connection;
     private AppointmentPageController appController;
     public Future<List<Customer>> customerResult;
     public Future<List<Appointment>> appointmentResult;
@@ -58,7 +57,7 @@ public class MainApp extends Application {
     public static void main(String[] args) {
 
         service = Executors.newSingleThreadExecutor();
-        connection = service.submit(DBConnection::makeConnection);
+        service.submit(DBConnection::makeConnection);
         launch(args);
         DBConnection.closeConnection();
         if(!service.isTerminated()) service.shutdown();
@@ -83,6 +82,21 @@ public class MainApp extends Application {
         appointmentList = FXCollections.observableArrayList();
         customerResult = service.submit(customerDS::getAllCustomers);
         appointmentResult = service.submit(appointmentDS::getAllAppointments);
+        service.shutdown();
+        new Thread(()-> {
+            boolean isDone = false;
+            while(!isDone){
+                isDone = service.isTerminated();
+            }
+            try {
+                customerList.clear();
+                appointmentList.clear();
+                customerList.addAll(customerResult.get());
+                appointmentList.addAll(appointmentResult.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private void loginPageLoad() {
@@ -107,7 +121,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
             CustomerPageController customerController = loader.getController();
-            customerController.setData(this, user, customerDS, customerResult);
+            customerController.setData(this, user, customerDS);
             window.setScene(scene);
 
        } catch (IOException e){
@@ -135,7 +149,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
             CalendarPageController appointmentController = loader.getController();
-            appointmentController.setData(this, user);
+            appointmentController.setData(this, user, appointmentResult);
             window.setScene(scene);
 
         } catch (IOException e){
@@ -147,8 +161,8 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML + REPORT_PAGE));
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
-            ReportPageController appointmentController = loader.getController();
-            appointmentController.setData(this, user);
+            ReportPageController reportController = loader.getController();
+            reportController.setData(this, user);
             window.setScene(scene);
 
         } catch (IOException e){

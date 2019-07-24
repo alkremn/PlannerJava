@@ -11,10 +11,6 @@ import main.java.com.planner.model.Address;
 import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
 public class CustomerPageController {
 
     private MainApp mainApp;
@@ -104,23 +100,12 @@ public class CustomerPageController {
         mainApp.reportPageLoad();
     }
 
-    public void setData(MainApp mainApp, User user, CustomerDataService customerDS, Future<List<Customer>> result){
+    public void setData(MainApp mainApp, User user, CustomerDataService customerDS){
         this.mainApp = mainApp;
         this.user = user;
         this.customerDS = customerDS;
-        new Thread(()-> {
-            try {
-                mainApp.customerList.clear();
-                mainApp.customerList.addAll(result.get());
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        }).start();
         customerTableView.setItems(mainApp.customerList);
         this.usernameLabel.setText(user.getUserName());
     }
-
-
-
 
 }

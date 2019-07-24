@@ -57,7 +57,7 @@
                   <Insets top="10.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" styleClass="mainButton" text="Appointments">
+            <Button mnemonicParsing="false" onAction="#appointmentButtonHandler" styleClass="mainButton" text="Appointments">
                <padding>
                   <Insets top="10.0" />
                </padding>
@@ -119,28 +119,28 @@
                   <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Consultant Schedule" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
-            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TableView fx:id="firstTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
               <columns>
-                <TableColumn prefWidth="192.0" text="Month" />
-                <TableColumn prefWidth="192.0" text="Type" />
+                <TableColumn fx:id="monthColumn" prefWidth="192.0" text="Month" />
+                <TableColumn fx:id="typeColumn" prefWidth="192.0" text="Data" />
               </columns>
                <GridPane.margin>
                   <Insets bottom="20.0" />
                </GridPane.margin>
             </TableView>
-            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+            <TableView fx:id="secondTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
               <columns>
-                <TableColumn prefWidth="192.0" text="Consultant" />
-                <TableColumn prefWidth="192.0" text="Appointment time" />
+                <TableColumn fx:id="consultantColumn" prefWidth="192.0" text="Consultant" />
+                <TableColumn fx:id="appTimeColumn" prefWidth="192.0" text="Appointment time" />
               </columns>
                <GridPane.margin>
                   <Insets bottom="20.0" />
                </GridPane.margin>
             </TableView>
-            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
+            <TableView fx:id="thirdTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
               <columns>
-                <TableColumn prefWidth="192.0" text="Customer Name" />
-                <TableColumn prefWidth="192.0" text="Number of Appointments" />
+                <TableColumn fx:id="customerNameColumn" prefWidth="192.0" text="Customer Name" />
+                <TableColumn fx:id="numAppColumn" prefWidth="192.0" text="Number of Appointments" />
               </columns>
                <GridPane.margin>
                   <Insets bottom="20.0" />

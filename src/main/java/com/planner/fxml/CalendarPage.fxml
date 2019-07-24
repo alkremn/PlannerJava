@@ -100,9 +100,9 @@
          <children>
             <TableView fx:id="appointmentTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
                <columns>
-                  <TableColumn fx:id="cusNameColumn" prefWidth="166.0" text="Customer Name" />
-                  <TableColumn fx:id="appStartEndTimeColumn" prefWidth="125.0" text="Time" />
-                  <TableColumn fx:id="appDateColumn" prefWidth="143.0" text="Date" />
+                  <TableColumn fx:id="cusNameColumn" prefWidth="174.0" text="Customer Name" />
+                  <TableColumn fx:id="appStartEndTimeColumn" prefWidth="118.6666259765625" text="Time" />
+                  <TableColumn fx:id="appDateColumn" prefWidth="153.6666259765625" text="Date" />
                </columns>
                <GridPane.margin>
                   <Insets bottom="20.0" right="20.0" />

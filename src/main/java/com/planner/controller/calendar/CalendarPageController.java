@@ -10,9 +10,15 @@ import main.java.com.planner.MainApp;
 import main.java.com.planner.model.Appointment;
 import main.java.com.planner.model.Day;
 import main.java.com.planner.model.User;
+import sun.java2d.cmm.lcms.LcmsServiceProvider;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class CalendarPageController {
@@ -20,9 +26,9 @@ public class CalendarPageController {
     private final int YEAR_PERIOD = 10;
     private MainApp mainApp;
     private Button activeDayButton;
-    private User user;
     private ObservableList<Day> days = FXCollections.observableArrayList();
     private ObservableList<Appointment> currentAppointments = FXCollections.observableArrayList();
+    private ObservableList<Day> currentWeek = FXCollections.observableArrayList();
     private ObservableList<String> months = FXCollections.observableArrayList("January", "February", "March",
             "April", "May", "June", "July", "August", "September", "October", "November", "December");
     private ObservableList<String> years = FXCollections.observableArrayList();
@@ -54,7 +60,13 @@ public class CalendarPageController {
         cusNameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
         appStartEndTimeColumn.setCellValueFactory(cellData -> cellData.getValue().startEndTimeProperty());
         appDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateStringProperty());
+
+        cusNameColumn.setStyle( "-fx-alignment: CENTER;");
+        appStartEndTimeColumn.setStyle( "-fx-alignment: CENTER;");
+        appDateColumn.setStyle( "-fx-alignment: CENTER;");
+
         BuildCurrentCalendarMonth();
+        appointmentTableView.setItems(currentAppointments);
     }
 
     @FXML
@@ -68,18 +80,12 @@ public class CalendarPageController {
     }
 
     @FXML
-    private void calendarButtonHandler(ActionEvent event) {
-        mainApp.calendarPageLoad();
-    }
-
-    @FXML
     private void reportButtonHandler(ActionEvent actionEvent) {
         mainApp.reportPageLoad();
     }
 
-    public void setData(MainApp mainApp, User user){
+    public void setData(MainApp mainApp, User user, Future<List<Appointment>> result){
         this.mainApp = mainApp;
-        this.user = user;
         this.usernameLabel.setText(user.getUserName());
         this.monthBox.setItems(months);
         this.yearBox.setItems(years);
@@ -87,9 +93,8 @@ public class CalendarPageController {
         monthBox.getSelectionModel().select(date.getMonth().getValue() - 1);
         yearBox.getSelectionModel().select(String.valueOf(date.getYear()));
         buildYears(LocalDate.now());
-        createCalendar();
         selectedMonth.setText("This Month");
-        loadAppointmentByDay(LocalDate.now());
+        loadAppointmentByMonth(LocalDate.now());
         setSelectedDateLabel(LocalDate.now());
     }
 
@@ -101,19 +106,29 @@ public class CalendarPageController {
             int intYear = Integer.parseInt(year);
             LocalDate selectedDate = LocalDate.of(intYear, intMonth, 1);
             BuildCalendar(selectedDate);
-            createCalendar();
             setSelectedDateLabel(selectedDate);
+            loadAppointmentByMonth(selectedDate);
         }
     }
 
     @FXML
     private void monthHandler(ActionEvent event){
         selectedMonth.setText("This month");
+        LocalDate date = LocalDate.now();
+        monthBox.getSelectionModel().select(date.getMonth().getValue() - 1);
+        yearBox.getSelectionModel().select(String.valueOf(date.getYear()));
+        BuildCurrentCalendarMonth();
+        loadAppointmentByMonth(LocalDate.now());
     }
 
     @FXML
     private void weekHandler(ActionEvent event){
         selectedMonth.setText("This week");
+        LocalDate date = LocalDate.now();
+        monthBox.getSelectionModel().select(date.getMonth().getValue() - 1);
+        yearBox.getSelectionModel().select(String.valueOf(date.getYear()));
+        BuildCurrentCalendarMonth();
+        loadAppointmentByWeek();
     }
 
     private void BuildCurrentCalendarMonth(){
@@ -125,13 +140,14 @@ public class CalendarPageController {
 
         LocalDate d = LocalDate.of(targetDate.getYear(), targetDate.getMonth(), 1);
         int offset = d.getDayOfWeek().getValue();
-        if (offset != 6) d = d.plusDays(-offset);
+        if (offset != 7) d = d.plusDays(-offset);
 
         for(int i = 1; i < 42; i++){
             Day day = new Day(d, (targetDate.getMonth() == d.getMonth()), (d.equals(LocalDate.now())));
             days.add(day);
             d = d.plusDays(1);
         }
+        createCalendar();
     }
 
     private void createCalendar(){
@@ -152,7 +168,6 @@ public class CalendarPageController {
                 button.setId(button.getId() + "today");
             }
             dayPane.getChildren().add(button);
-
         }
     }
     private void dayButtonHandler(ActionEvent event){
@@ -191,8 +206,30 @@ public class CalendarPageController {
 
     private void loadAppointmentByDay(LocalDate selectedDay){
         currentAppointments.clear();
-        List<Appointment> selectedApp = mainApp.appointmentList.stream().filter(a -> a.getStart().toLocalDate() == selectedDay).collect(Collectors.toList());
+        List<Appointment> selectedApp = mainApp.appointmentList.stream()
+                .filter(a -> a.getStart().toLocalDate().equals(selectedDay)).collect(Collectors.toList());
+        currentAppointments.addAll(selectedApp);
+    }
+    private void loadAppointmentByMonth(LocalDate selectedMonth){
+        currentAppointments.clear();
+        List<Appointment> selectedApp = mainApp.appointmentList.stream()
+                .filter(a -> a.getStart().toLocalDate().getMonth().equals(selectedMonth.getMonth()) &&
+                        a.getStart().toLocalDate().getYear() == selectedMonth.getYear()).collect(Collectors.toList());
         currentAppointments.addAll(selectedApp);
     }
 
+    private void loadAppointmentByWeek(){
+        LocalDate currentWeeDay  = LocalDate.now().plusDays(-1 * LocalDate.now().getDayOfWeek().getValue());
+        List<LocalDate> week = new ArrayList<>();
+        for(int i = 0; i < 7; i++){
+            week.add(currentWeeDay.plusDays(i));
+        }
+        currentAppointments.clear();
+
+        for(LocalDate day : week){
+            List<Appointment> selectedApp = mainApp.appointmentList.stream()
+                    .filter(a -> a.getStart().toLocalDate().equals(day)).collect(Collectors.toList());
+            currentAppointments.addAll(selectedApp);
+        }
+    }
 }

@@ -161,14 +161,6 @@ public class AppointmentPageController {
         customerTableView.setItems(mainApp.customerList);
         customerApps = FXCollections.observableArrayList();
         appointmentTableView.setItems(customerApps);
-        new Thread(()-> {
-            try {
-                mainApp.appointmentList.clear();
-                mainApp.appointmentList.addAll(result.get());
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        }).start();
     }
 
     public void updateAppList(){
