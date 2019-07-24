@@ -18,7 +18,7 @@ import java.util.TimeZone;
 
 public class AuthenticationDataService {
 
-    public static List<User> getAllUsers(){
+    public List<User> getAllUsers(){
         String sql = "SELECT * FROM user";
         List<User> users = new ArrayList<>();
 
@@ -34,7 +34,7 @@ public class AuthenticationDataService {
         return users;
     }
 
-    public static User findUser(String user, String pass){
+    public User findUser(String user, String pass){
         String sql = "SELECT * FROM user WHERE userName = '" + user + "' AND password = '" + pass + "';";
         User foundUser = null;
         try{
@@ -50,7 +50,7 @@ public class AuthenticationDataService {
     }
 
 
-    private static User createUser(ResultSet result) throws SQLException, ParseException{
+    private User createUser(ResultSet result) throws SQLException, ParseException{
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         User user = null;

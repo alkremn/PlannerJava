@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css"
-          xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.ReportPageController">
+<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.ReportPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.3333740234375" minWidth="10.0" prefWidth="211.33334350585938" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1156.3333129882812" minWidth="10.0" prefWidth="910.0" />
@@ -131,8 +130,8 @@
             </TableView>
             <TableView fx:id="secondTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
               <columns>
-                <TableColumn fx:id="consultantColumn" prefWidth="192.0" text="Consultant" />
-                <TableColumn fx:id="appTimeColumn" prefWidth="192.0" text="Appointment time" />
+                <TableColumn fx:id="consultantColumn" prefWidth="110.66668701171875" text="Consultant" />
+                <TableColumn fx:id="appTimeColumn" prefWidth="273.33331298828125" text="Appointment time"/>
               </columns>
                <GridPane.margin>
                   <Insets bottom="20.0" />

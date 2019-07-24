@@ -1,4 +1,4 @@
-package main.java.com.planner.model;
+package main.java.com.planner.model.helpers;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

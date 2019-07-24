@@ -18,6 +18,7 @@ public class User {
 
     public int getUserId(){ return this.userId; }
     public String getUserName() { return this.userName; }
+    public String getPassword() { return  this.password; }
 
     public static class UserBuilder {
         private int userId;

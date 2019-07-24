@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import main.java.com.planner.DataService.AuthenticationDataService;
 import main.java.com.planner.Exceptions.AuthenticationException;
 import main.java.com.planner.Exceptions.LoggerException;
 import main.java.com.planner.MainApp;
@@ -15,6 +14,8 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 public class LoginPageController {
 
@@ -22,7 +23,7 @@ public class LoginPageController {
     private final String FILE_NAME = "log.txt";
     private final String CONNECTING_MESSAGE = "Connecting to server...Hold on!";
     private MainApp mainApp;
-
+    private List<User> userList;
     static User user;
 
     @FXML
@@ -53,18 +54,17 @@ public class LoginPageController {
 
 
     private User CheckValidData(String user, String pass) throws AuthenticationException {
-        user = user.trim().toLowerCase();
-        pass = pass.trim();
+        String username = user.trim().toLowerCase();
+        String password = pass.trim();
 
-        if (user.isEmpty() || pass.isEmpty())
+        if (username.isEmpty() || password.isEmpty())
             throw new AuthenticationException("Invalid credentials");
 
-        User foundUser = AuthenticationDataService.findUser(user, pass);
-
-        if(foundUser == null)
+        Optional<User> foundUser = userList.stream().filter(u -> u.getUserName().equals(username) && u.getPassword().equals(password)).findAny();
+        if(!foundUser.isPresent())
                 throw new AuthenticationException("User not authenticated");
 
-        return foundUser;
+        return foundUser.get();
 
     }
 
@@ -86,7 +86,8 @@ public class LoginPageController {
         }
     }
 
-    public void setData(MainApp mainApp) {
+    public void setData(MainApp mainApp, List<User> userList) {
+        this.userList = userList;
         this.mainApp = mainApp;
     }
 }

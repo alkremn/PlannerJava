@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.java.com.planner.DataService.AppointmentDataService;
+import main.java.com.planner.DataService.AuthenticationDataService;
 import main.java.com.planner.DataService.CustomerDataService;
 import main.java.com.planner.DataService.DBConnection;
 import main.java.com.planner.controller.*;
@@ -26,6 +27,7 @@ import main.java.com.planner.model.User;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -40,15 +42,19 @@ public class MainApp extends Application {
     private final String CALENDAR_PAGE = "CalendarPage.fxml";
     private final String REPORT_PAGE = "ReportPage.fxml";
     private final String ICON_PATH = "resources/favicon.jpg";
-    public static ExecutorService service;
-    private CustomerDataService customerDS;
-    private AppointmentDataService appointmentDS;
-    public ObservableList<Customer> customerList;
-    public ObservableList<Appointment> appointmentList;
     private Stage detailsWindow;
     private AppointmentPageController appController;
-    public Future<List<Customer>> customerResult;
-    public Future<List<Appointment>> appointmentResult;
+    private AuthenticationDataService authDS;
+    private CustomerDataService customerDS;
+    private AppointmentDataService appointmentDS;
+    private static ExecutorService service;
+    private Future<List<User>> authResult;
+    private Future<List<Customer>> customerResult;
+    private Future<List<Appointment>> appointmentResult;
+    private List<User> userList;
+    public ObservableList<Customer> customerList;
+    public ObservableList<Appointment> appointmentList;
+
 
     public static User user = new User.UserBuilder(1).username("test").password("test").active(true)
             .createDate(ZonedDateTime.now(ZoneId.systemDefault())).createdBy("Alex").lastUpdate(ZonedDateTime.now(ZoneId.systemDefault())).LastUpdateBy("Alex").build();
@@ -71,15 +77,18 @@ public class MainApp extends Application {
         window.setResizable(false);
         initData();
 
-        customersPageLoad();
+        loginPageLoad();
         window.show();
     }
 
     private void initData(){
+        authDS = new AuthenticationDataService();
         customerDS = new CustomerDataService();
         appointmentDS = new AppointmentDataService();
+        userList = new ArrayList<>();
         customerList = FXCollections.observableArrayList();
         appointmentList = FXCollections.observableArrayList();
+        authResult = service.submit(authDS::getAllUsers);
         customerResult = service.submit(customerDS::getAllCustomers);
         appointmentResult = service.submit(appointmentDS::getAllAppointments);
         service.shutdown();
@@ -89,8 +98,10 @@ public class MainApp extends Application {
                 isDone = service.isTerminated();
             }
             try {
+                userList.clear();
                 customerList.clear();
                 appointmentList.clear();
+                userList.addAll(authResult.get());
                 customerList.addAll(customerResult.get());
                 appointmentList.addAll(appointmentResult.get());
             } catch (InterruptedException | ExecutionException e) {
@@ -107,7 +118,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
             LoginPageController loginController = loader.getController();
-            loginController.setData(this);
+            loginController.setData(this, userList);
             window.setScene(scene);
         } catch (IOException e){
             e.printStackTrace();
@@ -162,7 +173,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
             ReportPageController reportController = loader.getController();
-            reportController.setData(this, user);
+            reportController.setData(this, user, userList);
             window.setScene(scene);
 
         } catch (IOException e){
