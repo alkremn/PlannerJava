@@ -201,7 +201,7 @@ public class AppDetailController {
             int userId = user.getUserId();
 
             appointment = new Appointment(0,customerId,userId,title,desc,location,contact,type,url,startTime,endTime,currentDate,
-                    user.getUserName(), currentDate, user.getUserName());
+                    user.getUserName(), currentDate, user.getUserName(), customer.getName());
 
         } else {
             appointment.setTitle(title);

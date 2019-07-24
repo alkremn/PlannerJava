@@ -14,12 +14,16 @@ public class AppointmentDataService {
 
     public List<Appointment> getAllAppointments(){
         List<Appointment> appointments = new ArrayList<>();
-        String allAppointmentsSQL = "SELECT * from appointment";
-
+        String allAppointmentsSQL = "SELECT appointment.appointmentId, appointment.customerId, appointment.userId, appointment.title, appointment.description, \n" +
+                "                appointment.location, appointment.contact, appointment.type, appointment.url, appointment.start, appointment.end, \n" +
+                "                appointment.createDate, appointment.createdBy, appointment.lastUpdate, appointment.lastUpdateBy, customer.customerName FROM appointment\n" +
+                "                LEFT JOIN customer ON customer.customerid = appointment.customerid;";
         try{
             Statement statement = DBConnection.getConnection().createStatement();
             ResultSet result = statement.executeQuery(allAppointmentsSQL);
             while(result.next()){
+
+
                 appointments.add(createAppointment(result));
             }
         } catch (SQLException e){
@@ -62,9 +66,11 @@ public class AppointmentDataService {
 
     private Appointment createAppointment(final ResultSet entry){
         Appointment appointment = null;
-        try {
-            int id = entry.getInt("appointmentId");
+
+        try{
             int customerId = entry.getInt("customerId");
+
+            int id = entry.getInt("appointmentId");
             int userId = entry.getInt("userId");
             String title = entry.getString("title");
             String description = entry.getString("description");
@@ -72,6 +78,7 @@ public class AppointmentDataService {
             String contact = entry.getString("contact");
             String type = entry.getString("type");
             String url = entry.getString("url");
+            String customerName = entry.getString("customerName");
 
             String startTimeString = entry.getString("start");
             String endTimeString = entry.getString("end");
@@ -105,7 +112,7 @@ public class AppointmentDataService {
 
             appointment = new Appointment(id, customerId, userId, title, description, location, contact, type,
             url, localStartDate.toLocalDateTime(), localEndDate.toLocalDateTime(), localCreateDate.toLocalDateTime(),
-                    createdBy, localUpdateDate.toLocalDateTime(), lastUpdateBy);
+                    createdBy, localUpdateDate.toLocalDateTime(), lastUpdateBy, customerName);
         } catch(SQLException e){
            System.out.println(e.getMessage());
         }

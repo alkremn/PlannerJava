@@ -100,10 +100,9 @@
          <children>
             <TableView fx:id="appointmentTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
                <columns>
-                  <TableColumn fx:id="appTypeColumn" prefWidth="166.0" text="Customer Name" />
+                  <TableColumn fx:id="cusNameColumn" prefWidth="166.0" text="Customer Name" />
                   <TableColumn fx:id="appStartEndTimeColumn" prefWidth="125.0" text="Time" />
                   <TableColumn fx:id="appDateColumn" prefWidth="143.0" text="Date" />
-                  <TableColumn fx:id="appCreateDateColumn" prefWidth="121.0" text="Created On" />
                </columns>
                <GridPane.margin>
                   <Insets bottom="20.0" right="20.0" />
@@ -131,7 +130,7 @@
                      </padding>
                   </Label>
                   <ComboBox fx:id="yearBox" prefWidth="150.0" styleClass="choice-box" />
-                  <Button fx:id="showButton" mnemonicParsing="false" onAction="#showButtonHandler" style="-fx-font-size: 18;" styleClass="utilityButton" text="Show">
+                  <Button mnemonicParsing="false" onAction="#showButtonHandler" style="-fx-font-size: 18;" styleClass="utilityButton" text="Show">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>

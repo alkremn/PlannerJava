@@ -25,9 +25,10 @@ public class Appointment {
     private StringProperty startEndTime;
     private StringProperty startDateString;
     private StringProperty lastUpdateBy;
+    private StringProperty customerName;
 
     public Appointment(int id, int customerId, int userId, String title, String description, String location, String contact, String type, String url,
-                       LocalDateTime start, LocalDateTime end, LocalDateTime createDate, String createBy, LocalDateTime lastUpdateDate, String lastUpdateBy) {
+                       LocalDateTime start, LocalDateTime end, LocalDateTime createDate, String createBy, LocalDateTime lastUpdateDate, String lastUpdateBy, String customerName) {
         this.id = new SimpleIntegerProperty(id);
         this.customerId = new SimpleIntegerProperty(customerId);
         this.userId = new SimpleIntegerProperty(userId);
@@ -45,6 +46,7 @@ public class Appointment {
         this.startEndTime = new SimpleStringProperty(createTimeString());
         this.startDateString = new SimpleStringProperty(createAppDateString());
         this.lastUpdateBy = new SimpleStringProperty(lastUpdateBy);
+        this.customerName = new SimpleStringProperty(customerName);
     }
 
     public int getId() {
@@ -232,6 +234,8 @@ public class Appointment {
     public void setLastUpdateBy(String lastUpdatedBy) {
         this.lastUpdateBy.set(lastUpdatedBy);
     }
+
+    public StringProperty customerNameProperty(){ return customerName; }
 
     private String createTimeString(){
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);

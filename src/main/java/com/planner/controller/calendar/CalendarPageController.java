@@ -4,15 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import main.java.com.planner.MainApp;
+import main.java.com.planner.model.Appointment;
 import main.java.com.planner.model.Day;
 import main.java.com.planner.model.User;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CalendarPageController {
 
@@ -21,25 +22,38 @@ public class CalendarPageController {
     private Button activeDayButton;
     private User user;
     private ObservableList<Day> days = FXCollections.observableArrayList();
-    private ObservableList<Day> currentWeek = FXCollections.observableArrayList();
+    private ObservableList<Appointment> currentAppointments = FXCollections.observableArrayList();
     private ObservableList<String> months = FXCollections.observableArrayList("January", "February", "March",
             "April", "May", "June", "July", "August", "September", "October", "November", "December");
     private ObservableList<String> years = FXCollections.observableArrayList();
 
     @FXML
-    private Label usernameLabel;
+    private Label usernameLabel, selectedMonth, selectedDate;
 
     @FXML
     private ComboBox<String> monthBox, yearBox;
 
     @FXML
+    private TableView<Appointment> appointmentTableView;
+
+    @FXML
+    private TableColumn<Appointment, String> cusNameColumn;
+
+
+    @FXML
+    private TableColumn<Appointment, String> appStartEndTimeColumn;
+
+    @FXML
+    private TableColumn<Appointment, String> appDateColumn;
+
+    @FXML
     private FlowPane dayPane;
 
     @FXML
-    private Button showButton;
-
-    @FXML
     private void initialize(){
+        cusNameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
+        appStartEndTimeColumn.setCellValueFactory(cellData -> cellData.getValue().startEndTimeProperty());
+        appDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateStringProperty());
         BuildCurrentCalendarMonth();
     }
 
@@ -74,6 +88,9 @@ public class CalendarPageController {
         yearBox.getSelectionModel().select(String.valueOf(date.getYear()));
         buildYears(LocalDate.now());
         createCalendar();
+        selectedMonth.setText("This Month");
+        loadAppointmentByDay(LocalDate.now());
+        setSelectedDateLabel(LocalDate.now());
     }
 
     @FXML
@@ -82,19 +99,21 @@ public class CalendarPageController {
         String year = yearBox.getSelectionModel().getSelectedItem();
         if(intMonth > 0 && year != null){
             int intYear = Integer.parseInt(year);
-            BuildCalendar(LocalDate.of(intYear, intMonth, 1));
+            LocalDate selectedDate = LocalDate.of(intYear, intMonth, 1);
+            BuildCalendar(selectedDate);
             createCalendar();
+            setSelectedDateLabel(selectedDate);
         }
     }
 
     @FXML
     private void monthHandler(ActionEvent event){
-        //TODO::
+        selectedMonth.setText("This month");
     }
 
     @FXML
     private void weekHandler(ActionEvent event){
-        //TODO::
+        selectedMonth.setText("This week");
     }
 
     private void BuildCurrentCalendarMonth(){
@@ -149,7 +168,12 @@ public class CalendarPageController {
         }
         activeDayButton = (Button)event.getSource();
         activeDayButton.setStyle("-fx-background-color: #787878;");
-        System.out.println(activeDayButton.getText());
+        int day = Integer.parseInt(activeDayButton.getText());
+        int month = monthBox.getSelectionModel().getSelectedIndex() + 1;
+        int year = Integer.parseInt(yearBox.getSelectionModel().getSelectedItem());
+        LocalDate date = LocalDate.of(year,month,day);
+        loadAppointmentByDay(date);
+        setSelectedDateLabel(date);
     }
 
     private void buildYears(LocalDate targetDate){
@@ -158,6 +182,17 @@ public class CalendarPageController {
         for(int year = lowerBound; year < upperBound; year++){
             years.add(String.valueOf(year));
         }
+    }
+
+    private void setSelectedDateLabel(LocalDate targetDate){
+        String date = String.format("%s, %s", months.get(targetDate.getMonth().getValue() - 1), targetDate.getYear());
+        selectedDate.setText(date);
+    }
+
+    private void loadAppointmentByDay(LocalDate selectedDay){
+        currentAppointments.clear();
+        List<Appointment> selectedApp = mainApp.appointmentList.stream().filter(a -> a.getStart().toLocalDate() == selectedDay).collect(Collectors.toList());
+        currentAppointments.addAll(selectedApp);
     }
 
 }
