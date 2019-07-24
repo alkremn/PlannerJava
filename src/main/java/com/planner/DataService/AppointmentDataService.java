@@ -144,9 +144,17 @@ public class AppointmentDataService {
         ZonedDateTime utcUpdateDate = appUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 
+        ZonedDateTime zonedStartTime = appointment.getStart().atZone(ZoneId.systemDefault());
+        ZonedDateTime utcStartTime = zonedStartTime.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime startTime  = utcStartTime.toLocalDateTime();
+
+        ZonedDateTime zonedEndTime = appointment.getEnd().atZone(ZoneId.systemDefault());
+        ZonedDateTime utcEndTime = zonedEndTime.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime endTime  = utcEndTime.toLocalDateTime();
+
         return String.format("%d, %d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s'",
                 appointment.getCustomerId(),appointment.getUserId(), appointment.getTitle(), appointment.getDescription(),appointment.getLocation(),
-                appointment.getContact(), appointment.getType(), appointment.getUrl(), appointment.getStart(), appointment.getEnd(),
+                appointment.getContact(), appointment.getType(), appointment.getUrl(), startTime.format(formatter), endTime.format(formatter),
                 createDate.format(formatter),appointment.getCreateBy(),
                 updateDate.format(formatter),appointment.getLastUpdateBy());
     }
@@ -156,9 +164,17 @@ public class AppointmentDataService {
         ZonedDateTime utcUpdateDate = appUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
 
+        ZonedDateTime zonedStartTime = appointment.getStart().atZone(ZoneId.systemDefault());
+        ZonedDateTime utcStartTime = zonedStartTime.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime startTime  = utcStartTime.toLocalDateTime();
+
+        ZonedDateTime zonedEndTime = appointment.getEnd().atZone(ZoneId.systemDefault());
+        ZonedDateTime utcEndTime = zonedEndTime.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime endTime  = utcEndTime.toLocalDateTime();
+
         return String.format("title='%s',description='%s',location='%s',contact='%s',type='%s',url='%s',start='%s',end='%s',lastUpdate ='%s',lastUpdateBy ='%s'",
                 appointment.getTitle(), appointment.getDescription(), appointment.getLocation(),
-                appointment.getContact(), appointment.getType(), appointment.getUrl(), appointment.getStart().format(formatter),
-                appointment.getEnd().format(formatter), updateDate.format(formatter), appointment.getLastUpdateBy());
+                appointment.getContact(), appointment.getType(), appointment.getUrl(), startTime.format(formatter),
+                endTime.format(formatter), updateDate.format(formatter), appointment.getLastUpdateBy());
     }
 }
