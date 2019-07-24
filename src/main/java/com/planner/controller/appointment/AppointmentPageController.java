@@ -101,7 +101,7 @@ public class AppointmentPageController {
         if(selectedCustomer == null)
             mainApp.showAlertMessage("No customer selected", "please, select the customer in the table");
         else
-            mainApp.appDetailPageLoad(null, selectedCustomer, user);
+            mainApp.appDetailPageLoad(this,null, selectedCustomer, user);
     }
 
     @FXML
@@ -113,7 +113,7 @@ public class AppointmentPageController {
         } else if (selectedApp == null) {
             mainApp.showAlertMessage("No appointment selected", "please, select the appointment in the table");
         } else{
-            mainApp.appDetailPageLoad(selectedApp, selectedCustomer, user);
+            mainApp.appDetailPageLoad(this, selectedApp, selectedCustomer, user);
         }
 
     }
@@ -163,5 +163,14 @@ public class AppointmentPageController {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    public void updateAppList(){
+        if(selectedCustomer != null) {
+            int customerId = selectedCustomer.getCustomerId();
+            List<Appointment> appointments = mainApp.appointmentList.stream().filter(app -> app.getCustomerId() == customerId).collect(Collectors.toList());
+            customerApps.clear();
+            customerApps.setAll(appointments);
+        }
     }
 }

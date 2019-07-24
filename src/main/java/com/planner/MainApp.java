@@ -47,6 +47,7 @@ public class MainApp extends Application {
     public ObservableList<Appointment> appointmentList;
     private Stage detailsWindow;
     private static Future<Boolean> connection;
+    private AppointmentPageController appController;
     public Future<List<Customer>> customerResult;
     public Future<List<Appointment>> appointmentResult;
 
@@ -180,8 +181,9 @@ public class MainApp extends Application {
         }
    }
 
-   public void appDetailPageLoad(Appointment appointment, Customer selectedCustomer, User user){
-       try{
+   public void appDetailPageLoad(AppointmentPageController appController,Appointment appointment, Customer selectedCustomer, User user){
+       this.appController = appController;
+        try{
            FXMLLoader loader = new FXMLLoader();
            loader.setLocation(getClass().getResource("fxml/AppDetailPage.fxml"));
 
@@ -231,6 +233,8 @@ public class MainApp extends Application {
             }
             appointmentList.clear();
             appointmentList.addAll(appointmentDS.getAllAppointments());
+            if(this.appController != null)
+                this.appController.updateAppList();
         }
     }
 
