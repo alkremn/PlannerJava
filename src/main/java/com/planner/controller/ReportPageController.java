@@ -8,12 +8,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import main.java.com.planner.MainApp;
+import main.java.com.planner.model.Appointment;
 import main.java.com.planner.model.NumAppTypesByMonth;
 import main.java.com.planner.model.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReportPageController {
 
@@ -84,10 +86,22 @@ public class ReportPageController {
     }
 
     private void createFirstReport(){
-        mainApp.appointmentList.forEach(a -> {
-            String month = months.get(a.getStart().getMonth().getValue() - 1);
-            System.out.println(month);
-        });
+
+        for(String month : months){
+            List<Appointment> appList = mainApp.appointmentList.stream()
+                    .filter(a -> a.getStart().getMonth().name().toLowerCase().equals(month.toLowerCase())).collect(Collectors.toList());
+            if(!appList.isEmpty()) calculateData(appList, month);
+        }
+    }
+    private void calculateData(List<Appointment> monthList, String month){
+        NumAppTypesByMonth report = new NumAppTypesByMonth(month);
+        for(Appointment app : monthList){
+            if(app.getType().toLowerCase().equals("scrum"))
+                 report.scrum++;
+            else
+                report.presentation++;
+        }
+        firstReport.add(report);
     }
 
 }

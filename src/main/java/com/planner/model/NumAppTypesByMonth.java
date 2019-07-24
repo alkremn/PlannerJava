@@ -5,11 +5,11 @@ import javafx.beans.property.StringProperty;
 
 public class NumAppTypesByMonth {
     private StringProperty month;
-    private StringProperty data;
+    public int scrum;
+    public int presentation;
 
-    public NumAppTypesByMonth(String month, String data) {
+    public NumAppTypesByMonth(String month) {
         this.month = new SimpleStringProperty(month);
-        this.data = new SimpleStringProperty(data);
     }
 
     public StringProperty monthProperty() {
@@ -17,6 +17,6 @@ public class NumAppTypesByMonth {
     }
 
     public StringProperty dataProperty() {
-        return data;
+        return new SimpleStringProperty(String.format("Scrum:            %d \nPresentation:  %d",scrum, presentation));
     }
 }
