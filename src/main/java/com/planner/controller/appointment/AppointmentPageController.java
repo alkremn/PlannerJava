@@ -95,6 +95,12 @@ public class AppointmentPageController {
             }
         });
     }
+
+    @FXML
+    private void addCustomerHandler(ActionEvent event){
+        mainApp.customerDetailPageLoad(null);
+    }
+
     @FXML
     private void addAppointmentHandler(ActionEvent event){
         Customer selectedCustomer= customerTableView.getSelectionModel().getSelectedItem();

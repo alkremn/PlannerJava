@@ -159,119 +159,50 @@ public class CustomerDataService {
     }
 
     private String getCountryUpdateValueString(final Country country, final DateTimeFormatter formatter){
-        ZonedDateTime countryCreateDate = country.getCreateDate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcCreateDate = countryCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime createDate = utcCreateDate.toLocalDateTime();
-
-        ZonedDateTime countryUpdateDate = country.getLastUpdate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcUpdateDate = countryUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
-
-        return String.format("country = '%s', createDate = '%s', createdBy = '%s', lastUpdate = '%s', lastUpdateBy = '%s'",
-                country.getName(), createDate.format(formatter),country.getCreatedBy(),
-                updateDate.format(formatter),country.getLastUpdateBy());
+        return String.format("country = '%s', lastUpdate = '%s', lastUpdateBy = '%s'",
+                country.getName(), country.getLastUpdate().format(formatter),country.getLastUpdateBy());
     }
 
     private String getCityUpdateValueString(final City city, final DateTimeFormatter formatter) {
-        ZonedDateTime cityCreateDate = city.getCreateDate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcCreateDate = cityCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime createDate = utcCreateDate.toLocalDateTime();
-
-        ZonedDateTime cityUpdateDate = city.getLastUpdate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcUpdateDate = cityUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
-
-        return String.format("city = '%s',createDate = '%s', createdBy = '%s', lastUpdate = '%s', lastUpdateBy = '%s'",
-                city.getName(), createDate.format(formatter), city.getCreatedBy(),
-                updateDate.format(formatter), city.getLastUpdateBy());
+        return String.format("city = '%s',lastUpdate = '%s', lastUpdateBy = '%s'",
+                city.getName(), city.getLastUpdate().format(formatter), city.getLastUpdateBy());
     }
 
     private String getAddressUpdateValueString(final Address address, final DateTimeFormatter formatter) {
-        ZonedDateTime addressCreateDate = address.getCreateDate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcCreateDate = addressCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime createDate = utcCreateDate.toLocalDateTime();
-
-        ZonedDateTime addressUpdateDate = address.getLastUpdate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcUpdateDate = addressUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
-
-        return String.format("address='%s', address2='%s',postalCode='%s',phone='%s',createDate = '%s', createdBy = '%s', lastUpdate = '%s', lastUpdateBy = '%s'",
+        return String.format("address='%s', address2='%s',postalCode='%s',phone='%s', lastUpdate = '%s', lastUpdateBy = '%s'",
                 address.getAddress(), address.getAddress2(), address.getPostalCode(),
-                address.getPhone(), createDate.format(formatter), address.getCreatedBy(),
-                updateDate.format(formatter), address.getLastUpdateBy());
-
+                address.getPhone(), address.getLastUpdate().format(formatter), address.getLastUpdateBy());
     }
 
     private String getCustomerUpdateValueString(final Customer customer, final DateTimeFormatter formatter) {
-        ZonedDateTime customerCreateDate = customer.getCreateDate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcCreateDate = customerCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime createDate = utcCreateDate.toLocalDateTime();
-
-        ZonedDateTime customerUpdateDate = customer.getLastUpdate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcUpdateDate = customerUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
-
-        return String.format("customerName='%s', active=%d, createDate = '%s', createdBy = '%s', lastUpdate = '%s', lastUpdateBy = '%s'",
+        return String.format("customerName='%s', active=%d, lastUpdate = '%s', lastUpdateBy = '%s'",
                 customer.getName(), customer.isActive() ? 1 : 0,
-                createDate.format(formatter), customer.getCreatedBy(),
-                updateDate.format(formatter), customer.getLastUpdateBy());
+                customer.getLastUpdate().format(formatter), customer.getLastUpdateBy());
     }
 
     private String getCustomerValueString(final Customer customer, final DateTimeFormatter formatter){
-        ZonedDateTime customerCreateDate = customer.getCreateDate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcCreateDate = customerCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime createDate = utcCreateDate.toLocalDateTime();
-
-        ZonedDateTime customerUpdateDate = customer.getLastUpdate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcUpdateDate = customerUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
-
         return String.format("'%s', LAST_INSERT_ID(), %d, '%s', '%s', '%s', '%s'",
                 customer.getName(),customer.isActive() ? 1 : 0,
-                createDate.format(formatter),customer.getCreatedBy(),
-                updateDate.format(formatter),customer.getLastUpdateBy());
+                customer.getCreateDate().format(formatter),customer.getCreatedBy(),
+                customer.getLastUpdate().format(formatter),customer.getLastUpdateBy());
     }
 
     private String getAddressValueString(final Address address, final DateTimeFormatter formatter){
-        ZonedDateTime addressCreateDate = address.getCreateDate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcCreateDate = addressCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime createDate = utcCreateDate.toLocalDateTime();
-
-        ZonedDateTime addressUpdateDate = address.getLastUpdate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcUpdateDate = addressUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
-
         return String.format("'%s', '%s', LAST_INSERT_ID(), '%s', '%s', '%s', '%s','%s','%s'",
                 address.getAddress(), address.getAddress2(), address.getPostalCode(),
-                address.getPhone(), createDate.format(formatter),address.getCreatedBy(),
-                updateDate.format(formatter),address.getLastUpdateBy());
+                address.getPhone(), address.getCreateDate().format(formatter),address.getCreatedBy(),
+                address.getLastUpdate().format(formatter),address.getLastUpdateBy());
     }
 
     private String getCityValueString(final City city, final DateTimeFormatter formatter){
-        ZonedDateTime cityCreateDate = city.getCreateDate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcCreateDate = cityCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime createDate = utcCreateDate.toLocalDateTime();
-
-        ZonedDateTime cityUpdateDate = city.getLastUpdate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcUpdateDate = cityUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
-
         return String.format("'%s',LAST_INSERT_ID(),'%s','%s','%s','%s'",city.getName(),
-                createDate.format(formatter),city.getCreatedBy(),
-                updateDate.format(formatter), city.getLastUpdateBy());
+                city.getCreateDate().format(formatter),city.getCreatedBy(),
+                city.getLastUpdate().format(formatter), city.getLastUpdateBy());
     }
 
     private String getCountryValueString(final Country country, final DateTimeFormatter formatter){
-        ZonedDateTime countryCreateDate = country.getCreateDate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcCreateDate = countryCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime createDate = utcCreateDate.toLocalDateTime();
-
-        ZonedDateTime countryUpdateDate = country.getLastUpdate().atZone(ZoneId.systemDefault());
-        ZonedDateTime utcUpdateDate = countryUpdateDate.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime updateDate = utcUpdateDate.toLocalDateTime();
-
         return String.format("'%s', '%s', '%s', '%s', '%s'",
-                    country.getName(), createDate.format(formatter),country.getCreatedBy(),
-                    updateDate.format(formatter),country.getLastUpdateBy());
+                    country.getName(), country.getCreateDate().format(formatter),country.getCreatedBy(),
+                    country.getLastUpdate().format(formatter),country.getLastUpdateBy());
     }
 }
