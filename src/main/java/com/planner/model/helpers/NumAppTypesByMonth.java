@@ -17,6 +17,6 @@ public class NumAppTypesByMonth {
     }
 
     public StringProperty dataProperty() {
-        return new SimpleStringProperty(String.format("Scrum:            %d \nPresentation:  %d",scrum, presentation));
+        return new SimpleStringProperty(String.format("Scrum:            %d \nPresentation:  %d", scrum, presentation));
     }
 }

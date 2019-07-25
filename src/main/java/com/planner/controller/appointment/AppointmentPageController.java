@@ -14,13 +14,11 @@ import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 
 public class AppointmentPageController {
-
     private MainApp mainApp;
     private User user;
     private AppointmentDataService appointmentDS;
@@ -45,7 +43,6 @@ public class AppointmentPageController {
     @FXML
     private TableColumn<Customer, String> createDateColumn;
 
-
     @FXML
     private TableView<Appointment> appointmentTableView;
 
@@ -60,7 +57,6 @@ public class AppointmentPageController {
 
     @FXML
     private TableColumn<Appointment, String> appCreateDateColumn;
-
 
     @FXML
     void initialize() {
@@ -84,9 +80,8 @@ public class AppointmentPageController {
         appDateColumn.setStyle("-fx-alignment: CENTER;");
         appCreateDateColumn.setStyle("-fx-alignment: CENTER;");
 
-
         customerTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 selectedCustomer = newValue;
                 int customerId = selectedCustomer.getCustomerId();
                 List<Appointment> appointments = mainApp.appointmentList.stream().filter(app -> app.getCustomerId() == customerId).collect(Collectors.toList());
@@ -97,41 +92,42 @@ public class AppointmentPageController {
     }
 
     @FXML
-    private void addCustomerHandler(ActionEvent event){
+    private void addCustomerHandler(ActionEvent event) {
         mainApp.customerDetailPageLoad(null);
     }
 
     @FXML
-    private void addAppointmentHandler(ActionEvent event){
-        Customer selectedCustomer= customerTableView.getSelectionModel().getSelectedItem();
-        if(selectedCustomer == null)
+    private void addAppointmentHandler(ActionEvent event) {
+        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null)
             mainApp.showAlertMessage("No customer selected", "please, select the customer in the table");
         else
-            mainApp.appDetailPageLoad(this,null, selectedCustomer, user);
+            mainApp.appDetailPageLoad(this, null, selectedCustomer, user);
     }
 
     @FXML
-    private void modifyAppointmentHandler(ActionEvent event){
+    private void modifyAppointmentHandler(ActionEvent event) {
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
-        Appointment selectedApp= appointmentTableView.getSelectionModel().getSelectedItem();
-        if(selectedCustomer == null) {
+        Appointment selectedApp = appointmentTableView.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
             mainApp.showAlertMessage("No customer selected", "please, select the customer in the table");
         } else if (selectedApp == null) {
             mainApp.showAlertMessage("No appointment selected", "please, select the appointment in the table");
-        } else{
+        } else {
             mainApp.appDetailPageLoad(this, selectedApp, selectedCustomer, user);
         }
 
     }
 
+    //deletes selected appointment
     @FXML
-    private void deleteAppointmentHandler(ActionEvent event){
+    private void deleteAppointmentHandler(ActionEvent event) {
         Appointment selectedApp = appointmentTableView.getSelectionModel().getSelectedItem();
 
-        if (selectedApp == null){
+        if (selectedApp == null) {
             mainApp.showAlertMessage("No appointment selected", "please, select the appointment in the table");
         } else {
-            if(appointmentDS.deleteAppointment(selectedApp)){
+            if (appointmentDS.deleteAppointment(selectedApp)) {
                 customerApps.remove(selectedApp);
                 mainApp.appointmentList.remove(selectedApp);
             }
@@ -139,7 +135,7 @@ public class AppointmentPageController {
     }
 
     @FXML
-    private void customerButtonHandler(ActionEvent event){
+    private void customerButtonHandler(ActionEvent event) {
         mainApp.customersPageLoad();
     }
 
@@ -153,7 +149,7 @@ public class AppointmentPageController {
         mainApp.reportPageLoad();
     }
 
-    public void setData(MainApp mainApp, User user, AppointmentDataService appointmentDS, Future<List<Appointment>> result){
+    public void setData(MainApp mainApp, User user, AppointmentDataService appointmentDS, Future<List<Appointment>> result) {
         this.mainApp = mainApp;
         this.user = user;
         this.appointmentDS = appointmentDS;
@@ -163,8 +159,8 @@ public class AppointmentPageController {
         appointmentTableView.setItems(customerApps);
     }
 
-    public void updateAppList(){
-        if(selectedCustomer != null) {
+    public void updateAppList() {
+        if (selectedCustomer != null) {
             int customerId = selectedCustomer.getCustomerId();
             List<Appointment> appointments = mainApp.appointmentList.stream().filter(app -> app.getCustomerId() == customerId).collect(Collectors.toList());
             customerApps.clear();

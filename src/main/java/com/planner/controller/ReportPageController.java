@@ -57,7 +57,7 @@ public class ReportPageController {
     private TableColumn<CusNumOfApps, String> numAppColumn;
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         //first tableView
         monthColumn.setCellValueFactory(cellData -> cellData.getValue().monthProperty());
         typeColumn.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
@@ -71,13 +71,14 @@ public class ReportPageController {
         numAppColumn.setCellValueFactory(cellData -> cellData.getValue().numberOfAppProperty());
 
 
-        monthColumn.setStyle( "-fx-alignment: CENTER;");
-        typeColumn.setStyle( "-fx-alignment: CENTER;");
+        monthColumn.setStyle("-fx-alignment: CENTER;");
+        typeColumn.setStyle("-fx-alignment: CENTER;");
 
-        consultantColumn.setStyle( "-fx-alignment: CENTER;");
+        consultantColumn.setStyle("-fx-alignment: CENTER;");
+        appTimeColumn.setStyle("-fx-alignment: CENTER;");
 
-        customerNameColumn.setStyle( "-fx-alignment: CENTER;");
-        numAppColumn.setStyle( "-fx-alignment: CENTER;");
+        customerNameColumn.setStyle("-fx-alignment: CENTER;");
+        numAppColumn.setStyle("-fx-alignment: CENTER;");
 
         firstTableView.setItems(firstReport);
         secondTableView.setItems(secondReport);
@@ -85,7 +86,9 @@ public class ReportPageController {
     }
 
     @FXML
-    private void customerButtonHandler(ActionEvent event){ mainApp.customersPageLoad();}
+    private void customerButtonHandler(ActionEvent event) {
+        mainApp.customersPageLoad();
+    }
 
     @FXML
     private void appointmentButtonHandler(ActionEvent event) {
@@ -97,39 +100,38 @@ public class ReportPageController {
         mainApp.calendarPageLoad();
     }
 
-    public void setData(MainApp mainApp, User user, List<User> userList){
+    public void setData(MainApp mainApp, User user, List<User> userList) {
         this.mainApp = mainApp;
-
         this.usernameLabel.setText(user.getUserName());
         createFirstReport();
         createSecondReport(userList);
         createThirdReport();
     }
 
-    private void createFirstReport(){
-
-        for(String month : months){
+    private void createFirstReport() {
+        for (String month : months) {
             List<Appointment> appList = mainApp.appointmentList.stream()
                     .filter(a -> a.getStart().getMonth().name().toLowerCase().equals(month.toLowerCase())).collect(Collectors.toList());
-            if(!appList.isEmpty()) calculateData(appList, month);
+            if (!appList.isEmpty()) calculateData(appList, month);
         }
     }
-    private void calculateData(List<Appointment> monthList, String month){
+
+    private void calculateData(List<Appointment> monthList, String month) {
         NumAppTypesByMonth report = new NumAppTypesByMonth(month);
-        for(Appointment app : monthList){
-            if(app.getType().toLowerCase().equals("scrum"))
-                 report.scrum++;
+        for (Appointment app : monthList) {
+            if (app.getType().toLowerCase().equals("scrum"))
+                report.scrum++;
             else
                 report.presentation++;
         }
         firstReport.add(report);
     }
 
-    private void createSecondReport(List<User> userList){
-        for(User user : userList){
+    private void createSecondReport(List<User> userList) {
+        for (User user : userList) {
             List<Appointment> appList = mainApp.appointmentList.stream()
                     .filter(a -> a.getUserId() == user.getUserId()).collect(Collectors.toList());
-            if(!appList.isEmpty()) createUserTimeData(appList, user.getUserName());
+            if (!appList.isEmpty()) createUserTimeData(appList, user.getUserName());
         }
     }
 
@@ -137,21 +139,21 @@ public class ReportPageController {
         Map<String, List<Appointment>> cusAppDic = new HashMap<>();
         mainApp.appointmentList.forEach(a -> {
             String customerName = a.customerNameProperty().get().toLowerCase();
-            if(cusAppDic.containsKey(customerName))
+            if (cusAppDic.containsKey(customerName))
                 cusAppDic.get(customerName).add(a);
             else
                 cusAppDic.put(customerName, new ArrayList<>(Collections.singletonList(a)));
         });
-        cusAppDic.forEach((key, appList) -> thirdReport.add(new CusNumOfApps(key,appList.size())));
+        cusAppDic.forEach((key, appList) -> thirdReport.add(new CusNumOfApps(key, appList.size())));
     }
 
-    private void createUserTimeData(List<Appointment> appList, String user){
+    private void createUserTimeData(List<Appointment> appList, String user) {
         StringBuilder timeString = new StringBuilder();
-        for(int i = 0; i < appList.size(); i++){
+        int counter = 1;
+        for (int i = 0; i < appList.size(); i++) {
             timeString.append(appList.get(i).startEndTimeProperty().get());
             timeString.append(i == appList.size() - 1 ? "." : ", ");
-            if(i % 2 == 0) timeString.append("\n");
-
+            if (counter++ % 2 == 0) timeString.append("\n");
         }
         secondReport.add(new TimeAppForUser(user, timeString.toString()));
     }

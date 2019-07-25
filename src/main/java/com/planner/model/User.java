@@ -1,7 +1,6 @@
 package main.java.com.planner.model;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 public class User {
     private int userId;

@@ -2,7 +2,6 @@ package main.java.com.planner.model;
 
 import javafx.beans.property.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -53,9 +52,6 @@ public class Appointment {
         return id.get();
     }
 
-    public IntegerProperty idProperty() {
-        return id;
-    }
 
     public void setId(int id) {
         this.id.set(id);
@@ -65,32 +61,14 @@ public class Appointment {
         return customerId.get();
     }
 
-    public IntegerProperty customerIdProperty() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId.set(customerId);
-    }
 
     public int getUserId() {
         return userId.get();
     }
 
-    public IntegerProperty userIdProperty() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId.set(userId);
-    }
 
     public String getTitle() {
         return Title.get();
-    }
-
-    public StringProperty titleProperty() {
-        return Title;
     }
 
     public void setTitle(String title) {
@@ -101,10 +79,6 @@ public class Appointment {
         return description.get();
     }
 
-    public StringProperty descriptionProperty() {
-        return description;
-    }
-
     public void setDescription(String description) {
         this.description.set(description);
     }
@@ -113,20 +87,12 @@ public class Appointment {
         return location.get();
     }
 
-    public StringProperty locationProperty() {
-        return location;
-    }
-
     public void setLocation(String location) {
         this.location.set(location);
     }
 
     public String getContact() {
         return contact.get();
-    }
-
-    public StringProperty contactProperty() {
-        return contact;
     }
 
     public void setContact(String contact) {
@@ -149,10 +115,6 @@ public class Appointment {
         return url.get();
     }
 
-    public StringProperty urlProperty() {
-        return url;
-    }
-
     public void setUrl(String url) {
         this.url.set(url);
     }
@@ -169,10 +131,6 @@ public class Appointment {
         return end.get();
     }
 
-    public ObjectProperty<LocalDateTime> endProperty() {
-        return end;
-    }
-
     public void setEnd(LocalDateTime end) {
         this.end.set(end);
         this.startEndTime.set(createTimeString());
@@ -183,18 +141,19 @@ public class Appointment {
         return createDate.get();
     }
 
-    public StringProperty startEndTimeProperty(){
-       return this.startEndTime;
+    public StringProperty startEndTimeProperty() {
+        return this.startEndTime;
     }
 
-    public StringProperty startDateStringProperty(){
+    public StringProperty startDateStringProperty() {
         return this.startDateString;
     }
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate.set(createDate);
     }
-    public StringProperty createDateProperty(){
+
+    public StringProperty createDateProperty() {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
         return new SimpleStringProperty(createDate.getValue().toLocalDate().format(formatter));
     }
@@ -203,20 +162,8 @@ public class Appointment {
         return createBy.get();
     }
 
-    public StringProperty createByProperty() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy.set(createBy);
-    }
-
     public LocalDateTime getLastUpdateDate() {
         return lastUpdateDate.get();
-    }
-
-    public ObjectProperty<LocalDateTime> lastUpdateDateProperty() {
-        return lastUpdateDate;
     }
 
     public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
@@ -227,30 +174,23 @@ public class Appointment {
         return lastUpdateBy.get();
     }
 
-    public StringProperty lastUpdateByProperty() {
-        return lastUpdateBy;
-    }
-
     public void setLastUpdateBy(String lastUpdatedBy) {
         this.lastUpdateBy.set(lastUpdatedBy);
     }
 
-    public StringProperty customerNameProperty(){ return customerName; }
+    public StringProperty customerNameProperty() {
+        return customerName;
+    }
 
-    private String createTimeString(){
+    private String createTimeString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
         String startTime = this.start.getValue().format(formatter);
         String endTime = this.end.getValue().format(formatter);
         return startTime + "-" + endTime;
     }
 
-    private String createAppDateString(){
+    private String createAppDateString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
         return start.getValue().format(formatter);
     }
-    private String createDateString(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
-        return createDate.getValue().format(formatter);
-    }
-
 }

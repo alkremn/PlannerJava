@@ -46,7 +46,6 @@ public class CustomerDetailController {
     //default constructor
     public CustomerDetailController(){}
 
-
     @FXML
     private void selectionChangedHandler(ActionEvent event){
         isCountryValid = true;
@@ -150,6 +149,7 @@ public class CustomerDetailController {
         saveButton.setDisable(false);
     }
 
+    //creates customer object
     private Customer createCustomer(boolean isExisting) {
         LocalDateTime currentDate = LocalDateTime.now(ZoneId.of("UTC"));
         if (!isExisting) {

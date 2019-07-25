@@ -76,13 +76,10 @@ public class CustomerPageController {
     @FXML
     private void deleteCustomerHandler(ActionEvent event){
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
-        if(selectedCustomer != null) {
-
-            if(customerDS.deleteCustomer(selectedCustomer))
-                mainApp.customerList.remove(selectedCustomer);
-        } else{
+        if(selectedCustomer != null)
+            mainApp.deleteCustomer(selectedCustomer);
+        else
             mainApp.showAlertMessage("No customer selected", "please, select the customer in the table");
-        }
     }
 
     @FXML

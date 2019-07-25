@@ -25,23 +25,26 @@ import main.java.com.planner.model.Customer;
 import main.java.com.planner.model.User;
 
 import java.io.IOException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 public class MainApp extends Application {
 
     private static Stage window;
     private final String FXML = "fxml/";
     private final String CSS_PATH = "resources/css/style.css";
-    private final String CUSTOMER_PAGE= "CustomerPage.fxml";
-    private final String LOGIN_PAGE= "LoginPage.fxml";
+    private final String CUSTOMER_PAGE = "CustomerPage.fxml";
+    private final String LOGIN_PAGE = "LoginPage.fxml";
     private final String APPOINTMENT_PAGE = "AppointmentPage.fxml";
     private final String CALENDAR_PAGE = "CalendarPage.fxml";
     private final String REPORT_PAGE = "ReportPage.fxml";
     private final String ICON_PATH = "resources/favicon.jpg";
+    private boolean isReminded = false;
     private Stage detailsWindow;
     private AppointmentPageController appController;
     private AuthenticationDataService authDS;
@@ -52,36 +55,37 @@ public class MainApp extends Application {
     private Future<List<Customer>> customerResult;
     private Future<List<Appointment>> appointmentResult;
     private List<User> userList;
+    public ResourceBundle bundle;
     public ObservableList<Customer> customerList;
     public ObservableList<Appointment> appointmentList;
 
-
     public static User user = new User.UserBuilder(1).username("test").password("test").active(true)
-            .createDate(ZonedDateTime.now(ZoneId.systemDefault())).createdBy("Alex").lastUpdate(ZonedDateTime.now(ZoneId.systemDefault())).LastUpdateBy("Alex").build();
+            .createDate(ZonedDateTime.now(ZoneId.systemDefault())).createdBy("Alex")
+            .lastUpdate(ZonedDateTime.now(ZoneId.systemDefault())).LastUpdateBy("Alex").build();
 
 
     public static void main(String[] args) {
-
         service = Executors.newSingleThreadExecutor();
         service.submit(DBConnection::makeConnection);
         launch(args);
         DBConnection.closeConnection();
-        if(!service.isTerminated()) service.shutdown();
+        if (!service.isTerminated()) service.shutdown();
     }
 
     @Override
     public void start(Stage primaryStage) {
+        bundle = ResourceBundle.getBundle("LoginBundle", Locale.getDefault());
         window = primaryStage;
         window.setTitle("Planner");
         window.getIcons().add(new Image(getClass().getResourceAsStream(ICON_PATH)));
         window.setResizable(false);
         initData();
-
         loginPageLoad();
         window.show();
     }
 
-    private void initData(){
+    //initializes the data
+    private void initData() {
         authDS = new AuthenticationDataService();
         customerDS = new CustomerDataService();
         appointmentDS = new AppointmentDataService();
@@ -92,9 +96,9 @@ public class MainApp extends Application {
         customerResult = service.submit(customerDS::getAllCustomers);
         appointmentResult = service.submit(appointmentDS::getAllAppointments);
         service.shutdown();
-        new Thread(()-> {
+        new Thread(() -> {
             boolean isDone = false;
-            while(!isDone){
+            while (!isDone) {
                 isDone = service.isTerminated();
             }
             try {
@@ -111,7 +115,6 @@ public class MainApp extends Application {
     }
 
     private void loginPageLoad() {
-
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(FXML + LOGIN_PAGE));
@@ -120,27 +123,29 @@ public class MainApp extends Application {
             LoginPageController loginController = loader.getController();
             loginController.setData(this, userList);
             window.setScene(scene);
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    public void customersPageLoad(){
-       try {
+    public void customersPageLoad() {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML + CUSTOMER_PAGE));
             Scene scene = new Scene(loader.load());
             scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
             CustomerPageController customerController = loader.getController();
             customerController.setData(this, user, customerDS);
             window.setScene(scene);
-
-       } catch (IOException e){
+            if (!isReminded) {
+                checkReminder();
+                isReminded = true;
+            }
+        } catch (IOException e) {
             e.printStackTrace();
-       }
+        }
     }
 
-    public void appointmentPageLoad(){
+    public void appointmentPageLoad() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML + APPOINTMENT_PAGE));
             Scene scene = new Scene(loader.load());
@@ -148,13 +153,12 @@ public class MainApp extends Application {
             AppointmentPageController appointmentController = loader.getController();
             appointmentController.setData(this, user, appointmentDS, appointmentResult);
             window.setScene(scene);
-
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void calendarPageLoad(){
+    public void calendarPageLoad() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML + CALENDAR_PAGE));
             Scene scene = new Scene(loader.load());
@@ -162,12 +166,12 @@ public class MainApp extends Application {
             CalendarPageController appointmentController = loader.getController();
             appointmentController.setData(this, user, appointmentResult);
             window.setScene(scene);
-
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void reportPageLoad(){
+
+    public void reportPageLoad() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML + REPORT_PAGE));
             Scene scene = new Scene(loader.load());
@@ -175,14 +179,13 @@ public class MainApp extends Application {
             ReportPageController reportController = loader.getController();
             reportController.setData(this, user, userList);
             window.setScene(scene);
-
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void customerDetailPageLoad(Customer customer){
-         try{
+    public void customerDetailPageLoad(Customer customer) {
+        try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("fxml/CustomerDetailPage.fxml"));
 
@@ -199,43 +202,41 @@ public class MainApp extends Application {
             Parent root = loader.getRoot();
             root.requestFocus();
             detailsWindow.showAndWait();
-
         } catch (
-        IOException e){
+                IOException e) {
             e.printStackTrace();
         }
-   }
+    }
 
-   public void appDetailPageLoad(AppointmentPageController appController,Appointment appointment, Customer selectedCustomer, User user){
-       this.appController = appController;
-        try{
-           FXMLLoader loader = new FXMLLoader();
-           loader.setLocation(getClass().getResource("fxml/AppDetailPage.fxml"));
+    public void appDetailPageLoad(AppointmentPageController appController, Appointment appointment, Customer selectedCustomer, User user) {
+        this.appController = appController;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("fxml/AppDetailPage.fxml"));
 
-           detailsWindow = new Stage();
-           detailsWindow.initModality(Modality.APPLICATION_MODAL);
+            detailsWindow = new Stage();
+            detailsWindow.initModality(Modality.APPLICATION_MODAL);
 
-           Scene scene = new Scene(loader.load());
-           scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
-           detailsWindow.setScene(scene);
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
+            detailsWindow.setScene(scene);
 
-           AppDetailController appDetailController = loader.getController();
-           appDetailController.setData(this, appointment, selectedCustomer, user);
+            AppDetailController appDetailController = loader.getController();
+            appDetailController.setData(this, appointment, selectedCustomer, user);
 
-           Parent root = loader.getRoot();
-           root.requestFocus();
-           detailsWindow.showAndWait();
+            Parent root = loader.getRoot();
+            root.requestFocus();
+            detailsWindow.showAndWait();
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-       } catch (
-               IOException e){
-           e.printStackTrace();
-       }
-   }
-    public void saveCustomer(Customer customer, boolean isExisting){
-        if(detailsWindow != null)
+    public void saveCustomer(Customer customer, boolean isExisting) {
+        if (detailsWindow != null)
             detailsWindow.close();
-
-        if(customer != null) {
+        if (customer != null) {
             if (isExisting) {
                 customerDS.updateCustomer(customer);
             } else {
@@ -246,11 +247,22 @@ public class MainApp extends Application {
         }
     }
 
-    public void saveAppointment(Appointment appointment, boolean isExisting){
-        if(detailsWindow != null)
-            detailsWindow.close();
+    public void deleteCustomer(Customer selectedCustomer) {
+        if (selectedCustomer == null)
+            return;
+        List<Appointment> foundApp = appointmentList.stream().filter(app -> app.getCustomerId() == selectedCustomer.getCustomerId()).collect(Collectors.toList());
+        if (!foundApp.isEmpty()) {
+            foundApp.forEach(app -> appointmentDS.deleteAppointment(app));
+            appointmentList.removeAll(foundApp);
+        }
+        customerDS.deleteCustomer(selectedCustomer);
+        customerList.remove(selectedCustomer);
+    }
 
-        if(appointment != null) {
+    public void saveAppointment(Appointment appointment, boolean isExisting) {
+        if (detailsWindow != null)
+            detailsWindow.close();
+        if (appointment != null) {
             if (isExisting) {
                 appointmentDS.updateAppointment(appointment);
             } else {
@@ -258,17 +270,37 @@ public class MainApp extends Application {
             }
             appointmentList.clear();
             appointmentList.addAll(appointmentDS.getAllAppointments());
-            if(this.appController != null)
+            if (this.appController != null)
                 this.appController.updateAppList();
         }
     }
 
-    public void showAlertMessage(final String header, final String message){
+    public void showAlertMessage(final String header, final String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Selection Warning");
         alert.setHeaderText(header);
         alert.setContentText(message);
         alert.initModality(Modality.APPLICATION_MODAL);
         alert.showAndWait();
+    }
+
+    //Checks appointments start time in next 15 mins
+    private void checkReminder() {
+        if (appointmentList.size() == 0)
+            return;
+        LocalDateTime currentUTCTime = LocalDateTime.now();
+        StringBuilder sb = new StringBuilder();
+        appointmentList.forEach(app -> {   // for each appointment it checks of the start time in less then 15 minutes
+            LocalDate appLocalDate = app.getStart().toLocalDate();
+            if (currentUTCTime.toLocalDate().equals(appLocalDate)) {
+                Duration timeUntilApp = Duration.between(currentUTCTime.toLocalTime(), app.getStart().toLocalTime());
+                if (timeUntilApp.getSeconds() >= 0 && timeUntilApp.getSeconds() < 900) {
+                    sb.append(String.format("You have a meeting with %s at %s\n", app.customerNameProperty().get(),
+                            app.getStart().toLocalTime()));
+                }
+            }
+        });
+        if (sb.length() > 0)
+            showAlertMessage("Reminder", sb.toString());
     }
 }

@@ -12,62 +12,59 @@ import java.util.List;
 
 public class AppointmentDataService {
 
-    public List<Appointment> getAllAppointments(){
+    //gets all appointments from database
+    public List<Appointment> getAllAppointments() {
         List<Appointment> appointments = new ArrayList<>();
         String allAppointmentsSQL = "SELECT appointment.appointmentId, appointment.customerId, appointment.userId, appointment.title, appointment.description, \n" +
-                "                appointment.location, appointment.contact, appointment.type, appointment.url, appointment.start, appointment.end, \n" +
-                "                appointment.createDate, appointment.createdBy, appointment.lastUpdate, appointment.lastUpdateBy, customer.customerName FROM appointment\n" +
-                "                LEFT JOIN customer ON customer.customerid = appointment.customerid;";
-        try{
+                "appointment.location, appointment.contact, appointment.type, appointment.url, appointment.start, appointment.end, \n" +
+                "appointment.createDate, appointment.createdBy, appointment.lastUpdate, appointment.lastUpdateBy, customer.customerName FROM appointment\n" +
+                "LEFT JOIN customer ON customer.customerid = appointment.customerid;";
+        try {
             Statement statement = DBConnection.getConnection().createStatement();
             ResultSet result = statement.executeQuery(allAppointmentsSQL);
-            while(result.next()){
-
-
+            while (result.next()) {
                 appointments.add(createAppointment(result));
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return appointments;
     }
 
-    public boolean addAppointment(Appointment appointment){
+    //adds Appointment to appointment table
+    public boolean addAppointment(Appointment appointment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
         String appointmentValues = getAppValueString(appointment, formatter);
-
-        String appointmentSQL = String.format("INSERT INTO appointment(%s) VALUES(%s)",SQLStrings.appointmentTableValues,appointmentValues);
-
+        String appointmentSQL = String.format("INSERT INTO appointment(%s) VALUES(%s)", SQLStrings.appointmentTableValues, appointmentValues);
         int result = 0;
-        try{
+        try {
             Statement statement = DBConnection.getConnection().createStatement();
             result = statement.executeUpdate(appointmentSQL);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        if(result > 0) System.out.println("Appointment Added!!!");
         return result > 0;
     }
 
-    public boolean deleteAppointment(Appointment appointment){
-        String appSQL = String.format("DELETE FROM appointment WHERE appointmentId = %d;",appointment.getId());
+    //deletes appointment from database
+    public boolean deleteAppointment(Appointment appointment) {
+        String appSQL = String.format("DELETE FROM appointment WHERE appointmentId = %d;", appointment.getId());
         int result = 0;
 
-        try{
+        try {
             Statement statement = DBConnection.getConnection().createStatement();
             result = statement.executeUpdate(appSQL);
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return result > 0;
     }
 
-
-    private Appointment createAppointment(final ResultSet entry){
+    //Creates Appointment class from result set
+    private Appointment createAppointment(final ResultSet entry) {
         Appointment appointment = null;
 
-        try{
+        try {
             int customerId = entry.getInt("customerId");
 
             int id = entry.getInt("appointmentId");
@@ -94,7 +91,6 @@ public class AppointmentDataService {
             ZonedDateTime localStartDate = zonedUTCStartDateTime.withZoneSameInstant(ZoneId.systemDefault());
             ZonedDateTime localEndDate = zonedUTCEndDateTime.withZoneSameInstant(ZoneId.systemDefault());
 
-
             String createdBy = entry.getString("createdBy");
             String lastUpdateBy = entry.getString("lastUpdateBy");
 
@@ -111,31 +107,32 @@ public class AppointmentDataService {
             ZonedDateTime localUpdateDate = zonedUTCUpdateDateTime.withZoneSameInstant(ZoneId.systemDefault());
 
             appointment = new Appointment(id, customerId, userId, title, description, location, contact, type,
-            url, localStartDate.toLocalDateTime(), localEndDate.toLocalDateTime(), localCreateDate.toLocalDateTime(),
+                    url, localStartDate.toLocalDateTime(), localEndDate.toLocalDateTime(), localCreateDate.toLocalDateTime(),
                     createdBy, localUpdateDate.toLocalDateTime(), lastUpdateBy, customerName);
-        } catch(SQLException e){
-           System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
         return appointment;
     }
 
-    public boolean updateAppointment(Appointment appointment){
+    //updates appointment in database
+    public boolean updateAppointment(Appointment appointment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String appUpdateValues = getAppUpdateValueString(appointment, formatter);
-        String updateAppSQL = String.format("UPDATE appointment SET %s WHERE appointmentId = %s;",appUpdateValues, appointment.getId());
+        String updateAppSQL = String.format("UPDATE appointment SET %s WHERE appointmentId = %s;", appUpdateValues, appointment.getId());
         int result = 0;
-        try{
+        try {
             Statement statement = DBConnection.getConnection().createStatement();
             result = statement.executeUpdate(updateAppSQL);
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return result > 0;
     }
 
-
-    private String getAppValueString(Appointment appointment, DateTimeFormatter formatter){
+    //Creates String from sql values
+    private String getAppValueString(Appointment appointment, DateTimeFormatter formatter) {
         ZonedDateTime appCreateDate = appointment.getCreateDate().atZone(ZoneId.systemDefault());
         ZonedDateTime utcCreateDate = appCreateDate.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime createDate = utcCreateDate.toLocalDateTime();
@@ -146,17 +143,17 @@ public class AppointmentDataService {
 
         ZonedDateTime zonedStartTime = appointment.getStart().atZone(ZoneId.systemDefault());
         ZonedDateTime utcStartTime = zonedStartTime.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime startTime  = utcStartTime.toLocalDateTime();
+        LocalDateTime startTime = utcStartTime.toLocalDateTime();
 
         ZonedDateTime zonedEndTime = appointment.getEnd().atZone(ZoneId.systemDefault());
         ZonedDateTime utcEndTime = zonedEndTime.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime endTime  = utcEndTime.toLocalDateTime();
+        LocalDateTime endTime = utcEndTime.toLocalDateTime();
 
         return String.format("%d, %d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s'",
-                appointment.getCustomerId(),appointment.getUserId(), appointment.getTitle(), appointment.getDescription(),appointment.getLocation(),
+                appointment.getCustomerId(), appointment.getUserId(), appointment.getTitle(), appointment.getDescription(), appointment.getLocation(),
                 appointment.getContact(), appointment.getType(), appointment.getUrl(), startTime.format(formatter), endTime.format(formatter),
-                createDate.format(formatter),appointment.getCreateBy(),
-                updateDate.format(formatter),appointment.getLastUpdateBy());
+                createDate.format(formatter), appointment.getCreateBy(),
+                updateDate.format(formatter), appointment.getLastUpdateBy());
     }
 
     private String getAppUpdateValueString(Appointment appointment, DateTimeFormatter formatter) {
@@ -166,11 +163,11 @@ public class AppointmentDataService {
 
         ZonedDateTime zonedStartTime = appointment.getStart().atZone(ZoneId.systemDefault());
         ZonedDateTime utcStartTime = zonedStartTime.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime startTime  = utcStartTime.toLocalDateTime();
+        LocalDateTime startTime = utcStartTime.toLocalDateTime();
 
         ZonedDateTime zonedEndTime = appointment.getEnd().atZone(ZoneId.systemDefault());
         ZonedDateTime utcEndTime = zonedEndTime.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime endTime  = utcEndTime.toLocalDateTime();
+        LocalDateTime endTime = utcEndTime.toLocalDateTime();
 
         return String.format("title='%s',description='%s',location='%s',contact='%s',type='%s',url='%s',start='%s',end='%s',lastUpdate ='%s',lastUpdateBy ='%s'",
                 appointment.getTitle(), appointment.getDescription(), appointment.getLocation(),

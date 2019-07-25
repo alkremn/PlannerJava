@@ -10,15 +10,11 @@ import main.java.com.planner.MainApp;
 import main.java.com.planner.model.Appointment;
 import main.java.com.planner.model.Day;
 import main.java.com.planner.model.User;
-import sun.java2d.cmm.lcms.LcmsServiceProvider;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class CalendarPageController {
@@ -28,7 +24,6 @@ public class CalendarPageController {
     private Button activeDayButton;
     private ObservableList<Day> days = FXCollections.observableArrayList();
     private ObservableList<Appointment> currentAppointments = FXCollections.observableArrayList();
-    private ObservableList<Day> currentWeek = FXCollections.observableArrayList();
     private ObservableList<String> months = FXCollections.observableArrayList("January", "February", "March",
             "April", "May", "June", "July", "August", "September", "October", "November", "December");
     private ObservableList<String> years = FXCollections.observableArrayList();
@@ -56,21 +51,21 @@ public class CalendarPageController {
     private FlowPane dayPane;
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         cusNameColumn.setCellValueFactory(cellData -> cellData.getValue().customerNameProperty());
         appStartEndTimeColumn.setCellValueFactory(cellData -> cellData.getValue().startEndTimeProperty());
         appDateColumn.setCellValueFactory(cellData -> cellData.getValue().startDateStringProperty());
 
-        cusNameColumn.setStyle( "-fx-alignment: CENTER;");
-        appStartEndTimeColumn.setStyle( "-fx-alignment: CENTER;");
-        appDateColumn.setStyle( "-fx-alignment: CENTER;");
+        cusNameColumn.setStyle("-fx-alignment: CENTER;");
+        appStartEndTimeColumn.setStyle("-fx-alignment: CENTER;");
+        appDateColumn.setStyle("-fx-alignment: CENTER;");
 
         BuildCurrentCalendarMonth();
         appointmentTableView.setItems(currentAppointments);
     }
 
     @FXML
-    private void customerButtonHandler(ActionEvent event){
+    private void customerButtonHandler(ActionEvent event) {
         mainApp.customersPageLoad();
     }
 
@@ -80,11 +75,11 @@ public class CalendarPageController {
     }
 
     @FXML
-    private void reportButtonHandler(ActionEvent actionEvent) {
+    private void reportButtonHandler(ActionEvent Event) {
         mainApp.reportPageLoad();
     }
 
-    public void setData(MainApp mainApp, User user, Future<List<Appointment>> result){
+    public void setData(MainApp mainApp, User user, Future<List<Appointment>> result) {
         this.mainApp = mainApp;
         this.usernameLabel.setText(user.getUserName());
         this.monthBox.setItems(months);
@@ -99,10 +94,10 @@ public class CalendarPageController {
     }
 
     @FXML
-    private void showButtonHandler(ActionEvent event){
+    private void showButtonHandler(ActionEvent event) {
         int intMonth = monthBox.getSelectionModel().getSelectedIndex() + 1;
         String year = yearBox.getSelectionModel().getSelectedItem();
-        if(intMonth > 0 && year != null){
+        if (intMonth > 0 && year != null) {
             int intYear = Integer.parseInt(year);
             LocalDate selectedDate = LocalDate.of(intYear, intMonth, 1);
             BuildCalendar(selectedDate);
@@ -112,7 +107,7 @@ public class CalendarPageController {
     }
 
     @FXML
-    private void monthHandler(ActionEvent event){
+    private void monthHandler(ActionEvent event) {
         selectedMonth.setText("This month");
         LocalDate date = LocalDate.now();
         monthBox.getSelectionModel().select(date.getMonth().getValue() - 1);
@@ -122,7 +117,7 @@ public class CalendarPageController {
     }
 
     @FXML
-    private void weekHandler(ActionEvent event){
+    private void weekHandler(ActionEvent event) {
         selectedMonth.setText("This week");
         LocalDate date = LocalDate.now();
         monthBox.getSelectionModel().select(date.getMonth().getValue() - 1);
@@ -131,7 +126,7 @@ public class CalendarPageController {
         loadAppointmentByWeek();
     }
 
-    private void BuildCurrentCalendarMonth(){
+    private void BuildCurrentCalendarMonth() {
         BuildCalendar(LocalDate.now());
     }
 
@@ -142,7 +137,7 @@ public class CalendarPageController {
         int offset = d.getDayOfWeek().getValue();
         if (offset != 7) d = d.plusDays(-offset);
 
-        for(int i = 1; i < 42; i++){
+        for (int i = 1; i < 42; i++) {
             Day day = new Day(d, (targetDate.getMonth() == d.getMonth()), (d.equals(LocalDate.now())));
             days.add(day);
             d = d.plusDays(1);
@@ -150,67 +145,68 @@ public class CalendarPageController {
         createCalendar();
     }
 
-    private void createCalendar(){
+    private void createCalendar() {
         dayPane.getChildren().clear();
-        for(Day d : days){
+        for (Day d : days) {
             Button button = new Button(String.valueOf(d.getDate().getDayOfMonth()));
             button.getStyleClass().add("calendarDayButton");
             button.onActionProperty().setValue(this::dayButtonHandler);
-            if(d.isTargetMonth()){
+            if (d.isTargetMonth()) {
                 button.setStyle("-fx-text-fill: #787878");
                 button.setId("targetMonth");
-            }
-            else{
+            } else {
                 button.setDisable(true);
             }
-            if(d.isToday()){
+            if (d.isToday()) {
                 button.setStyle("-fx-background-color: #458fbb");
                 button.setId(button.getId() + "today");
             }
             dayPane.getChildren().add(button);
         }
     }
-    private void dayButtonHandler(ActionEvent event){
-        if(activeDayButton != null){
+
+    private void dayButtonHandler(ActionEvent event) {
+        if (activeDayButton != null) {
             activeDayButton.setStyle("-fx-background-color: transparent");
-            if(activeDayButton.getId() != null){
-                if(activeDayButton.getId().equals("targetMonth")){
+            if (activeDayButton.getId() != null) {
+                if (activeDayButton.getId().equals("targetMonth")) {
                     activeDayButton.setStyle("-fx-text-fill: #787878");
-                }else{
+                } else {
                     activeDayButton.setStyle("-fx-background-color: #458fbb");
                 }
             }
         }
-        activeDayButton = (Button)event.getSource();
+        activeDayButton = (Button) event.getSource();
         activeDayButton.setStyle("-fx-background-color: #787878;");
         int day = Integer.parseInt(activeDayButton.getText());
         int month = monthBox.getSelectionModel().getSelectedIndex() + 1;
         int year = Integer.parseInt(yearBox.getSelectionModel().getSelectedItem());
-        LocalDate date = LocalDate.of(year,month,day);
+        LocalDate date = LocalDate.of(year, month, day);
         loadAppointmentByDay(date);
         setSelectedDateLabel(date);
     }
 
-    private void buildYears(LocalDate targetDate){
+    private void buildYears(LocalDate targetDate) {
         int lowerBound = targetDate.getYear() - YEAR_PERIOD;
         int upperBound = targetDate.getYear() + YEAR_PERIOD;
-        for(int year = lowerBound; year < upperBound; year++){
+        for (int year = lowerBound; year < upperBound; year++) {
             years.add(String.valueOf(year));
         }
     }
 
-    private void setSelectedDateLabel(LocalDate targetDate){
+    private void setSelectedDateLabel(LocalDate targetDate) {
         String date = String.format("%s, %s", months.get(targetDate.getMonth().getValue() - 1), targetDate.getYear());
         selectedDate.setText(date);
     }
 
-    private void loadAppointmentByDay(LocalDate selectedDay){
+    private void loadAppointmentByDay(LocalDate selectedDay) {
         currentAppointments.clear();
         List<Appointment> selectedApp = mainApp.appointmentList.stream()
                 .filter(a -> a.getStart().toLocalDate().equals(selectedDay)).collect(Collectors.toList());
         currentAppointments.addAll(selectedApp);
     }
-    private void loadAppointmentByMonth(LocalDate selectedMonth){
+
+    private void loadAppointmentByMonth(LocalDate selectedMonth) {
         currentAppointments.clear();
         List<Appointment> selectedApp = mainApp.appointmentList.stream()
                 .filter(a -> a.getStart().toLocalDate().getMonth().equals(selectedMonth.getMonth()) &&
@@ -218,15 +214,15 @@ public class CalendarPageController {
         currentAppointments.addAll(selectedApp);
     }
 
-    private void loadAppointmentByWeek(){
-        LocalDate currentWeeDay  = LocalDate.now().plusDays(-1 * LocalDate.now().getDayOfWeek().getValue());
+    private void loadAppointmentByWeek() {
+        LocalDate currentWeeDay = LocalDate.now().plusDays(-1 * LocalDate.now().getDayOfWeek().getValue());
         List<LocalDate> week = new ArrayList<>();
-        for(int i = 0; i < 7; i++){
+        for (int i = 0; i < 7; i++) {
             week.add(currentWeeDay.plusDays(i));
         }
         currentAppointments.clear();
 
-        for(LocalDate day : week){
+        for (LocalDate day : week) {
             List<Appointment> selectedApp = mainApp.appointmentList.stream()
                     .filter(a -> a.getStart().toLocalDate().equals(day)).collect(Collectors.toList());
             currentAppointments.addAll(selectedApp);

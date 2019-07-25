@@ -1,7 +1,6 @@
 package main.java.com.planner.model;
+
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
 
 public class Country {
     private int countryId;
@@ -24,10 +23,6 @@ public class Country {
         return countryId;
     }
 
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
-    }
-
     public String getName() {
         return name;
     }
@@ -46,10 +41,6 @@ public class Country {
 
     public String getCreatedBy() {
         return CreatedBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        CreatedBy = createdBy;
     }
 
     public LocalDateTime getLastUpdate() {

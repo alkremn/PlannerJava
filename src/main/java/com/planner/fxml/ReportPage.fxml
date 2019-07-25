@@ -13,140 +13,158 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.ReportPageController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.3333740234375" minWidth="10.0" prefWidth="211.33334350585938" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1156.3333129882812" minWidth="10.0" prefWidth="910.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1145.3333129882812" minWidth="10.0" prefWidth="282.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="712.6666717529297" minHeight="10.0" prefHeight="712.6666717529297" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
-   <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" styleClass="plannerLabel" text="Planner">
-         <GridPane.margin>
-            <Insets left="40.0" />
-         </GridPane.margin>
-      </Label>
-      <HBox alignment="CENTER" prefHeight="97.0" prefWidth="369.0" GridPane.columnIndex="2">
-         <children>
-            <Label style="-fx-text-fill: #0E4F79;" text="Welcome">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Label>
-            <Label fx:id="usernameLabel" text="User">
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #0E4F79;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2">
-         <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#customerButtonHandler" styleClass="mainButton" text="Customers">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#appointmentButtonHandler" styleClass="mainButton" text="Appointments">
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#calendarButtonHandler" styleClass="mainButton" text="Calendar">
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
-            </Button>
-            <Button mnemonicParsing="false" styleClass="mainButton" text="Report">
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
-            </Button>
-         </children>
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-         <padding>
-            <Insets top="20.0" />
-         </padding>
-      </VBox>
-      <GridPane alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="10.0" prefWidth="10.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="10.0" prefWidth="384.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="0.0" prefWidth="10.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="384.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="10.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="384.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="10.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="256.0" minHeight="-Infinity" prefHeight="52.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="256.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="778.3333358764648" minHeight="10.0" prefHeight="741.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label styleClass="secondLabel" text="Reports" GridPane.columnIndex="1">
-               <padding>
-                  <Insets left="30.0" />
-               </padding>
-            </Label>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;" GridPane.columnIndex="5" GridPane.rowIndex="1">
-               <center>
-                  <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Number of Appointments per Customer" BorderPane.alignment="CENTER" />
-               </center>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </BorderPane>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <center>
-                  <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Number of Appointment Types by Month" BorderPane.alignment="CENTER" />
-               </center>
-            </BorderPane>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;" GridPane.columnIndex="3" GridPane.rowIndex="1">
-               <center>
-                  <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;" text="Consultant Schedule" BorderPane.alignment="CENTER" />
-               </center>
-            </BorderPane>
-            <TableView fx:id="firstTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-              <columns>
-                <TableColumn fx:id="monthColumn" prefWidth="192.0" text="Month" />
-                <TableColumn fx:id="typeColumn" prefWidth="192.0" text="Data" />
-              </columns>
-               <GridPane.margin>
-                  <Insets bottom="20.0" />
-               </GridPane.margin>
-            </TableView>
-            <TableView fx:id="secondTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-              <columns>
-                <TableColumn fx:id="consultantColumn" prefWidth="110.66668701171875" text="Consultant" />
-                <TableColumn fx:id="appTimeColumn" prefWidth="273.33331298828125" text="Appointment time"/>
-              </columns>
-               <GridPane.margin>
-                  <Insets bottom="20.0" />
-               </GridPane.margin>
-            </TableView>
-            <TableView fx:id="thirdTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
-              <columns>
-                <TableColumn fx:id="customerNameColumn" prefWidth="192.0" text="Customer Name" />
-                <TableColumn fx:id="numAppColumn" prefWidth="192.0" text="Number of Appointments" />
-              </columns>
-               <GridPane.margin>
-                  <Insets bottom="20.0" />
-               </GridPane.margin>
-            </TableView>
-         </children>
-      </GridPane>
-   </children>
+<GridPane fx:id="gridPane" style="-fx-background-color: #fff;" styleClass="mainPage"
+          stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8.0.1"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.planner.controller.ReportPageController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="693.3333740234375" minWidth="10.0"
+                           prefWidth="211.33334350585938"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1156.3333129882812" minWidth="10.0" prefWidth="910.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1145.3333129882812" minWidth="10.0" prefWidth="282.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="712.6666717529297" minHeight="10.0" prefHeight="712.6666717529297"
+                        vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <children>
+        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="plannerLabel" text="Planner">
+            <GridPane.margin>
+                <Insets left="40.0"/>
+            </GridPane.margin>
+        </Label>
+        <HBox alignment="CENTER" prefHeight="97.0" prefWidth="369.0" GridPane.columnIndex="2">
+            <children>
+                <Label style="-fx-text-fill: #0E4F79;" text="Welcome">
+                    <font>
+                        <Font size="21.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="usernameLabel" text="User">
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                    <font>
+                        <Font size="19.0"/>
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #0E4F79;"
+              GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2">
+            <children>
+                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                        onAction="#customerButtonHandler" styleClass="mainButton" text="Customers">
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                    <padding>
+                        <Insets top="10.0"/>
+                    </padding>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#appointmentButtonHandler" styleClass="mainButton"
+                        text="Appointments">
+                    <padding>
+                        <Insets top="10.0"/>
+                    </padding>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#calendarButtonHandler" styleClass="mainButton"
+                        text="Calendar">
+                    <padding>
+                        <Insets top="10.0"/>
+                    </padding>
+                </Button>
+                <Button mnemonicParsing="false" styleClass="mainButton" text="Report">
+                    <padding>
+                        <Insets top="10.0"/>
+                    </padding>
+                </Button>
+            </children>
+            <GridPane.margin>
+                <Insets/>
+            </GridPane.margin>
+            <padding>
+                <Insets top="20.0"/>
+            </padding>
+        </VBox>
+        <GridPane alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1"
+                  GridPane.rowSpan="2">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="10.0" prefWidth="10.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="10.0" prefWidth="384.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="801.0" minWidth="0.0" prefWidth="10.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="384.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="10.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="384.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="591.0" minWidth="10.0" prefWidth="10.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="256.0" minHeight="-Infinity" prefHeight="52.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="256.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="778.3333358764648" minHeight="10.0" prefHeight="741.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Label styleClass="secondLabel" text="Reports" GridPane.columnIndex="1">
+                    <padding>
+                        <Insets left="30.0"/>
+                    </padding>
+                </Label>
+                <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;"
+                            GridPane.columnIndex="5" GridPane.rowIndex="1">
+                    <center>
+                        <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;"
+                               text="Number of Appointments per Customer" BorderPane.alignment="CENTER"/>
+                    </center>
+                    <GridPane.margin>
+                        <Insets/>
+                    </GridPane.margin>
+                </BorderPane>
+                <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;"
+                            GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <center>
+                        <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;"
+                               text="Number of Appointment Types by Month" BorderPane.alignment="CENTER"/>
+                    </center>
+                </BorderPane>
+                <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #919191;"
+                            GridPane.columnIndex="3" GridPane.rowIndex="1">
+                    <center>
+                        <Label style="-fx-font-size: 17; -fx-font-weight: bold; -fx-text-fill: #ecf0f1;"
+                               text="Consultant Schedule" BorderPane.alignment="CENTER"/>
+                    </center>
+                </BorderPane>
+                <TableView fx:id="firstTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1"
+                           GridPane.rowIndex="2">
+                    <columns>
+                        <TableColumn fx:id="monthColumn" prefWidth="192.0" text="Month"/>
+                        <TableColumn fx:id="typeColumn" prefWidth="192.0" text="Data"/>
+                    </columns>
+                    <GridPane.margin>
+                        <Insets bottom="20.0"/>
+                    </GridPane.margin>
+                </TableView>
+                <TableView fx:id="secondTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3"
+                           GridPane.rowIndex="2">
+                    <columns>
+                        <TableColumn fx:id="consultantColumn" prefWidth="110.66668701171875" text="Consultant"/>
+                        <TableColumn fx:id="appTimeColumn" prefWidth="273.33331298828125" text="Appointment time"/>
+                    </columns>
+                    <GridPane.margin>
+                        <Insets bottom="20.0"/>
+                    </GridPane.margin>
+                </TableView>
+                <TableView fx:id="thirdTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5"
+                           GridPane.rowIndex="2">
+                    <columns>
+                        <TableColumn fx:id="customerNameColumn" prefWidth="192.0" text="Customer Name"/>
+                        <TableColumn fx:id="numAppColumn" prefWidth="192.0" text="Number of Appointments"/>
+                    </columns>
+                    <GridPane.margin>
+                        <Insets bottom="20.0"/>
+                    </GridPane.margin>
+                </TableView>
+            </children>
+        </GridPane>
+    </children>
 </GridPane>

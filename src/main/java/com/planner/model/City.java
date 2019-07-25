@@ -25,10 +25,6 @@ public class City {
         return cityId;
     }
 
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
-    }
-
     public String getName() {
         return name;
     }
@@ -41,10 +37,6 @@ public class City {
         return country;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
     public LocalDateTime getCreateDate() {
         return createDate;
     }
@@ -55,10 +47,6 @@ public class City {
 
     public String getCreatedBy() {
         return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
     }
 
     public LocalDateTime getLastUpdate() {

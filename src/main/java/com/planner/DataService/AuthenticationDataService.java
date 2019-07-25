@@ -18,39 +18,25 @@ import java.util.TimeZone;
 
 public class AuthenticationDataService {
 
-    public List<User> getAllUsers(){
+    //gets all users from database
+    public List<User> getAllUsers() {
         String sql = "SELECT * FROM user";
         List<User> users = new ArrayList<>();
 
-        try{
+        try {
             Statement statement = DBConnection.getConnection().createStatement();
             ResultSet result = statement.executeQuery(sql);
-            while(result.next()){
+            while (result.next()) {
                 users.add(createUser(result));
             }
-        } catch (SQLException | ParseException e){
+        } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
         return users;
     }
 
-    public User findUser(String user, String pass){
-        String sql = "SELECT * FROM user WHERE userName = '" + user + "' AND password = '" + pass + "';";
-        User foundUser = null;
-        try{
-            Statement statement = DBConnection.getConnection().createStatement();
-            ResultSet result = statement.executeQuery(sql);
-            if(result.first()){
-                foundUser = createUser(result);
-            }
-        } catch (SQLException | ParseException e){
-            e.printStackTrace();
-        }
-        return foundUser;
-    }
-
-
-    private User createUser(ResultSet result) throws SQLException, ParseException{
+    //creates user object from result set
+    private User createUser(ResultSet result) throws SQLException, ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         User user = null;
@@ -77,7 +63,6 @@ public class AuthenticationDataService {
 
         ZonedDateTime localCreateDate = zonedUTCCreateDateTime.withZoneSameInstant(ZoneId.systemDefault());
         ZonedDateTime localUpdateDate = zonedUTCUpdateDateTime.withZoneSameInstant(ZoneId.systemDefault());
-
 
         user = new User.UserBuilder(id)
                 .username(username)

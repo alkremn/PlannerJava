@@ -1,7 +1,6 @@
 package main.java.com.planner.model;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 public class Address {
     private int addressId;
@@ -30,16 +29,12 @@ public class Address {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return address + address2;
     }
 
     public int getAddressId() {
         return addressId;
-    }
-
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
     }
 
     public String getAddress() {
@@ -60,10 +55,6 @@ public class Address {
 
     public City getCity() {
         return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
     }
 
     public String getPostalCode() {
@@ -92,10 +83,6 @@ public class Address {
 
     public String getCreatedBy() {
         return CreatedBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        CreatedBy = createdBy;
     }
 
     public LocalDateTime getLastUpdate() {

@@ -14,15 +14,16 @@ public class DBConnection {
 
     static Connection connection;
 
-    public static Connection getConnection(){return connection;}
+    public static Connection getConnection() {
+        return connection;
+    }
 
     //opens new connection to the database
-    public static boolean makeConnection(){
+    public static boolean makeConnection() {
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-            System.out.println("Connection Successful");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return true;
@@ -30,10 +31,9 @@ public class DBConnection {
 
     //closes the connection to the database
     public static void closeConnection() {
-        try{
+        try {
             connection.close();
-            System.out.println("Connection Closed");
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }

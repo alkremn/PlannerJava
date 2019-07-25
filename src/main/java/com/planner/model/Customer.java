@@ -18,10 +18,10 @@ public class Customer {
 
 
     public Customer(int customerId, String name, Address address, boolean active,
-                    LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate,String lastUpdateBy) {
+                    LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdateBy) {
         this.customerId = new SimpleIntegerProperty(customerId);
         this.name = new SimpleStringProperty(name);
-        this.address =  new SimpleObjectProperty<>(address);
+        this.address = new SimpleObjectProperty<>(address);
         this.active = new SimpleBooleanProperty(active);
         this.createDate = new SimpleObjectProperty<>(createDate);
         this.createdBy = new SimpleStringProperty(createdBy);
@@ -35,10 +35,6 @@ public class Customer {
 
     public IntegerProperty customerIdProperty() {
         return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId.set(customerId);
     }
 
     public String getName() {
@@ -59,10 +55,6 @@ public class Customer {
 
     public ObjectProperty<Address> addressProperty() {
         return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address.set(address);
     }
 
     public boolean isActive() {
@@ -86,7 +78,6 @@ public class Customer {
         return new SimpleStringProperty(createDate.getValue().format(formatter));
     }
 
-
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate.set(createDate);
     }
@@ -97,10 +88,6 @@ public class Customer {
 
     public StringProperty createdByProperty() {
         return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy.set(createdBy);
     }
 
     public LocalDateTime getLastUpdate() {
@@ -117,10 +104,6 @@ public class Customer {
 
     public String getLastUpdateBy() {
         return lastUpdateBy.get();
-    }
-
-    public StringProperty lastUpdateByProperty() {
-        return lastUpdateBy;
     }
 
     public void setLastUpdateBy(String lastUpdateBy) {

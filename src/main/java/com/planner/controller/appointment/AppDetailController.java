@@ -8,10 +8,7 @@ import javafx.scene.control.*;
 import main.java.com.planner.MainApp;
 import main.java.com.planner.model.*;
 
-import java.sql.Time;
 import java.time.*;
-import java.util.Calendar;
-import java.util.List;
 
 public class AppDetailController {
 
@@ -56,60 +53,60 @@ public class AppDetailController {
             isStartValid, isEndValid;
 
     //default constructor
-    public AppDetailController(){}
-
+    public AppDetailController() {
+    }
 
     @FXML
-    private void startSelectionChangedHandler(ActionEvent event){
+    private void startSelectionChangedHandler(ActionEvent event) {
         isStartValid = true;
         TimeSpan startTime = startTimePicker.getSelectionModel().getSelectedItem();
         endTimePicker.getItems().clear();
-        endTimePicker.setItems(createTime(new TimeSpan(startTime.hours,startTime.minutes + TIME_PACE),FXCollections.observableArrayList()));
+        endTimePicker.setItems(createTime(new TimeSpan(startTime.hours, startTime.minutes + TIME_PACE), FXCollections.observableArrayList()));
         endTimePicker.getSelectionModel().select(0);
         isEndValid = true;
         validFormCheck();
     }
 
     @FXML
-    private void endSelectionChangedHandler(ActionEvent event){
+    private void endSelectionChangedHandler(ActionEvent event) {
         isEndValid = true;
         validFormCheck();
     }
 
     @FXML
-    private void typeSelectionChangedHandler(ActionEvent event){
+    private void typeSelectionChangedHandler(ActionEvent event) {
         isTypeValid = true;
         validFormCheck();
     }
 
     @FXML
-    private void appDateSelected(ActionEvent event){
+    private void appDateSelected(ActionEvent event) {
         System.out.println("Date selected");
         isDateValid = true;
         validFormCheck();
     }
 
     @FXML
-    private void saveButtonHandler(ActionEvent event){
-        if(customer != null)
+    private void saveButtonHandler(ActionEvent event) {
+        if (customer != null)
             mainApp.saveAppointment(createAppointment(isExisting), isExisting);
         else
             mainApp.saveAppointment(createAppointment(isExisting), isExisting);
     }
 
     @FXML
-    private void cancelButtonHandler(ActionEvent event){
+    private void cancelButtonHandler(ActionEvent event) {
         mainApp.saveCustomer(null, !isExisting);
     }
 
-    public void setData(MainApp mainApp, Appointment appointment, Customer customer, User user){
+    public void setData(MainApp mainApp, Appointment appointment, Customer customer, User user) {
         this.mainApp = mainApp;
         this.appointment = appointment;
         this.customer = customer;
         this.user = user;
-        startTimePicker.setItems(createTime(new TimeSpan(START_TIME_HOUR,0),FXCollections.observableArrayList()));
+        startTimePicker.setItems(createTime(new TimeSpan(START_TIME_HOUR, 0), FXCollections.observableArrayList()));
 
-        if(appointment != null) {
+        if (appointment != null) {
             initFields(appointment, customer);
             saveButton.setDisable(false);
             isExisting = true;
@@ -117,8 +114,8 @@ public class AppDetailController {
     }
 
     @FXML
-    public void initialize(){
-        typePicker.setItems(FXCollections.observableArrayList( "Presentation", "Scrum"));
+    public void initialize() {
+        typePicker.setItems(FXCollections.observableArrayList("Presentation", "Scrum"));
         titleField.textProperty().addListener((observable, oldValue, newValue) -> {
             isTitleValid = !newValue.isEmpty();
             titleError.setVisible(!isTitleValid);
@@ -151,13 +148,13 @@ public class AppDetailController {
 
     }
 
-    private void validFormCheck(){
+    private void validFormCheck() {
         boolean isValidToSave = isTitleValid && isDescValid && isLocationValid && isContactValid && isUrlValid &&
                 isTypeValid && isDateValid && isStartValid && isEndValid;
         saveButton.setDisable(!isValidToSave);
     }
 
-    private void initFields(Appointment appointment, Customer customer){
+    private void initFields(Appointment appointment, Customer customer) {
         appointmentLabel.setText("Modify Appointment");
         customerNameLabel.setText(customer.getName());
         titleField.setText(appointment.getTitle());
@@ -176,7 +173,7 @@ public class AppDetailController {
         isTypeValid = isDateValid = true;
     }
 
-    private Appointment createAppointment(boolean isExisting){
+    private Appointment createAppointment(boolean isExisting) {
         LocalDateTime currentDate = LocalDateTime.now(ZoneId.of("UTC"));
 
         String title = titleField.getText();
@@ -188,25 +185,14 @@ public class AppDetailController {
         TimeSpan start = startTimePicker.getValue();
         TimeSpan end = endTimePicker.getValue();
         LocalDate date = appDatePicker.getValue();
-
-//        ZonedDateTime zonedStartTime = LocalDateTime.of(date, LocalTime.of(start.hours,start.minutes, 0)).atZone(ZoneId.systemDefault());
-//        ZonedDateTime utcStartTime = zonedStartTime.withZoneSameInstant(ZoneId.of("UTC"));
-//        LocalDateTime startTime  = utcStartTime.toLocalDateTime();
-
-//        ZonedDateTime zonedEndTime = LocalDateTime.of(date, LocalTime.of(end.hours, end.minutes, 0)).atZone(ZoneId.systemDefault());
-//        ZonedDateTime utcEndTime = zonedEndTime.withZoneSameInstant(ZoneId.of("UTC"));
-//        LocalDateTime endTime  = utcEndTime.toLocalDateTime();
-
-        LocalDateTime startTime = LocalDateTime.of(date, LocalTime.of(start.hours,start.minutes, 0));
+        LocalDateTime startTime = LocalDateTime.of(date, LocalTime.of(start.hours, start.minutes, 0));
         LocalDateTime endTime = LocalDateTime.of(date, LocalTime.of(end.hours, end.minutes, 0));
 
         if (!isExisting) {
             int customerId = customer.getCustomerId();
             int userId = user.getUserId();
-
-            appointment = new Appointment(0,customerId,userId,title,desc,location,contact,type,url,startTime,endTime,currentDate,
+            appointment = new Appointment(0, customerId, userId, title, desc, location, contact, type, url, startTime, endTime, currentDate,
                     user.getUserName(), currentDate, user.getUserName(), customer.getName());
-
         } else {
             appointment.setTitle(title);
             appointment.setDescription(desc);
@@ -222,11 +208,11 @@ public class AppDetailController {
         return appointment;
     }
 
-    private ObservableList<TimeSpan> createTime(TimeSpan startTime, ObservableList<TimeSpan> timeCollection){
+    private ObservableList<TimeSpan> createTime(TimeSpan startTime, ObservableList<TimeSpan> timeCollection) {
         timeCollection.clear();
         int mins = startTime.minutes;
-        for(int hour = startTime.hours; hour < END_TIME_HOUR; hour++){
-            for(int min = mins; min < MINUTES_IN_HOUR; min += TIME_PACE){
+        for (int hour = startTime.hours; hour < END_TIME_HOUR; hour++) {
+            for (int min = mins; min < MINUTES_IN_HOUR; min += TIME_PACE) {
                 timeCollection.add(new TimeSpan(hour, min));
             }
             mins = 0;
