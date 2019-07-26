@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import main.java.com.planner.Exceptions.AppOverlapException;
 import main.java.com.planner.MainApp;
 import main.java.com.planner.model.*;
 
@@ -88,10 +89,14 @@ public class AppDetailController {
 
     @FXML
     private void saveButtonHandler(ActionEvent event) {
-        if (customer != null)
-            mainApp.saveAppointment(createAppointment(isExisting), isExisting);
-        else
-            mainApp.saveAppointment(createAppointment(isExisting), isExisting);
+        try {
+            if (customer != null)
+                mainApp.saveAppointment(createAppointment(isExisting), isExisting);
+            else
+                mainApp.saveAppointment(createAppointment(isExisting), isExisting);
+        } catch (AppOverlapException e) {
+            mainApp.showAlertMessage("Error", e.getMessage());
+        }
     }
 
     @FXML
@@ -175,7 +180,7 @@ public class AppDetailController {
 
     private Appointment createAppointment(boolean isExisting) {
         LocalDateTime currentDate = LocalDateTime.now(ZoneId.of("UTC"));
-
+        Appointment newAppointment = null;
         String title = titleField.getText();
         String desc = descTextArea.getText();
         String location = locationTextArea.getText();
@@ -191,21 +196,14 @@ public class AppDetailController {
         if (!isExisting) {
             int customerId = customer.getCustomerId();
             int userId = user.getUserId();
-            appointment = new Appointment(0, customerId, userId, title, desc, location, contact, type, url, startTime, endTime, currentDate,
+            newAppointment = new Appointment(0, customerId, userId, title, desc, location, contact, type, url, startTime, endTime, currentDate,
                     user.getUserName(), currentDate, user.getUserName(), customer.getName());
         } else {
-            appointment.setTitle(title);
-            appointment.setDescription(desc);
-            appointment.setLocation(location);
-            appointment.setContact(contact);
-            appointment.setUrl(url);
-            appointment.setType(type);
-            appointment.setStart(startTime);
-            appointment.setEnd(endTime);
-            appointment.setLastUpdateDate(currentDate);
-            appointment.setLastUpdateBy(user.getUserName());
+            newAppointment = new Appointment(appointment.getId(), appointment.getCustomerId(), appointment.getUserId(),
+                    title, desc, location, contact, type, url, startTime, endTime, appointment.getCreateDate(),
+                    appointment.getCreateBy(), currentDate, user.getUserName(), appointment.customerNameProperty().getName());
         }
-        return appointment;
+        return newAppointment;
     }
 
     private ObservableList<TimeSpan> createTime(TimeSpan startTime, ObservableList<TimeSpan> timeCollection) {

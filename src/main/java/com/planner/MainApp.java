@@ -14,6 +14,7 @@ import main.java.com.planner.DataService.AppointmentDataService;
 import main.java.com.planner.DataService.AuthenticationDataService;
 import main.java.com.planner.DataService.CustomerDataService;
 import main.java.com.planner.DataService.DBConnection;
+import main.java.com.planner.Exceptions.AppOverlapException;
 import main.java.com.planner.controller.*;
 import main.java.com.planner.controller.Customer.CustomerDetailController;
 import main.java.com.planner.controller.Customer.CustomerPageController;
@@ -259,20 +260,36 @@ public class MainApp extends Application {
         customerList.remove(selectedCustomer);
     }
 
-    public void saveAppointment(Appointment appointment, boolean isExisting) {
+    //throws exception if new appointment overlaps with existing one
+    public void saveAppointment(Appointment appointment, boolean isExisting) throws AppOverlapException {
+        if(appointment == null)
+            return;
+        List<Appointment> foundApp = appointmentList.stream()
+                .filter(app -> app.getCustomerId() == appointment.getCustomerId()
+                        && app.getStart().toLocalDate().equals(appointment.getStart().toLocalDate())).collect(Collectors.toList());
+        if (!foundApp.isEmpty()) {
+            for (Appointment app : foundApp) {
+                LocalTime startTime = app.getStart().toLocalTime();
+                LocalTime endTime = app.getEnd().toLocalTime();
+                LocalTime newAppStartTime = appointment.getStart().toLocalTime();
+                LocalTime newAppEndTime = appointment.getEnd().toLocalTime();
+                if (newAppStartTime.equals(startTime) || newAppStartTime.isAfter(startTime) && newAppStartTime.isBefore(endTime)
+                        ||newAppEndTime.isAfter(startTime) && newAppEndTime.isBefore(endTime))
+                    throw new AppOverlapException("Overlapping with another appointment time");
+            }
+        }
         if (detailsWindow != null)
             detailsWindow.close();
-        if (appointment != null) {
-            if (isExisting) {
-                appointmentDS.updateAppointment(appointment);
-            } else {
-                appointmentDS.addAppointment(appointment);
-            }
-            appointmentList.clear();
-            appointmentList.addAll(appointmentDS.getAllAppointments());
-            if (this.appController != null)
-                this.appController.updateAppList();
+
+        if (isExisting) {
+            appointmentDS.updateAppointment(appointment);
+        } else {
+            appointmentDS.addAppointment(appointment);
         }
+        appointmentList.clear();
+        appointmentList.addAll(appointmentDS.getAllAppointments());
+        if (this.appController != null)
+            this.appController.updateAppList();
     }
 
     public void showAlertMessage(final String header, final String message) {
